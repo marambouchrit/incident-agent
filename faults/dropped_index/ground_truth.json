@@ -1,0 +1,20 @@
+{
+  "id": "{{ID}}",
+  "fault": "dropped_index",
+  "category": "performance_regression",
+  "key_detail": "migration 0002 in commit {{CULPRIT_COMMIT}} dropped the index ix_order_items_order_id on order_items(order_id); the per-order item count on GET /orders now does a sequential scan of order_items for every order listed",
+  "key_detail_aliases": ["ix_order_items_order_id", "order_items(order_id)", "order_items.order_id", "drop_index", "missing index", "sequential scan"],
+  "culprit_commit": "{{CULPRIT_COMMIT}}",
+  "culprit_file": "migrations/versions/0002_order_items_product_index.py",
+  "first_error_ts": "{{INJECT_TS}}",
+  "symptom_location": "logs/api.jsonl",
+  "cause_location": ["git/diffs/{{CULPRIT_COMMIT}}.patch", "db/schema.sql"],
+  "difficulty": "medium",
+  "red_herrings": [
+    "api settings commit (catalog cache TTL) deployed to the api about four minutes before the slowdown",
+    "'slow request' WARNINGs on /checkout that also occur in the healthy period"
+  ],
+  "split": "dev",
+  "expected_fix": "recreate the index on order_items(order_id) (new migration or CREATE INDEX) and keep both indexes declared in the model",
+  "notes": "No ERROR is logged; first_error_ts is the time the culprit commit was made, the migration runs a few seconds later. Evidence is latency_ms on GET /orders (about 80 ms before, about 600 ms after) with status 200, plus 'slow request' WARNINGs on /orders. The api is not restarted by the culprit deploy; only the worker is. GET /orders/{id} is also slower but stays under the slow-request threshold."
+}

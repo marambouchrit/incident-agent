@@ -1,0 +1,20 @@
+{
+  "id": "{{ID}}",
+  "fault": "missing_migration",
+  "category": "missing_migration",
+  "key_detail": "column orders.discount_code is used by the code since commit {{CULPRIT_COMMIT}} but was never added to the database",
+  "key_detail_aliases": ["discount_code", "orders.discount_code"],
+  "culprit_commit": "{{CULPRIT_COMMIT}}",
+  "culprit_file": "app/models.py",
+  "first_error_ts": "{{FIRST_ERROR_TS}}",
+  "symptom_location": "logs/api.jsonl",
+  "cause_location": ["git/diffs/{{CULPRIT_COMMIT}}.patch", "db/schema.sql"],
+  "difficulty": "easy",
+  "red_herrings": [
+    "README-only commit about ten minutes before the incident, never deployed",
+    "payment retry WARNINGs that also occur in the healthy period"
+  ],
+  "split": "dev",
+  "expected_fix": "add and run a migration that adds a nullable orders.discount_code column (or roll the api back to the previous commit)",
+  "notes": "Both POST /checkout and GET /orders fail because the ORM selects the new column on every read of orders. The worker was not redeployed and keeps working."
+}

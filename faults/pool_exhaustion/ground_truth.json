@@ -1,0 +1,21 @@
+{
+  "id": "{{ID}}",
+  "fault": "pool_exhaustion",
+  "category": "resource_exhaustion",
+  "key_detail": "commit {{CULPRIT_COMMIT}} shrank the api's DB connection pool in config/api.env (DB_POOL_SIZE 10 -> 2, DB_MAX_OVERFLOW 5 -> 0, DB_POOL_TIMEOUT_S 10 -> 1); bursts of checkout traffic now exhaust the pool and requests fail with QueuePool timeouts",
+  "key_detail_aliases": ["DB_POOL_SIZE", "DB_MAX_OVERFLOW", "DB_POOL_TIMEOUT_S", "QueuePool", "connection pool", "pool size"],
+  "culprit_commit": "{{CULPRIT_COMMIT}}",
+  "culprit_file": "config/api.env",
+  "first_error_ts": "{{FIRST_ERROR_TS}}",
+  "symptom_location": "logs/api.jsonl",
+  "cause_location": ["config/api.env", "git/diffs/{{CULPRIT_COMMIT}}.patch"],
+  "difficulty": "medium",
+  "red_herrings": [
+    "logging refactor commit deployed to the api about four minutes before the first errors",
+    "the traffic burst itself: an equally large burst about fifteen minutes earlier, before the pool change, caused no errors",
+    "'slow request' WARNINGs appear during every burst, including the healthy one"
+  ],
+  "split": "holdout",
+  "expected_fix": "restore the previous pool settings in config/api.env (DB_POOL_SIZE=10, DB_MAX_OVERFLOW=5, DB_POOL_TIMEOUT_S=10) and redeploy the api",
+  "notes": "The api runs on the culprit settings for about ten minutes of steady traffic without any error; failures only appear during the two later bursts. The first burst (healthy settings) is the control that shows traffic alone is not the cause. The log names the mechanism (QueuePool limit of size 2 overflow 0) but not who changed it or when."
+}

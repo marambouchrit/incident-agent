@@ -1,0 +1,1 @@
+Since around {{FIRST_CRASH_TIME}} UTC customers report that order confirmation emails arrive late or not at all. Placing orders still works. No maintenance was announced.

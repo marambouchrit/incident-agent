@@ -1,0 +1,19 @@
+{
+  "id": "{{ID}}",
+  "fault": "oom_restart",
+  "category": "infra_crash",
+  "key_detail": "the worker is OOM-killed (256 MB limit) and restarts in a loop because the sales_export job, since commit {{CULPRIT_COMMIT}}, loads every order into memory instead of streaming one day in chunks",
+  "key_detail_aliases": ["sales_export", "oom", "out of memory", "oom_killed", "worker/handlers/sales_export.py"],
+  "culprit_commit": "{{CULPRIT_COMMIT}}",
+  "culprit_file": "worker/handlers/sales_export.py",
+  "first_error_ts": "{{FIRST_CRASH_TS}}",
+  "symptom_location": "containers.json",
+  "cause_location": ["git/diffs/{{CULPRIT_COMMIT}}.patch"],
+  "difficulty": "easy",
+  "red_herrings": [
+    "api commit capping search results, deployed about two minutes before the first worker kill"
+  ],
+  "split": "dev",
+  "expected_fix": "revert the export to a chunked/streamed query limited to the reporting window (or compute all-time totals in SQL), then redeploy the worker",
+  "notes": "The worker is deployed on the culprit commit about ten minutes before the first kill; it only dies when the periodic export runs. No ERROR is logged by the worker: the evidence is repeated 'service started' and 'requeued interrupted jobs' lines, a sales_export 'job started' with no 'job finished', and oom_killed/restarts in containers.json. first_error_ts is the time of the first kill. db.log shows dropped client connections as a consequence."
+}
