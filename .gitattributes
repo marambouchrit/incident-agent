@@ -1,0 +1,2 @@
+# Keep LF line endings everywhere: bash scripts break with CRLF, and scenario files must stay byte-identical for evidence matching.
+* text=auto eol=lf
