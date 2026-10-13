@@ -12,7 +12,7 @@
 | CP3 — Agent vs. baseline, full set | 10 | ⬜ | |
 | CP4 — Repo, viewer, demo | 13 | ⬜ | |
 
-Current day: **Day 1**  ·  Agent version: —  ·  Dev model: gemini-3.5-flash-lite (free tier: 15 RPM · 250K TPM · 500 RPD)  ·  Final model: —
+Current day: **Day 2**  ·  Agent version: —  ·  Dev model: gemini-3.5-flash-lite (free tier: 15 RPM · 250K TPM · 500 RPD)  ·  Final model: —
 
 ---
 
@@ -31,7 +31,24 @@ Current day: **Day 1**  ·  Agent version: —  ·  Dev model: gemini-3.5-flash-
   - `pytest` is not installed (system Python 3.12, no `.venv` yet); needed by Day 2.
 - **Next:** Day 1 — target app, capture script, 5 scenarios (3 easy + 2 medium) + ground truth; manual giveaway review.
 
-### Day 1 — YYYY-MM-DD
+### Day 1 — 2026-10-13 — Environment & first scenarios
+- **Done:**
+  - Target app "shopline" (api, worker, payments stub, load generator, PostgreSQL) runs in Docker Compose with JSON logs; own 10-commit git history (`2ca8b57`).
+  - Capture tool records a live incident into `scenarios/<id>/` + `ground_truth/<id>.json`; 5 fault kits (`cd6f764`).
+  - 5 scenarios recorded from the live app (`82487a9`): s01 missing migration (easy, dev), s02 wrong env var (easy, holdout), s03 OOM restart (easy, dev), s04 pool exhaustion (medium, holdout), s05 dropped index (medium, dev).
+  - Automated review per scenario: cause and symptom in different files, timing lines up, 0 real giveaway hits. Log volume in range except the worker in s01 (1,490 lines) and s02 (1,483), just under the 1,500 minimum.
+  - Fault map in `docs/TARGET_APP_BRIEF.md` §8.
+- **TODO(human) gaps filled:** —
+- **Learned:** (→ also in `docs/concepts.md`)
+  - Cause and symptom are kept in different places because that is what makes an agent necessary; if they were together, the problem could be read off directly.
+  - The log gives the mechanism, not the root cause (s04: the log says the pool is full; only the config and the commit say who shrank it and when).
+- **Blocked / questions for Claude:**
+  - The first s01 recording was lost (laptop went to sleep; worker crashed every 5 min from a query bug). Both fixed; recordings need the lid open.
+  - s04 and s05 differ from the brief: s04 needed traffic bursts and a 1 s pool timeout; s05 drops the order_items(order_id) index, and the app gained an item count on the order history page (s01–s04 were recorded before that change).
+  - `pytest` not installed yet, no `.venv`.
+- **Next:** solve s02–s05 by hand (< 10 min each, s01 done), then Day 2: tools, guards, registry, unit tests.
+
+### Day 2 — YYYY-MM-DD
 - **Done:**
 - **TODO(human) gaps filled:**
 - **Learned:** (→ also in `docs/concepts.md`)
