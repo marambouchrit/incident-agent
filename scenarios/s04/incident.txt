@@ -1,0 +1,1 @@
+Since around 17:27 UTC customers get errors (HTTP 500) across the site for short periods, then it works again. It has happened more than once. No maintenance was announced.

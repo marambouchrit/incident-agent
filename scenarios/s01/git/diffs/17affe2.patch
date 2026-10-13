@@ -1,0 +1,24 @@
+commit 17affe2
+Author: Lina Haddad
+Date:   2026-10-13T13:56:08Z
+
+    Add API usage examples to README
+
+
+diff --git a/README.md b/README.md
+index a5a5793..3ba447f 100644
+--- a/README.md
++++ b/README.md
+@@ -18,3 +18,12 @@ curl localhost:18000/healthz
+ ```
+ docker compose --profile load up -d loadgen
+ ```
++
++## API examples
++```
++curl "localhost:18000/products?category=books&page=1"
++curl "localhost:18000/products/search?q=lamp"
++curl "localhost:18000/orders?user_id=42"
++curl -X POST localhost:18000/checkout -H 'content-type: application/json' \
++     -d '{"user_id": 42, "items": [{"product_id": 7, "quantity": 1}]}'
++```

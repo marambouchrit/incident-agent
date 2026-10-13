@@ -1,0 +1,20 @@
+commit 0f782bf
+Author: Tomas Keller
+Date:   2026-10-13T15:28:50Z
+
+    Align payments client settings with provider guide
+
+
+diff --git a/config/api.env b/config/api.env
+index 4933e25..ab13fad 100644
+--- a/config/api.env
++++ b/config/api.env
+@@ -6,6 +6,6 @@ DB_POOL_TIMEOUT_S=10
+ SLOW_REQUEST_MS=400
+ CATALOG_CACHE_TTL_S=30
+ FEATURE_DISCOUNTS=false
+-PAYMENTS_URL=http://payments:8080
+-PAYMENTS_TIMEOUT_S=3
++PAYMENTS_URL=http://payments:8443
++PAYMENTS_TIMEOUT_S=5
+ PAYMENTS_RETRIES=2

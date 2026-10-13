@@ -1,0 +1,20 @@
+commit 08af5bd
+Author: Priya Nair
+Date:   2026-10-13T15:19:51Z
+
+    Increase worker batch size to 20
+
+
+diff --git a/config/worker.env b/config/worker.env
+index 77cb746..c19a0a7 100644
+--- a/config/worker.env
++++ b/config/worker.env
+@@ -4,7 +4,7 @@ DB_POOL_SIZE=5
+ DB_MAX_OVERFLOW=2
+ WORKER_CONCURRENCY=2
+ WORKER_POLL_INTERVAL_S=1
+-WORKER_BATCH_SIZE=10
++WORKER_BATCH_SIZE=20
+ EXPORT_CHUNK_ROWS=2000
+ EXPORT_INTERVAL_S=600
+ RECONCILE_INTERVAL_S=300

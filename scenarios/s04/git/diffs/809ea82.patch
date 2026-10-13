@@ -1,0 +1,28 @@
+commit 809ea82
+Author: Tomas Keller
+Date:   2026-10-13T17:23:32Z
+
+    Refactor request logging fields
+
+
+diff --git a/app/middleware.py b/app/middleware.py
+index c4af3db..f41f2b0 100644
+--- a/app/middleware.py
++++ b/app/middleware.py
+@@ -13,11 +13,15 @@ access_log = logging.getLogger("app.access")
+ error_log = logging.getLogger("app.errors")
+ 
+ 
++def _request_fields(request: Request) -> dict[str, object]:
++    return {"method": request.method, "path": request.url.path}
++
++
+ async def request_logging(request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
+     request_id = uuid.uuid4().hex[:12]
+     token = request_id_var.set(request_id)
+     start = time.perf_counter()
+-    fields = {"method": request.method, "path": request.url.path}
++    fields = _request_fields(request)
+     try:
+         try:
+             response = await call_next(request)

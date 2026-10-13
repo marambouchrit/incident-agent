@@ -1,0 +1,31 @@
+2026-10-13 17:06:47.656 UTC [119] shopline@shopline LOG:  unexpected EOF on client connection with an open transaction
+2026-10-13 17:06:50.544 UTC [1] @ LOG:  received fast shutdown request
+2026-10-13 17:06:50.549 UTC [1] @ LOG:  aborting any active transactions
+2026-10-13 17:06:50.553 UTC [1] @ LOG:  background worker "logical replication launcher" (PID 31) exited with exit code 1
+2026-10-13 17:06:50.554 UTC [26] @ LOG:  shutting down
+2026-10-13 17:06:50.558 UTC [26] @ LOG:  checkpoint starting: shutdown immediate
+2026-10-13 17:06:50.683 UTC [26] @ LOG:  checkpoint complete: wrote 1092 buffers (3.3%); 0 WAL file(s) added, 1 removed, 0 recycled; write=0.075 s, sync=0.031 s, total=0.129 s; sync files=38, longest=0.005 s, average=0.001 s; distance=8126 kB, estimate=8126 kB; lsn=0/3E188910, redo lsn=0/3E188910
+2026-10-13 17:06:50.697 UTC [1] @ LOG:  database system is shut down
+
+PostgreSQL Database directory appears to contain a database; Skipping initialization
+
+2026-10-13 17:07:20.620 UTC [1] @ LOG:  starting PostgreSQL 16.15 (Debian 16.15-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-10-13 17:07:20.621 UTC [1] @ LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2026-10-13 17:07:20.621 UTC [1] @ LOG:  listening on IPv6 address "::", port 5432
+2026-10-13 17:07:20.629 UTC [1] @ LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-10-13 17:07:20.638 UTC [29] @ LOG:  database system was shut down at 2026-10-13 17:06:50 UTC
+2026-10-13 17:07:20.651 UTC [1] @ LOG:  database system is ready to accept connections
+2026-10-13 17:12:20.631 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-13 17:12:35.420 UTC [27] @ LOG:  checkpoint complete: wrote 148 buffers (0.5%); 0 WAL file(s) added, 0 removed, 0 recycled; write=14.705 s, sync=0.039 s, total=14.790 s; sync files=32, longest=0.008 s, average=0.002 s; distance=917 kB, estimate=917 kB; lsn=0/3E328018, redo lsn=0/3E26DE78
+2026-10-13 17:17:20.435 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-13 17:18:52.615 UTC [27] @ LOG:  checkpoint complete: wrote 919 buffers (2.8%); 0 WAL file(s) added, 0 removed, 0 recycled; write=92.096 s, sync=0.038 s, total=92.181 s; sync files=42, longest=0.005 s, average=0.001 s; distance=6619 kB, estimate=6619 kB; lsn=0/3E96EF80, redo lsn=0/3E8E4B50
+2026-10-13 17:22:20.631 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-13 17:22:33.054 UTC [27] @ LOG:  checkpoint complete: wrote 123 buffers (0.4%); 0 WAL file(s) added, 0 removed, 0 recycled; write=12.299 s, sync=0.071 s, total=12.424 s; sync files=29, longest=0.019 s, average=0.003 s; distance=978 kB, estimate=6055 kB; lsn=0/3EA008A8, redo lsn=0/3E9D9390
+2026-10-13 17:27:20.077 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-13 17:27:32.507 UTC [27] @ LOG:  checkpoint complete: wrote 124 buffers (0.4%); 0 WAL file(s) added, 0 removed, 0 recycled; write=12.383 s, sync=0.027 s, total=12.430 s; sync files=29, longest=0.006 s, average=0.001 s; distance=821 kB, estimate=5531 kB; lsn=0/3EAD2560, redo lsn=0/3EAA69B8
+2026-10-13 17:32:20.497 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-13 17:33:07.840 UTC [27] @ LOG:  checkpoint complete: wrote 472 buffers (1.4%); 0 WAL file(s) added, 0 removed, 0 recycled; write=47.287 s, sync=0.026 s, total=47.344 s; sync files=32, longest=0.004 s, average=0.001 s; distance=3404 kB, estimate=5319 kB; lsn=0/3F155840, redo lsn=0/3EDF9C10
+2026-10-13 17:36:29.901 UTC [832] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 17:36:29.901 UTC [832] shopline@shopline DETAIL:  Key (email)=(shopper759.ce65bf@example.com) already exists.
+2026-10-13 17:36:29.901 UTC [832] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 17:37:20.883 UTC [27] @ LOG:  checkpoint starting: time

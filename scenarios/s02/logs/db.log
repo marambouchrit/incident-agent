@@ -1,0 +1,475 @@
+2026-10-13 15:10:54.134 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:10:54.134 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper36455@example.com) already exists.
+2026-10-13 15:10:54.134 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:11:15.072 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:11:15.072 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper48075@example.com) already exists.
+2026-10-13 15:11:15.072 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:11:50.235 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:11:50.235 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper25367@example.com) already exists.
+2026-10-13 15:11:50.235 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:11:52.807 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:11:52.807 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper46911@example.com) already exists.
+2026-10-13 15:11:52.807 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:11:56.286 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:11:56.286 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper22380@example.com) already exists.
+2026-10-13 15:11:56.286 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:11:56.538 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:11:56.538 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper21266@example.com) already exists.
+2026-10-13 15:11:56.538 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:11:59.763 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:11:59.763 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper1898@example.com) already exists.
+2026-10-13 15:11:59.763 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:12:15.075 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:12:15.075 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper27233@example.com) already exists.
+2026-10-13 15:12:15.075 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:12:21.654 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:12:21.654 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper10025@example.com) already exists.
+2026-10-13 15:12:21.654 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:12:51.569 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:12:51.569 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper31328@example.com) already exists.
+2026-10-13 15:12:51.569 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:12:59.323 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:12:59.323 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper4387@example.com) already exists.
+2026-10-13 15:12:59.323 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:13:39.902 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:13:39.902 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper12997@example.com) already exists.
+2026-10-13 15:13:39.902 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:13:47.638 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:13:47.638 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper1921@example.com) already exists.
+2026-10-13 15:13:47.638 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:14:05.148 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:14:05.148 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper24942@example.com) already exists.
+2026-10-13 15:14:05.148 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:14:07.101 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:14:07.101 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper7816@example.com) already exists.
+2026-10-13 15:14:07.101 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:14:09.097 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:14:09.097 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper814@example.com) already exists.
+2026-10-13 15:14:09.097 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:14:13.720 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:14:13.720 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper44698@example.com) already exists.
+2026-10-13 15:14:13.720 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:14:15.770 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:14:15.770 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper14354@example.com) already exists.
+2026-10-13 15:14:15.770 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:14:33.286 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:14:33.286 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper40733@example.com) already exists.
+2026-10-13 15:14:33.286 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:14:45.307 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:14:45.307 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper49218@example.com) already exists.
+2026-10-13 15:14:45.307 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:14:46.058 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:14:46.058 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper326@example.com) already exists.
+2026-10-13 15:14:46.058 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:14:46.225 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:14:46.225 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper47096@example.com) already exists.
+2026-10-13 15:14:46.225 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:14:53.081 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:14:53.081 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper46298@example.com) already exists.
+2026-10-13 15:14:53.081 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:15:00.956 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:15:00.956 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper27491@example.com) already exists.
+2026-10-13 15:15:00.956 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:15:17.114 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:15:17.114 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper43583@example.com) already exists.
+2026-10-13 15:15:17.114 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:15:18.621 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:15:18.621 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper2970@example.com) already exists.
+2026-10-13 15:15:18.621 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:15:28.502 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:15:28.502 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper44328@example.com) already exists.
+2026-10-13 15:15:28.502 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:15:39.257 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:15:39.257 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper7899@example.com) already exists.
+2026-10-13 15:15:39.257 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:15:39.821 UTC [28] @ LOG:  checkpoint starting: time
+2026-10-13 15:16:01.410 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:16:01.410 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper206@example.com) already exists.
+2026-10-13 15:16:01.410 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:16:02.815 UTC [28] @ LOG:  checkpoint complete: wrote 229 buffers (0.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=22.828 s, sync=0.101 s, total=22.995 s; sync files=32, longest=0.041 s, average=0.004 s; distance=1444 kB, estimate=1444 kB; lsn=0/3BA062A8, redo lsn=0/3B9CB9C8
+2026-10-13 15:16:10.851 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:16:10.851 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper38561@example.com) already exists.
+2026-10-13 15:16:10.851 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:16:11.519 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:16:11.519 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper28523@example.com) already exists.
+2026-10-13 15:16:11.519 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:16:16.480 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:16:16.480 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper33862@example.com) already exists.
+2026-10-13 15:16:16.480 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:16:19.933 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:16:19.933 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper49088@example.com) already exists.
+2026-10-13 15:16:19.933 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:16:23.301 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:16:23.301 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper24550@example.com) already exists.
+2026-10-13 15:16:23.301 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:16:54.711 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:16:54.711 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper11093@example.com) already exists.
+2026-10-13 15:16:54.711 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:17:03.656 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:17:03.656 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper25245@example.com) already exists.
+2026-10-13 15:17:03.656 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:17:19.982 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:17:19.982 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper26953@example.com) already exists.
+2026-10-13 15:17:19.982 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:17:25.913 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:17:25.913 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper44404@example.com) already exists.
+2026-10-13 15:17:25.913 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:17:38.521 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:17:38.521 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper33690@example.com) already exists.
+2026-10-13 15:17:38.521 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:17:46.927 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:17:46.927 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper43307@example.com) already exists.
+2026-10-13 15:17:46.927 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:18:44.569 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:18:44.569 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper12138@example.com) already exists.
+2026-10-13 15:18:44.569 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:18:49.230 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:18:49.230 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper19023@example.com) already exists.
+2026-10-13 15:18:49.230 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:19:19.435 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:19:19.435 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper14279@example.com) already exists.
+2026-10-13 15:19:19.435 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:19:30.241 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:19:30.241 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper37146@example.com) already exists.
+2026-10-13 15:19:30.241 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:19:49.280 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:19:49.280 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper31733@example.com) already exists.
+2026-10-13 15:19:49.280 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:19:55.127 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:19:55.127 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper2572@example.com) already exists.
+2026-10-13 15:19:55.127 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:19:56.323 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:19:56.323 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper49980@example.com) already exists.
+2026-10-13 15:19:56.323 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:20:00.156 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:20:00.156 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper7502@example.com) already exists.
+2026-10-13 15:20:00.156 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:20:18.766 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:20:18.766 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper25701@example.com) already exists.
+2026-10-13 15:20:18.766 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:20:35.301 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:20:35.301 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper36523@example.com) already exists.
+2026-10-13 15:20:35.301 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:20:39.830 UTC [28] @ LOG:  checkpoint starting: time
+2026-10-13 15:21:03.575 UTC [28] @ LOG:  checkpoint complete: wrote 235 buffers (0.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=23.600 s, sync=0.068 s, total=23.745 s; sync files=30, longest=0.035 s, average=0.003 s; distance=1424 kB, estimate=1442 kB; lsn=0/3BB78048, redo lsn=0/3BB2FC20
+2026-10-13 15:21:14.257 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:21:14.257 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper18129@example.com) already exists.
+2026-10-13 15:21:14.257 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:21:22.863 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:21:22.863 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper13960@example.com) already exists.
+2026-10-13 15:21:22.863 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:21:44.243 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:21:44.243 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper45181@example.com) already exists.
+2026-10-13 15:21:44.243 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:21:45.046 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:21:45.046 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper21958@example.com) already exists.
+2026-10-13 15:21:45.046 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:22:03.891 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:22:03.891 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper26066@example.com) already exists.
+2026-10-13 15:22:03.891 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:22:20.313 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:22:20.313 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper26768@example.com) already exists.
+2026-10-13 15:22:20.313 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:22:36.674 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:22:36.674 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper29614@example.com) already exists.
+2026-10-13 15:22:36.674 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:22:37.474 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:22:37.474 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper25588@example.com) already exists.
+2026-10-13 15:22:37.474 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:22:55.985 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:22:55.985 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper21297@example.com) already exists.
+2026-10-13 15:22:55.985 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:22:57.226 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:22:57.226 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper35876@example.com) already exists.
+2026-10-13 15:22:57.226 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:23:11.783 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:23:11.783 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper42334@example.com) already exists.
+2026-10-13 15:23:11.783 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:23:18.259 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:23:18.259 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper17746@example.com) already exists.
+2026-10-13 15:23:18.259 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:23:23.032 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:23:23.032 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper12137@example.com) already exists.
+2026-10-13 15:23:23.032 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:23:38.871 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:23:38.871 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper35443@example.com) already exists.
+2026-10-13 15:23:38.871 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:23:53.004 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:23:53.004 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper40630@example.com) already exists.
+2026-10-13 15:23:53.004 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:24:00.271 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:24:00.271 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper41691@example.com) already exists.
+2026-10-13 15:24:00.271 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:24:05.750 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:24:05.750 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper29984@example.com) already exists.
+2026-10-13 15:24:05.750 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:24:42.865 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:24:42.865 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper36091@example.com) already exists.
+2026-10-13 15:24:42.865 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:25:26.867 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:25:26.867 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper20450@example.com) already exists.
+2026-10-13 15:25:26.867 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:25:27.342 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:25:27.342 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper30984@example.com) already exists.
+2026-10-13 15:25:27.342 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:25:36.665 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:25:36.665 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper25787@example.com) already exists.
+2026-10-13 15:25:36.665 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:25:39.560 UTC [28] @ LOG:  checkpoint starting: time
+2026-10-13 15:25:40.538 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:25:40.538 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper13093@example.com) already exists.
+2026-10-13 15:25:40.538 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:25:45.137 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:25:45.137 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper47@example.com) already exists.
+2026-10-13 15:25:45.137 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:25:49.905 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:25:49.905 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper27362@example.com) already exists.
+2026-10-13 15:25:49.905 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:26:01.311 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:26:01.311 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper10101@example.com) already exists.
+2026-10-13 15:26:01.311 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:26:03.024 UTC [28] @ LOG:  checkpoint complete: wrote 232 buffers (0.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=23.316 s, sync=0.074 s, total=23.465 s; sync files=29, longest=0.013 s, average=0.003 s; distance=1623 kB, estimate=1623 kB; lsn=0/3BD09088, redo lsn=0/3BCC58E0
+2026-10-13 15:26:08.732 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:26:08.732 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper32247@example.com) already exists.
+2026-10-13 15:26:08.732 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:26:09.915 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:26:09.915 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper306@example.com) already exists.
+2026-10-13 15:26:09.915 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:26:11.035 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:26:11.035 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper8341@example.com) already exists.
+2026-10-13 15:26:11.035 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:26:29.542 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:26:29.542 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper8372@example.com) already exists.
+2026-10-13 15:26:29.542 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:26:40.316 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:26:40.316 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper40216@example.com) already exists.
+2026-10-13 15:26:40.316 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:26:43.197 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:26:43.197 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper38598@example.com) already exists.
+2026-10-13 15:26:43.197 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:26:47.857 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:26:47.857 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper6875@example.com) already exists.
+2026-10-13 15:26:47.857 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:27:13.563 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:27:13.563 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper33710@example.com) already exists.
+2026-10-13 15:27:13.563 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:27:31.263 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:27:31.263 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper7296@example.com) already exists.
+2026-10-13 15:27:31.263 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:28:20.116 UTC [58] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:28:20.116 UTC [58] shopline@shopline DETAIL:  Key (email)=(shopper8729@example.com) already exists.
+2026-10-13 15:28:20.116 UTC [58] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:28:31.682 UTC [57] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:28:31.682 UTC [57] shopline@shopline DETAIL:  Key (email)=(shopper40084@example.com) already exists.
+2026-10-13 15:28:31.682 UTC [57] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:28:46.080 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:28:46.080 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper26237@example.com) already exists.
+2026-10-13 15:28:46.080 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:28:48.399 UTC [59] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:28:48.399 UTC [59] shopline@shopline DETAIL:  Key (email)=(shopper40118@example.com) already exists.
+2026-10-13 15:28:48.399 UTC [59] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:29:16.566 UTC [870] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:29:16.566 UTC [870] shopline@shopline DETAIL:  Key (email)=(shopper44239@example.com) already exists.
+2026-10-13 15:29:16.566 UTC [870] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:29:29.374 UTC [868] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:29:29.374 UTC [868] shopline@shopline DETAIL:  Key (email)=(shopper1007@example.com) already exists.
+2026-10-13 15:29:29.374 UTC [868] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:29:30.571 UTC [870] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:29:30.571 UTC [870] shopline@shopline DETAIL:  Key (email)=(shopper17548@example.com) already exists.
+2026-10-13 15:29:30.571 UTC [870] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:29:41.209 UTC [868] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:29:41.209 UTC [868] shopline@shopline DETAIL:  Key (email)=(shopper38326@example.com) already exists.
+2026-10-13 15:29:41.209 UTC [868] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:30:05.715 UTC [870] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:30:05.715 UTC [870] shopline@shopline DETAIL:  Key (email)=(shopper6789@example.com) already exists.
+2026-10-13 15:30:05.715 UTC [870] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:30:18.978 UTC [870] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:30:18.978 UTC [870] shopline@shopline DETAIL:  Key (email)=(shopper8142@example.com) already exists.
+2026-10-13 15:30:18.978 UTC [870] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:30:28.346 UTC [870] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:30:28.346 UTC [870] shopline@shopline DETAIL:  Key (email)=(shopper37511@example.com) already exists.
+2026-10-13 15:30:28.346 UTC [870] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:30:28.505 UTC [930] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:30:28.505 UTC [930] shopline@shopline DETAIL:  Key (email)=(shopper45909@example.com) already exists.
+2026-10-13 15:30:28.505 UTC [930] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:30:29.067 UTC [870] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:30:29.067 UTC [870] shopline@shopline DETAIL:  Key (email)=(shopper246@example.com) already exists.
+2026-10-13 15:30:29.067 UTC [870] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:30:39.057 UTC [28] @ LOG:  checkpoint starting: time
+2026-10-13 15:30:57.113 UTC [868] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:30:57.113 UTC [868] shopline@shopline DETAIL:  Key (email)=(shopper42746@example.com) already exists.
+2026-10-13 15:30:57.113 UTC [868] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:30:59.016 UTC [870] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:30:59.016 UTC [870] shopline@shopline DETAIL:  Key (email)=(shopper19801@example.com) already exists.
+2026-10-13 15:30:59.016 UTC [870] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:31:02.926 UTC [28] @ LOG:  checkpoint complete: wrote 236 buffers (0.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=23.731 s, sync=0.085 s, total=23.870 s; sync files=31, longest=0.043 s, average=0.003 s; distance=1527 kB, estimate=1613 kB; lsn=0/3BE77148, redo lsn=0/3BE436C8
+2026-10-13 15:31:09.797 UTC [868] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:31:09.797 UTC [868] shopline@shopline DETAIL:  Key (email)=(shopper43568@example.com) already exists.
+2026-10-13 15:31:09.797 UTC [868] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:31:09.845 UTC [870] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:31:09.845 UTC [870] shopline@shopline DETAIL:  Key (email)=(shopper33154@example.com) already exists.
+2026-10-13 15:31:09.845 UTC [870] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:31:54.861 UTC [930] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:31:54.861 UTC [930] shopline@shopline DETAIL:  Key (email)=(shopper35743@example.com) already exists.
+2026-10-13 15:31:54.861 UTC [930] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:32:09.464 UTC [868] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:32:09.464 UTC [868] shopline@shopline DETAIL:  Key (email)=(shopper29730@example.com) already exists.
+2026-10-13 15:32:09.464 UTC [868] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:32:19.058 UTC [870] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:32:19.058 UTC [870] shopline@shopline DETAIL:  Key (email)=(shopper18398@example.com) already exists.
+2026-10-13 15:32:19.058 UTC [870] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:32:35.848 UTC [930] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:32:35.848 UTC [930] shopline@shopline DETAIL:  Key (email)=(shopper48140@example.com) already exists.
+2026-10-13 15:32:35.848 UTC [930] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:32:57.467 UTC [930] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:32:57.467 UTC [930] shopline@shopline DETAIL:  Key (email)=(shopper21366@example.com) already exists.
+2026-10-13 15:32:57.467 UTC [930] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:32:57.647 UTC [868] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:32:57.647 UTC [868] shopline@shopline DETAIL:  Key (email)=(shopper22128@example.com) already exists.
+2026-10-13 15:32:57.647 UTC [868] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:33:24.565 UTC [930] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:33:24.565 UTC [930] shopline@shopline DETAIL:  Key (email)=(shopper13337@example.com) already exists.
+2026-10-13 15:33:24.565 UTC [930] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:33:33.463 UTC [930] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:33:33.463 UTC [930] shopline@shopline DETAIL:  Key (email)=(shopper32598@example.com) already exists.
+2026-10-13 15:33:33.463 UTC [930] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:33:41.334 UTC [868] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:33:41.334 UTC [868] shopline@shopline DETAIL:  Key (email)=(shopper25695@example.com) already exists.
+2026-10-13 15:33:41.334 UTC [868] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:33:45.107 UTC [930] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:33:45.107 UTC [930] shopline@shopline DETAIL:  Key (email)=(shopper25204@example.com) already exists.
+2026-10-13 15:33:45.107 UTC [930] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:34:23.169 UTC [930] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:34:23.169 UTC [930] shopline@shopline DETAIL:  Key (email)=(shopper12541@example.com) already exists.
+2026-10-13 15:34:23.169 UTC [930] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:34:26.948 UTC [930] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:34:26.948 UTC [930] shopline@shopline DETAIL:  Key (email)=(shopper23966@example.com) already exists.
+2026-10-13 15:34:26.948 UTC [930] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:35:20.869 UTC [930] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:35:20.869 UTC [930] shopline@shopline DETAIL:  Key (email)=(shopper29781@example.com) already exists.
+2026-10-13 15:35:20.869 UTC [930] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:35:26.227 UTC [1158] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:35:26.227 UTC [1158] shopline@shopline DETAIL:  Key (email)=(shopper44889@example.com) already exists.
+2026-10-13 15:35:26.227 UTC [1158] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:35:32.462 UTC [1158] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:35:32.462 UTC [1158] shopline@shopline DETAIL:  Key (email)=(shopper35457@example.com) already exists.
+2026-10-13 15:35:32.462 UTC [1158] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:35:35.194 UTC [870] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:35:35.194 UTC [870] shopline@shopline DETAIL:  Key (email)=(shopper21757@example.com) already exists.
+2026-10-13 15:35:35.194 UTC [870] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:35:39.981 UTC [28] @ LOG:  checkpoint starting: time
+2026-10-13 15:35:40.355 UTC [1158] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:35:40.355 UTC [1158] shopline@shopline DETAIL:  Key (email)=(shopper37275@example.com) already exists.
+2026-10-13 15:35:40.355 UTC [1158] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:36:00.518 UTC [28] @ LOG:  checkpoint complete: wrote 204 buffers (0.6%); 0 WAL file(s) added, 0 removed, 0 recycled; write=20.430 s, sync=0.036 s, total=20.537 s; sync files=17, longest=0.010 s, average=0.003 s; distance=1286 kB, estimate=1580 kB; lsn=0/3BFB91B0, redo lsn=0/3BF84FD0
+2026-10-13 15:36:41.507 UTC [870] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:36:41.507 UTC [870] shopline@shopline DETAIL:  Key (email)=(shopper39940@example.com) already exists.
+2026-10-13 15:36:41.507 UTC [870] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:36:42.006 UTC [930] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:36:42.006 UTC [930] shopline@shopline DETAIL:  Key (email)=(shopper19510@example.com) already exists.
+2026-10-13 15:36:42.006 UTC [930] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:36:44.035 UTC [930] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:36:44.035 UTC [930] shopline@shopline DETAIL:  Key (email)=(shopper8146@example.com) already exists.
+2026-10-13 15:36:44.035 UTC [930] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:37:01.918 UTC [1158] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:37:01.918 UTC [1158] shopline@shopline DETAIL:  Key (email)=(shopper88@example.com) already exists.
+2026-10-13 15:37:01.918 UTC [1158] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:37:31.104 UTC [1158] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:37:31.104 UTC [1158] shopline@shopline DETAIL:  Key (email)=(shopper19480@example.com) already exists.
+2026-10-13 15:37:31.104 UTC [1158] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:37:35.419 UTC [1158] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:37:35.419 UTC [1158] shopline@shopline DETAIL:  Key (email)=(shopper42402@example.com) already exists.
+2026-10-13 15:37:35.419 UTC [1158] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:37:49.544 UTC [868] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:37:49.544 UTC [868] shopline@shopline DETAIL:  Key (email)=(shopper15311@example.com) already exists.
+2026-10-13 15:37:49.544 UTC [868] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:37:55.226 UTC [868] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:37:55.226 UTC [868] shopline@shopline DETAIL:  Key (email)=(shopper40725@example.com) already exists.
+2026-10-13 15:37:55.226 UTC [868] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:37:57.492 UTC [868] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:37:57.492 UTC [868] shopline@shopline DETAIL:  Key (email)=(shopper34585@example.com) already exists.
+2026-10-13 15:37:57.492 UTC [868] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:37:57.978 UTC [1158] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:37:57.978 UTC [1158] shopline@shopline DETAIL:  Key (email)=(shopper5099@example.com) already exists.
+2026-10-13 15:37:57.978 UTC [1158] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:38:08.183 UTC [1158] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:38:08.183 UTC [1158] shopline@shopline DETAIL:  Key (email)=(shopper46643@example.com) already exists.
+2026-10-13 15:38:08.183 UTC [1158] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:38:22.935 UTC [930] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:38:22.935 UTC [930] shopline@shopline DETAIL:  Key (email)=(shopper1592@example.com) already exists.
+2026-10-13 15:38:22.935 UTC [930] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:38:57.504 UTC [868] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:38:57.504 UTC [868] shopline@shopline DETAIL:  Key (email)=(shopper17933@example.com) already exists.
+2026-10-13 15:38:57.504 UTC [868] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:39:03.669 UTC [868] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:39:03.669 UTC [868] shopline@shopline DETAIL:  Key (email)=(shopper22372@example.com) already exists.
+2026-10-13 15:39:03.669 UTC [868] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:39:19.078 UTC [1158] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:39:19.078 UTC [1158] shopline@shopline DETAIL:  Key (email)=(shopper17072@example.com) already exists.
+2026-10-13 15:39:19.078 UTC [1158] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:39:30.306 UTC [868] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:39:30.306 UTC [868] shopline@shopline DETAIL:  Key (email)=(shopper9842@example.com) already exists.
+2026-10-13 15:39:30.306 UTC [868] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:39:31.272 UTC [1158] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:39:31.272 UTC [1158] shopline@shopline DETAIL:  Key (email)=(shopper35375@example.com) already exists.
+2026-10-13 15:39:31.272 UTC [1158] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:39:32.879 UTC [1158] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:39:32.879 UTC [1158] shopline@shopline DETAIL:  Key (email)=(shopper44048@example.com) already exists.
+2026-10-13 15:39:32.879 UTC [1158] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:39:53.270 UTC [868] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:39:53.270 UTC [868] shopline@shopline DETAIL:  Key (email)=(shopper26040@example.com) already exists.
+2026-10-13 15:39:53.270 UTC [868] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:39:55.392 UTC [870] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:39:55.392 UTC [870] shopline@shopline DETAIL:  Key (email)=(shopper49221@example.com) already exists.
+2026-10-13 15:39:55.392 UTC [870] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:40:00.344 UTC [870] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:40:00.344 UTC [870] shopline@shopline DETAIL:  Key (email)=(shopper38999@example.com) already exists.
+2026-10-13 15:40:00.344 UTC [870] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:40:08.852 UTC [870] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:40:08.852 UTC [870] shopline@shopline DETAIL:  Key (email)=(shopper16806@example.com) already exists.
+2026-10-13 15:40:08.852 UTC [870] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:40:38.314 UTC [1158] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:40:38.314 UTC [1158] shopline@shopline DETAIL:  Key (email)=(shopper3428@example.com) already exists.
+2026-10-13 15:40:38.314 UTC [1158] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:40:39.546 UTC [28] @ LOG:  checkpoint starting: time
+2026-10-13 15:40:40.030 UTC [930] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:40:40.030 UTC [930] shopline@shopline DETAIL:  Key (email)=(shopper26777@example.com) already exists.
+2026-10-13 15:40:40.030 UTC [930] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:40:52.407 UTC [1158] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:40:52.407 UTC [1158] shopline@shopline DETAIL:  Key (email)=(shopper45585@example.com) already exists.
+2026-10-13 15:40:52.407 UTC [1158] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:40:55.961 UTC [868] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:40:55.961 UTC [868] shopline@shopline DETAIL:  Key (email)=(shopper27908@example.com) already exists.
+2026-10-13 15:40:55.961 UTC [868] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:41:00.977 UTC [28] @ LOG:  checkpoint complete: wrote 212 buffers (0.6%); 0 WAL file(s) added, 1 removed, 0 recycled; write=21.310 s, sync=0.048 s, total=21.431 s; sync files=14, longest=0.031 s, average=0.004 s; distance=1304 kB, estimate=1553 kB; lsn=0/3C0F6870, redo lsn=0/3C0CB3B0
+2026-10-13 15:42:04.309 UTC [930] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:42:04.309 UTC [930] shopline@shopline DETAIL:  Key (email)=(shopper42410@example.com) already exists.
+2026-10-13 15:42:04.309 UTC [930] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:42:08.401 UTC [870] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:42:08.401 UTC [870] shopline@shopline DETAIL:  Key (email)=(shopper48690@example.com) already exists.
+2026-10-13 15:42:08.401 UTC [870] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:43:44.758 UTC [930] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:43:44.758 UTC [930] shopline@shopline DETAIL:  Key (email)=(shopper9881@example.com) already exists.
+2026-10-13 15:43:44.758 UTC [930] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:43:47.860 UTC [930] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:43:47.860 UTC [930] shopline@shopline DETAIL:  Key (email)=(shopper25109@example.com) already exists.
+2026-10-13 15:43:47.860 UTC [930] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:44:04.931 UTC [930] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:44:04.931 UTC [930] shopline@shopline DETAIL:  Key (email)=(shopper40607@example.com) already exists.
+2026-10-13 15:44:04.931 UTC [930] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:44:22.123 UTC [870] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:44:22.123 UTC [870] shopline@shopline DETAIL:  Key (email)=(shopper10714@example.com) already exists.
+2026-10-13 15:44:22.123 UTC [870] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:44:49.314 UTC [930] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:44:49.314 UTC [930] shopline@shopline DETAIL:  Key (email)=(shopper31100@example.com) already exists.
+2026-10-13 15:44:49.314 UTC [930] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:45:01.737 UTC [870] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:45:01.737 UTC [870] shopline@shopline DETAIL:  Key (email)=(shopper40845@example.com) already exists.
+2026-10-13 15:45:01.737 UTC [870] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:45:07.682 UTC [1158] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:45:07.682 UTC [1158] shopline@shopline DETAIL:  Key (email)=(shopper22730@example.com) already exists.
+2026-10-13 15:45:07.682 UTC [1158] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 15:45:39.949 UTC [28] @ LOG:  checkpoint starting: time
+2026-10-13 15:45:47.506 UTC [930] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 15:45:47.506 UTC [930] shopline@shopline DETAIL:  Key (email)=(shopper4365@example.com) already exists.
+2026-10-13 15:45:47.506 UTC [930] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at

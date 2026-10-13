@@ -1,0 +1,61 @@
+commit 734075c
+Author: Priya Nair
+Date:   2026-10-09T11:00:00Z
+
+    Add sales export job
+
+
+diff --git a/worker/handlers/sales_export.py b/worker/handlers/sales_export.py
+new file mode 100644
+index 0000000..28472dd
+--- /dev/null
++++ b/worker/handlers/sales_export.py
+@@ -0,0 +1,48 @@
++import csv
++import logging
++import time
++from collections import defaultdict
++from datetime import datetime, timedelta, timezone
++from pathlib import Path
++from typing import Any
++
++from sqlalchemy import select
++from sqlalchemy.orm import Session
++
++from app import config
++from app.models import Order
++
++KIND = "sales_export"
++INTERVAL_S = config.EXPORT_INTERVAL_S
++EXPORT_DIR = Path("/tmp/exports")
++log = logging.getLogger("worker.export")
++
++
++def handle(session: Session, payload: dict[str, Any]) -> None:
++    started = time.perf_counter()
++    since = datetime.now(timezone.utc) - timedelta(days=1)
++    query = (
++        select(Order.created_at, Order.status, Order.total_cents)
++        .where(Order.created_at >= since)
++        .execution_options(yield_per=config.EXPORT_CHUNK_ROWS)
++    )
++    totals: dict[tuple[str, str], list[int]] = defaultdict(lambda: [0, 0])
++    rows = 0
++    for created_at, status, total_cents in session.execute(query):
++        bucket = totals[(created_at.strftime("%Y-%m-%dT%H:00Z"), status)]
++        bucket[0] += 1
++        bucket[1] += total_cents
++        rows += 1
++
++    EXPORT_DIR.mkdir(parents=True, exist_ok=True)
++    path = EXPORT_DIR / f"sales_{datetime.now(timezone.utc):%Y%m%dT%H%M%SZ}.csv"
++    with path.open("w", newline="") as handle_:
++        writer = csv.writer(handle_)
++        writer.writerow(["hour", "status", "orders", "total_cents"])
++        for (hour, status), (count, total) in sorted(totals.items()):
++            writer.writerow([hour, status, count, total])
++
++    log.info(
++        "sales export written",
++        extra={"rows": rows, "file": str(path), "duration_ms": round((time.perf_counter() - started) * 1000)},
++    )

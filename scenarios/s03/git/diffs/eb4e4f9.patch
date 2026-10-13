@@ -1,0 +1,63 @@
+commit eb4e4f9
+Author: Priya Nair
+Date:   2026-09-28T16:30:00Z
+
+    Add request logging middleware and request ids
+
+
+diff --git a/app/main.py b/app/main.py
+index 3abf2c9..abf3aa3 100644
+--- a/app/main.py
++++ b/app/main.py
+@@ -4,8 +4,10 @@ import pkgutil
+ from fastapi import FastAPI
+ 
+ from app import config, routers
++from app.middleware import request_logging
+ 
+ app = FastAPI(title="shopline", version=config.APP_VERSION)
++app.middleware("http")(request_logging)
+ 
+ for module in pkgutil.iter_modules(routers.__path__):
+     app.include_router(importlib.import_module(f"app.routers.{module.name}").router)
+diff --git a/app/middleware.py b/app/middleware.py
+new file mode 100644
+index 0000000..c4af3db
+--- /dev/null
++++ b/app/middleware.py
+@@ -0,0 +1,35 @@
++import logging
++import time
++import uuid
++from collections.abc import Awaitable, Callable
++
++from fastapi import Request, Response
++from fastapi.responses import JSONResponse
++
++from app import config
++from app.logging_setup import request_id_var
++
++access_log = logging.getLogger("app.access")
++error_log = logging.getLogger("app.errors")
++
++
++async def request_logging(request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
++    request_id = uuid.uuid4().hex[:12]
++    token = request_id_var.set(request_id)
++    start = time.perf_counter()
++    fields = {"method": request.method, "path": request.url.path}
++    try:
++        try:
++            response = await call_next(request)
++        except Exception:
++            error_log.exception("unhandled exception", extra=fields)
++            response = JSONResponse({"detail": "Internal Server Error"}, status_code=500)
++        latency_ms = round((time.perf_counter() - start) * 1000, 1)
++        fields |= {"status": response.status_code, "latency_ms": latency_ms}
++        access_log.info("request", extra=fields)
++        if latency_ms > config.SLOW_REQUEST_MS:
++            access_log.warning("slow request", extra=fields)
++        response.headers["x-request-id"] = request_id
++        return response
++    finally:
++        request_id_var.reset(token)

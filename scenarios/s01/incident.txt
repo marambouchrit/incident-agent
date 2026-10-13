@@ -1,0 +1,1 @@
+Since around 14:06 UTC customers cannot complete checkout and cannot open their order history (HTTP 500). Browsing and searching products still works. No maintenance was announced.

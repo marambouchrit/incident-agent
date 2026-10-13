@@ -1,0 +1,20 @@
+commit d4bf948
+Author: Lina Haddad
+Date:   2026-10-13T16:23:39Z
+
+    Cap product search results at 30
+
+
+diff --git a/app/routers/search.py b/app/routers/search.py
+index be0208c..32e3468 100644
+--- a/app/routers/search.py
++++ b/app/routers/search.py
+@@ -13,7 +13,7 @@ router = APIRouter()
+ @router.get("/products/search")
+ def search_products(
+     q: str = Query(min_length=2, max_length=60),
+-    limit: int = Query(20, ge=1, le=50),
++    limit: int = Query(20, ge=1, le=30),
+     session: Session = Depends(get_session),
+ ) -> list[dict[str, Any]]:
+     query = select(Product).where(Product.name.ilike(f"%{q}%")).order_by(Product.name).limit(limit)

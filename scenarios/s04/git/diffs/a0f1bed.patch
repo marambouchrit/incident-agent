@@ -1,0 +1,23 @@
+commit a0f1bed
+Author: Priya Nair
+Date:   2026-10-13T17:17:32Z
+
+    Tune DB settings for staging parity
+
+
+diff --git a/config/api.env b/config/api.env
+index 4933e25..50608c7 100644
+--- a/config/api.env
++++ b/config/api.env
+@@ -1,8 +1,8 @@
+ LOG_LEVEL=INFO
+ DATABASE_URL=postgresql+psycopg://shopline:***@db:5432/shopline
+-DB_POOL_SIZE=10
+-DB_MAX_OVERFLOW=5
+-DB_POOL_TIMEOUT_S=10
++DB_POOL_SIZE=2
++DB_MAX_OVERFLOW=0
++DB_POOL_TIMEOUT_S=1
+ SLOW_REQUEST_MS=400
+ CATALOG_CACHE_TTL_S=30
+ FEATURE_DISCOUNTS=false

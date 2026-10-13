@@ -1,0 +1,21 @@
+commit 924d128
+Author: Priya Nair
+Date:   2026-10-05T09:05:00Z
+
+    Bump SQLAlchemy and psycopg versions
+
+
+diff --git a/requirements.txt b/requirements.txt
+index 531f38b..7891b82 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -1,7 +1,7 @@
+ fastapi==0.115.6
+ uvicorn==0.34.0
+ pydantic==2.10.4
+-SQLAlchemy==2.0.30
+-psycopg[binary]==3.1.19
++SQLAlchemy==2.0.36
++psycopg[binary]==3.2.3
+ alembic==1.14.0
+ httpx==0.28.1

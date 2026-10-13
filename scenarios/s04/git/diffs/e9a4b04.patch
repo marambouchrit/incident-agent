@@ -1,0 +1,193 @@
+commit e9a4b04
+Author: Tomas Keller
+Date:   2026-10-01T10:15:00Z
+
+    Add worker and jobs queue
+
+
+diff --git a/worker/__init__.py b/worker/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/worker/handlers/__init__.py b/worker/handlers/__init__.py
+new file mode 100644
+index 0000000..4f71262
+--- /dev/null
++++ b/worker/handlers/__init__.py
+@@ -0,0 +1 @@
++"""Job handlers. Each module defines KIND and handle(session, payload); INTERVAL_S makes it periodic."""
+diff --git a/worker/handlers/order_confirmation.py b/worker/handlers/order_confirmation.py
+new file mode 100644
+index 0000000..2a1e2ed
+--- /dev/null
++++ b/worker/handlers/order_confirmation.py
+@@ -0,0 +1,19 @@
++import logging
++import time
++from typing import Any
++
++from sqlalchemy.orm import Session
++
++from app.models import Order, User
++
++KIND = "order_confirmation"
++log = logging.getLogger("worker.jobs")
++
++
++def handle(session: Session, payload: dict[str, Any]) -> None:
++    order = session.get(Order, payload["order_id"])
++    if order is None:
++        raise LookupError(f"order {payload['order_id']} not found")
++    user = session.get(User, order.user_id)
++    time.sleep(0.02)  # mail gateway round trip
++    log.info("order confirmation sent", extra={"order_id": order.id, "user_id": user.id if user else None})
+diff --git a/worker/handlers/stock_reconcile.py b/worker/handlers/stock_reconcile.py
+new file mode 100644
+index 0000000..99c4924
+--- /dev/null
++++ b/worker/handlers/stock_reconcile.py
+@@ -0,0 +1,19 @@
++import logging
++from typing import Any
++
++from sqlalchemy import update
++from sqlalchemy.orm import Session
++
++from app import config
++from app.models import Inventory
++
++KIND = "stock_reconcile"
++INTERVAL_S = config.RECONCILE_INTERVAL_S
++LOW_WATER = 1000
++RESTOCK_TO = 100000
++log = logging.getLogger("worker.jobs")
++
++
++def handle(session: Session, payload: dict[str, Any]) -> None:
++    result = session.execute(update(Inventory).where(Inventory.quantity < LOW_WATER).values(quantity=RESTOCK_TO))
++    log.info("stock reconciled", extra={"restocked_products": result.rowcount})
+diff --git a/worker/main.py b/worker/main.py
+new file mode 100644
+index 0000000..8eda805
+--- /dev/null
++++ b/worker/main.py
+@@ -0,0 +1,120 @@
++import importlib
++import logging
++import pkgutil
++import time
++import warnings
++from concurrent.futures import ThreadPoolExecutor
++from types import ModuleType
++from typing import Any
++
++from sqlalchemy import text
++
++from app import config
++from app.db import SessionLocal
++from app.logging_setup import configure
++from worker import handlers
++
++log = logging.getLogger("worker.jobs")
++MAX_ATTEMPTS = 3
++
++CLAIM_SQL = text(
++    """
++    UPDATE jobs SET status = 'running', attempts = attempts + 1
++    WHERE id IN (
++        SELECT id FROM jobs
++        WHERE status = 'pending' AND run_at <= now()
++        ORDER BY id LIMIT :batch
++        FOR UPDATE SKIP LOCKED
++    )
++    RETURNING id, kind, payload, attempts
++    """
++)
++
++
++def discover() -> dict[str, ModuleType]:
++    found = {}
++    for module in pkgutil.iter_modules(handlers.__path__):
++        loaded = importlib.import_module(f"worker.handlers.{module.name}")
++        found[loaded.KIND] = loaded
++    return found
++
++
++def requeue_interrupted() -> None:
++    with SessionLocal() as session:
++        result = session.execute(text("UPDATE jobs SET status = 'pending' WHERE status = 'running'"))
++        session.commit()
++    if result.rowcount:
++        log.warning("requeued interrupted jobs", extra={"count": result.rowcount})
++
++
++def schedule_periodic(registry: dict[str, ModuleType], last_run: dict[str, float]) -> None:
++    now = time.monotonic()
++    for kind, module in registry.items():
++        interval = getattr(module, "INTERVAL_S", None)
++        if interval is None or now - last_run.setdefault(kind, now) < interval:
++            continue
++        last_run[kind] = now
++        with SessionLocal() as session:
++            session.execute(
++                text(
++                    "INSERT INTO jobs (kind, payload, status, attempts) "
++                    "SELECT CAST(:kind AS varchar), '{}'::jsonb, 'pending', 0 WHERE NOT EXISTS "
++                    "(SELECT 1 FROM jobs WHERE kind = CAST(:kind AS varchar) AND status IN ('pending', 'running'))"
++                ),
++                {"kind": kind},
++            )
++            session.commit()
++
++
++def claim() -> list[tuple[int, str, dict[str, Any], int]]:
++    with SessionLocal() as session:
++        rows = session.execute(CLAIM_SQL, {"batch": config.WORKER_BATCH_SIZE}).all()
++        session.commit()
++    return [tuple(row) for row in rows]
++
++
++def run_job(registry: dict[str, ModuleType], job: tuple[int, str, dict[str, Any], int]) -> None:
++    job_id, kind, payload, attempts = job
++    fields = {"job_id": job_id, "kind": kind}
++    started = time.perf_counter()
++    log.info("job started", extra=fields)
++    try:
++        with SessionLocal() as session:
++            registry[kind].handle(session, payload)
++            session.execute(
++                text("UPDATE jobs SET status = 'done', finished_at = now() WHERE id = :id"), {"id": job_id}
++            )
++            session.commit()
++        log.info("job finished", extra=fields | {"duration_ms": round((time.perf_counter() - started) * 1000)})
++    except Exception:
++        log.exception("job failed", extra=fields | {"attempt": attempts})
++        status = "failed" if attempts >= MAX_ATTEMPTS else "pending"
++        with SessionLocal() as session:
++            session.execute(
++                text("UPDATE jobs SET status = :status, run_at = now() + interval '30 seconds' WHERE id = :id"),
++                {"status": status, "id": job_id},
++            )
++            session.commit()
++
++
++def main() -> None:
++    configure("worker")
++    log.info("service started", extra={"version": config.APP_VERSION})
++    warnings.warn(
++        "jobs payload format v1 is deprecated and will be removed in shopline 2.0", DeprecationWarning, stacklevel=1
++    )
++    registry = discover()
++    requeue_interrupted()
++    last_run: dict[str, float] = {}
++    with ThreadPoolExecutor(max_workers=config.WORKER_CONCURRENCY) as pool:
++        while True:
++            schedule_periodic(registry, last_run)
++            jobs = claim()
++            if not jobs:
++                time.sleep(config.WORKER_POLL_INTERVAL_S)
++                continue
++            list(pool.map(lambda job: run_job(registry, job), jobs))
++
++
++if __name__ == "__main__":
++    main()

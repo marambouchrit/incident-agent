@@ -1,0 +1,1 @@
+Since around 15:28 UTC all checkout attempts fail with an error (HTTP 500). Customers can still browse products and see their past orders. No maintenance was announced.

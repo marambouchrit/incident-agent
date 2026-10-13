@@ -1,0 +1,26 @@
+{
+  "id": "s02",
+  "fault": "wrong_env_var",
+  "category": "bad_config",
+  "key_detail": "PAYMENTS_URL in config/api.env was changed to http://payments:8443 by commit 0f782bf; the payment service listens on 8080, so every charge is refused",
+  "key_detail_aliases": [
+    "PAYMENTS_URL",
+    "payments:8443",
+    "8443"
+  ],
+  "culprit_commit": "0f782bf",
+  "culprit_file": "config/api.env",
+  "first_error_ts": "2026-10-13T15:28:59.075Z",
+  "symptom_location": "logs/api.jsonl",
+  "cause_location": [
+    "config/api.env",
+    "git/diffs/0f782bf.patch"
+  ],
+  "difficulty": "easy",
+  "red_herrings": [
+    "worker settings commit (batch size) deployed to the worker about nine minutes before the incident"
+  ],
+  "split": "holdout",
+  "expected_fix": "set PAYMENTS_URL back to http://payments:8080 and redeploy the api",
+  "notes": "Only POST /checkout fails. Each failed checkout logs two 'payment attempt failed, retrying' WARNINGs and then one ERROR; this recording has no such WARNING in the healthy period. The same commit also raises PAYMENTS_TIMEOUT_S from 3 to 5, which is harmless. The payment service's real port (8080) is visible in the old value in the culprit diff and in the stub's source."
+}

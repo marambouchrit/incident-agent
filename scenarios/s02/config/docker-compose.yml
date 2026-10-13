@@ -1,0 +1,72 @@
+name: shopline
+
+x-app: &app
+  image: shopline-app:${APP_VERSION:-dev}
+  restart: unless-stopped
+
+services:
+  db:
+    image: postgres:16
+    command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
+    environment:
+      POSTGRES_USER: shopline
+      POSTGRES_PASSWORD: ***
+      POSTGRES_DB: shopline
+    volumes:
+      - ./config/postgres.conf:/etc/postgresql/postgresql.conf:ro
+      - dbdata:/var/lib/postgresql/data
+    shm_size: 256m
+    mem_limit: 1g
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "shopline"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  api:
+    <<: *app
+    build:
+      context: .
+      args:
+        APP_VERSION: ${APP_VERSION:-dev}
+    command: ["python", "-m", "app.run"]
+    env_file: config/api.env
+    ports:
+      - "18000:8000"
+    mem_limit: 512m
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/healthz')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  worker:
+    <<: *app
+    command: ["python", "-m", "worker.main"]
+    env_file: config/worker.env
+    mem_limit: 256m
+    depends_on:
+      db:
+        condition: service_healthy
+
+  payments:
+    <<: *app
+    command: ["python", "-m", "payments_stub.main"]
+    mem_limit: 64m
+
+  loadgen:
+    <<: *app
+    profiles: ["load"]
+    command: ["python", "-m", "loadgen.run"]
+    environment:
+      API_URL: http://api:8000
+      LOADGEN_RPS: "3.5"
+    depends_on:
+      - api
+
+volumes:
+  dbdata:

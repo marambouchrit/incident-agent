@@ -1,0 +1,1 @@
+Since around 18:13 UTC customers report that the order history page has become very slow. No error is shown and other pages feel normal. No maintenance was announced.

@@ -1,0 +1,35 @@
+
+PostgreSQL Database directory appears to contain a database; Skipping initialization
+
+2026-10-13 17:54:58.370 UTC [1] @ LOG:  starting PostgreSQL 16.15 (Debian 16.15-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-10-13 17:54:58.370 UTC [1] @ LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2026-10-13 17:54:58.370 UTC [1] @ LOG:  listening on IPv6 address "::", port 5432
+2026-10-13 17:54:58.376 UTC [1] @ LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-10-13 17:54:58.383 UTC [29] @ LOG:  database system was shut down at 2026-10-13 17:53:54 UTC
+2026-10-13 17:54:58.396 UTC [1] @ LOG:  database system is ready to accept connections
+2026-10-13 17:59:58.405 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-13 18:00:21.015 UTC [27] @ LOG:  checkpoint complete: wrote 226 buffers (0.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=22.565 s, sync=0.024 s, total=22.611 s; sync files=32, longest=0.005 s, average=0.001 s; distance=1568 kB, estimate=1568 kB; lsn=0/412A6EB0, redo lsn=0/4125A808
+2026-10-13 18:04:58.030 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-13 18:05:18.507 UTC [27] @ LOG:  checkpoint complete: wrote 204 buffers (0.6%); 0 WAL file(s) added, 0 removed, 0 recycled; write=20.380 s, sync=0.059 s, total=20.477 s; sync files=27, longest=0.016 s, average=0.003 s; distance=1450 kB, estimate=1557 kB; lsn=0/4140BDA0, redo lsn=0/413C50A8
+2026-10-13 18:07:44.565 UTC [101] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 18:07:44.565 UTC [101] shopline@shopline DETAIL:  Key (email)=(shopper759.ce70eb@example.com) already exists.
+2026-10-13 18:07:44.565 UTC [101] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 18:09:58.513 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-13 18:10:25.232 UTC [27] @ LOG:  checkpoint complete: wrote 266 buffers (0.8%); 0 WAL file(s) added, 0 removed, 0 recycled; write=26.633 s, sync=0.052 s, total=26.720 s; sync files=32, longest=0.008 s, average=0.002 s; distance=1661 kB, estimate=1661 kB; lsn=0/415B9F30, redo lsn=0/415647E8
+2026-10-13 18:13:17.732 UTC [897] shopline@shopline LOG:  duration: 582.620 ms  statement: CREATE INDEX ix_order_items_product_id ON order_items (product_id)
+2026-10-13 18:14:58.277 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-13 18:15:37.873 UTC [27] @ LOG:  checkpoint complete: wrote 394 buffers (1.2%); 0 WAL file(s) added, 1 removed, 0 recycled; write=39.528 s, sync=0.044 s, total=39.597 s; sync files=47, longest=0.005 s, average=0.001 s; distance=11087 kB, estimate=11087 kB; lsn=0/421060D8, redo lsn=0/42038400
+2026-10-13 18:19:58.916 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-13 18:20:58.237 UTC [27] @ LOG:  checkpoint complete: wrote 593 buffers (1.8%); 0 WAL file(s) added, 0 removed, 0 recycled; write=59.273 s, sync=0.032 s, total=59.321 s; sync files=31, longest=0.005 s, average=0.001 s; distance=4117 kB, estimate=10390 kB; lsn=0/4256E220, redo lsn=0/4243DAA0
+2026-10-13 18:22:54.829 UTC [723] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 18:22:54.829 UTC [723] shopline@shopline DETAIL:  Key (email)=(shopper2546.ce70eb@example.com) already exists.
+2026-10-13 18:22:54.829 UTC [723] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 18:23:38.426 UTC [721] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 18:23:38.426 UTC [721] shopline@shopline DETAIL:  Key (email)=(shopper1399.ce70eb@example.com) already exists.
+2026-10-13 18:23:38.426 UTC [721] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 18:24:58.255 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-13 18:25:49.724 UTC [27] @ LOG:  checkpoint complete: wrote 512 buffers (1.6%); 0 WAL file(s) added, 0 removed, 0 recycled; write=51.370 s, sync=0.070 s, total=51.469 s; sync files=29, longest=0.013 s, average=0.003 s; distance=3719 kB, estimate=9723 kB; lsn=0/429039F0, redo lsn=0/427DFA20
+2026-10-13 18:26:45.005 UTC [723] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-13 18:26:45.005 UTC [723] shopline@shopline DETAIL:  Key (email)=(shopper2651.ce70eb@example.com) already exists.
+2026-10-13 18:26:45.005 UTC [723] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-13 18:29:58.772 UTC [27] @ LOG:  checkpoint starting: time

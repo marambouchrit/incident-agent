@@ -1,0 +1,438 @@
+commit d859681
+Author: Lina Haddad
+Date:   2026-09-22T09:40:00Z
+
+    Initial project skeleton and Compose setup
+
+
+diff --git a/.dockerignore b/.dockerignore
+new file mode 100644
+index 0000000..ce6de41
+--- /dev/null
++++ b/.dockerignore
+@@ -0,0 +1,3 @@
++.git
++__pycache__
++*.pyc
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+index 0000000..00f2d38
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1,3 @@
++__pycache__/
++*.pyc
++.venv/
+diff --git a/Dockerfile b/Dockerfile
+new file mode 100644
+index 0000000..6d7b216
+--- /dev/null
++++ b/Dockerfile
+@@ -0,0 +1,9 @@
++FROM python:3.12-slim
++
++WORKDIR /srv
++COPY requirements.txt .
++RUN pip install --no-cache-dir -r requirements.txt
++COPY . .
++
++ARG APP_VERSION=dev
++ENV APP_VERSION=$APP_VERSION PYTHONUNBUFFERED=1
+diff --git a/alembic.ini b/alembic.ini
+new file mode 100644
+index 0000000..400d282
+--- /dev/null
++++ b/alembic.ini
+@@ -0,0 +1,3 @@
++[alembic]
++script_location = migrations
++prepend_sys_path = .
+diff --git a/app/__init__.py b/app/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/app/config.py b/app/config.py
+new file mode 100644
+index 0000000..71f62df
+--- /dev/null
++++ b/app/config.py
+@@ -0,0 +1,37 @@
++import os
++
++
++def _int(name: str, default: int) -> int:
++    return int(os.environ.get(name, default))
++
++
++def _float(name: str, default: float) -> float:
++    return float(os.environ.get(name, default))
++
++
++def _bool(name: str, default: bool) -> bool:
++    return os.environ.get(name, str(default)).strip().lower() in ("1", "true", "yes", "on")
++
++
++APP_VERSION = os.environ.get("APP_VERSION", "dev")
++LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO").upper()
++
++DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql+psycopg://shopline:***@db:5432/shopline")
++DB_POOL_SIZE = _int("DB_POOL_SIZE", 10)
++DB_MAX_OVERFLOW = _int("DB_MAX_OVERFLOW", 5)
++DB_POOL_TIMEOUT_S = _float("DB_POOL_TIMEOUT_S", 10)
++
++SLOW_REQUEST_MS = _int("SLOW_REQUEST_MS", 400)
++CATALOG_CACHE_TTL_S = _int("CATALOG_CACHE_TTL_S", 30)
++FEATURE_DISCOUNTS = _bool("FEATURE_DISCOUNTS", False)
++
++PAYMENTS_URL = os.environ.get("PAYMENTS_URL", "http://payments:8080")
++PAYMENTS_TIMEOUT_S = _float("PAYMENTS_TIMEOUT_S", 3)
++PAYMENTS_RETRIES = _int("PAYMENTS_RETRIES", 2)
++
++WORKER_CONCURRENCY = _int("WORKER_CONCURRENCY", 2)
++WORKER_POLL_INTERVAL_S = _float("WORKER_POLL_INTERVAL_S", 1)
++WORKER_BATCH_SIZE = _int("WORKER_BATCH_SIZE", 10)
++EXPORT_CHUNK_ROWS = _int("EXPORT_CHUNK_ROWS", 2000)
++EXPORT_INTERVAL_S = _int("EXPORT_INTERVAL_S", 600)
++RECONCILE_INTERVAL_S = _int("RECONCILE_INTERVAL_S", 300)
+diff --git a/app/db.py b/app/db.py
+new file mode 100644
+index 0000000..3fe1608
+--- /dev/null
++++ b/app/db.py
+@@ -0,0 +1,23 @@
++from collections.abc import Iterator
++
++from sqlalchemy import create_engine
++from sqlalchemy.orm import Session, sessionmaker
++
++from app import config
++
++engine = create_engine(
++    config.DATABASE_URL,
++    pool_size=config.DB_POOL_SIZE,
++    max_overflow=config.DB_MAX_OVERFLOW,
++    pool_timeout=config.DB_POOL_TIMEOUT_S,
++    pool_pre_ping=True,
++)
++SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
++
++
++def get_session() -> Iterator[Session]:
++    session = SessionLocal()
++    try:
++        yield session
++    finally:
++        session.close()
+diff --git a/app/logging_setup.py b/app/logging_setup.py
+new file mode 100644
+index 0000000..fd0dabd
+--- /dev/null
++++ b/app/logging_setup.py
+@@ -0,0 +1,47 @@
++import contextvars
++import json
++import logging
++import sys
++from datetime import datetime, timezone
++
++from app import config
++
++request_id_var: contextvars.ContextVar[str | None] = contextvars.ContextVar("request_id", default=None)
++
++_STANDARD = set(logging.LogRecord("", 0, "", 0, "", (), None).__dict__) | {"message", "asctime", "taskName", "color_message"}
++
++
++class JsonFormatter(logging.Formatter):
++    def __init__(self, service: str) -> None:
++        super().__init__()
++        self.service = service
++
++    def format(self, record: logging.LogRecord) -> str:
++        ts = datetime.fromtimestamp(record.created, tz=timezone.utc)
++        out: dict[str, object] = {
++            "ts": ts.strftime("%Y-%m-%dT%H:%M:%S.") + f"{ts.microsecond // 1000:03d}Z",
++            "level": record.levelname,
++            "service": self.service,
++            "logger": record.name,
++            "msg": record.getMessage(),
++        }
++        request_id = request_id_var.get()
++        if request_id:
++            out["request_id"] = request_id
++        for key, value in record.__dict__.items():
++            if key not in _STANDARD and not key.startswith("_"):
++                out[key] = value
++        if record.exc_info:
++            out["exc"] = self.formatException(record.exc_info)
++        return json.dumps(out, default=str)
++
++
++def configure(service: str) -> None:
++    handler = logging.StreamHandler(sys.stdout)
++    handler.setFormatter(JsonFormatter(service))
++    root = logging.getLogger()
++    root.handlers[:] = [handler]
++    root.setLevel(config.LOG_LEVEL)
++    logging.captureWarnings(True)
++    logging.getLogger("httpx").setLevel(logging.WARNING)
++    logging.getLogger("httpcore").setLevel(logging.WARNING)
+diff --git a/app/main.py b/app/main.py
+new file mode 100644
+index 0000000..3abf2c9
+--- /dev/null
++++ b/app/main.py
+@@ -0,0 +1,16 @@
++import importlib
++import pkgutil
++
++from fastapi import FastAPI
++
++from app import config, routers
++
++app = FastAPI(title="shopline", version=config.APP_VERSION)
++
++for module in pkgutil.iter_modules(routers.__path__):
++    app.include_router(importlib.import_module(f"app.routers.{module.name}").router)
++
++
++@app.get("/healthz")
++def healthz() -> dict[str, str]:
++    return {"status": "ok", "version": config.APP_VERSION}
+diff --git a/app/routers/__init__.py b/app/routers/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/app/run.py b/app/run.py
+new file mode 100644
+index 0000000..679d0a3
+--- /dev/null
++++ b/app/run.py
+@@ -0,0 +1,16 @@
++import logging
++
++import uvicorn
++
++from app import config
++from app.logging_setup import configure
++
++
++def main() -> None:
++    configure("api")
++    logging.getLogger("app").info("service started", extra={"version": config.APP_VERSION})
++    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, log_config=None, access_log=False)
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/config/api.env b/config/api.env
+new file mode 100644
+index 0000000..4933e25
+--- /dev/null
++++ b/config/api.env
+@@ -0,0 +1,11 @@
++LOG_LEVEL=INFO
++DATABASE_URL=postgresql+psycopg://shopline:***@db:5432/shopline
++DB_POOL_SIZE=10
++DB_MAX_OVERFLOW=5
++DB_POOL_TIMEOUT_S=10
++SLOW_REQUEST_MS=400
++CATALOG_CACHE_TTL_S=30
++FEATURE_DISCOUNTS=false
++PAYMENTS_URL=http://payments:8080
++PAYMENTS_TIMEOUT_S=3
++PAYMENTS_RETRIES=2
+diff --git a/config/postgres.conf b/config/postgres.conf
+new file mode 100644
+index 0000000..2e8afc4
+--- /dev/null
++++ b/config/postgres.conf
+@@ -0,0 +1,8 @@
++listen_addresses = '*'
++max_connections = 60
++shared_buffers = 256MB
++statement_timeout = 30s
++log_min_duration_statement = 500
++log_line_prefix = '%m [%p] %u@%d '
++log_timezone = 'UTC'
++timezone = 'UTC'
+diff --git a/config/worker.env b/config/worker.env
+new file mode 100644
+index 0000000..77cb746
+--- /dev/null
++++ b/config/worker.env
+@@ -0,0 +1,10 @@
++LOG_LEVEL=INFO
++DATABASE_URL=postgresql+psycopg://shopline:***@db:5432/shopline
++DB_POOL_SIZE=5
++DB_MAX_OVERFLOW=2
++WORKER_CONCURRENCY=2
++WORKER_POLL_INTERVAL_S=1
++WORKER_BATCH_SIZE=10
++EXPORT_CHUNK_ROWS=2000
++EXPORT_INTERVAL_S=600
++RECONCILE_INTERVAL_S=300
+diff --git a/deploy.sh b/deploy.sh
+new file mode 100644
+index 0000000..da9d2b4
+--- /dev/null
++++ b/deploy.sh
+@@ -0,0 +1,22 @@
++#!/usr/bin/env bash
++# Build the current commit and roll it out.
++#   ./deploy.sh [--migrate] <service> [<service>...]
++set -euo pipefail
++cd "$(dirname "$0")"
++export MSYS_NO_PATHCONV=1
++
++MIGRATE=0
++if [ "${1:-}" = "--migrate" ]; then
++    MIGRATE=1
++    shift
++fi
++[ "$#" -gt 0 ] || { echo "usage: ./deploy.sh [--migrate] <service>..." >&2; exit 2; }
++
++APP_VERSION="$(git rev-parse --short HEAD)"
++export APP_VERSION
++
++docker compose build api
++if [ "$MIGRATE" = 1 ]; then
++    docker compose run --rm --no-deps api alembic upgrade head
++fi
++docker compose up -d --no-deps "$@"
+diff --git a/docker-compose.yml b/docker-compose.yml
+new file mode 100644
+index 0000000..4712624
+--- /dev/null
++++ b/docker-compose.yml
+@@ -0,0 +1,72 @@
++name: shopline
++
++x-app: &app
++  image: shopline-app:${APP_VERSION:-dev}
++  restart: unless-stopped
++
++services:
++  db:
++    image: postgres:16
++    command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
++    environment:
++      POSTGRES_USER: shopline
++      POSTGRES_PASSWORD: ***
++      POSTGRES_DB: shopline
++    volumes:
++      - ./config/postgres.conf:/etc/postgresql/postgresql.conf:ro
++      - dbdata:/var/lib/postgresql/data
++    shm_size: 256m
++    mem_limit: 1g
++    restart: unless-stopped
++    healthcheck:
++      test: ["CMD", "pg_isready", "-U", "shopline"]
++      interval: 10s
++      timeout: 3s
++      retries: 10
++
++  api:
++    <<: *app
++    build:
++      context: .
++      args:
++        APP_VERSION: ${APP_VERSION:-dev}
++    command: ["python", "-m", "app.run"]
++    env_file: config/api.env
++    ports:
++      - "18000:8000"
++    mem_limit: 512m
++    depends_on:
++      db:
++        condition: service_healthy
++    healthcheck:
++      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/healthz')"]
++      interval: 30s
++      timeout: 5s
++      retries: 3
++
++  worker:
++    <<: *app
++    command: ["python", "-m", "worker.main"]
++    env_file: config/worker.env
++    mem_limit: 256m
++    depends_on:
++      db:
++        condition: service_healthy
++
++  payments:
++    <<: *app
++    command: ["python", "-m", "payments_stub.main"]
++    mem_limit: 64m
++
++  loadgen:
++    <<: *app
++    profiles: ["load"]
++    command: ["python", "-m", "loadgen.run"]
++    environment:
++      API_URL: http://api:8000
++      LOADGEN_RPS: "${LOADGEN_RPS:-3.5}"
++    depends_on:
++      - api
++
++volumes:
++  dbdata:
+diff --git a/migrations/env.py b/migrations/env.py
+new file mode 100644
+index 0000000..45aa376
+--- /dev/null
++++ b/migrations/env.py
+@@ -0,0 +1,18 @@
++from alembic import context
++from sqlalchemy import create_engine
++
++from app import config
++from app.models import Base
++
++target_metadata = Base.metadata
++
++
++def run_migrations() -> None:
++    engine = create_engine(config.DATABASE_URL)
++    with engine.connect() as connection:
++        context.configure(connection=connection, target_metadata=target_metadata)
++        with context.begin_transaction():
++            context.run_migrations()
++
++
++run_migrations()
+diff --git a/migrations/script.py.mako b/migrations/script.py.mako
+new file mode 100644
+index 0000000..7f40c2d
+--- /dev/null
++++ b/migrations/script.py.mako
+@@ -0,0 +1,18 @@
++"""${message}
++
++Revision ID: ${up_revision}
++Revises: ${down_revision | comma,n}
++"""
++import sqlalchemy as sa
++from alembic import op
++
++revision = ${repr(up_revision)}
++down_revision = ${repr(down_revision)}
++
++
++def upgrade() -> None:
++    ${upgrades if upgrades else "pass"}
++
++
++def downgrade() -> None:
++    ${downgrades if downgrades else "pass"}
+diff --git a/requirements.txt b/requirements.txt
+new file mode 100644
+index 0000000..531f38b
+--- /dev/null
++++ b/requirements.txt
+@@ -0,0 +1,7 @@
++fastapi==0.115.6
++uvicorn==0.34.0
++pydantic==2.10.4
++SQLAlchemy==2.0.30
++psycopg[binary]==3.1.19
++alembic==1.14.0
++httpx==0.28.1

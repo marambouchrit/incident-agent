@@ -1,0 +1,49 @@
+commit 7cca109
+Author: Priya Nair
+Date:   2026-10-13T16:15:39Z
+
+    Include all-time totals in sales export
+
+
+diff --git a/worker/handlers/sales_export.py b/worker/handlers/sales_export.py
+index 28472dd..0cf72ca 100644
+--- a/worker/handlers/sales_export.py
++++ b/worker/handlers/sales_export.py
+@@ -21,18 +21,17 @@ log = logging.getLogger("worker.export")
+ def handle(session: Session, payload: dict[str, Any]) -> None:
+     started = time.perf_counter()
+     since = datetime.now(timezone.utc) - timedelta(days=1)
+-    query = (
+-        select(Order.created_at, Order.status, Order.total_cents)
+-        .where(Order.created_at >= since)
+-        .execution_options(yield_per=config.EXPORT_CHUNK_ROWS)
+-    )
++    orders = session.scalars(select(Order).order_by(Order.created_at)).all()
+     totals: dict[tuple[str, str], list[int]] = defaultdict(lambda: [0, 0])
+-    rows = 0
+-    for created_at, status, total_cents in session.execute(query):
+-        bucket = totals[(created_at.strftime("%Y-%m-%dT%H:00Z"), status)]
+-        bucket[0] += 1
+-        bucket[1] += total_cents
+-        rows += 1
++    all_time: dict[str, list[int]] = defaultdict(lambda: [0, 0])
++    for order in orders:
++        all_time[order.status][0] += 1
++        all_time[order.status][1] += order.total_cents
++        if order.created_at >= since:
++            bucket = totals[(order.created_at.strftime("%Y-%m-%dT%H:00Z"), order.status)]
++            bucket[0] += 1
++            bucket[1] += order.total_cents
++    rows = len(orders)
+ 
+     EXPORT_DIR.mkdir(parents=True, exist_ok=True)
+     path = EXPORT_DIR / f"sales_{datetime.now(timezone.utc):%Y%m%dT%H%M%SZ}.csv"
+@@ -41,6 +40,8 @@ def handle(session: Session, payload: dict[str, Any]) -> None:
+         writer.writerow(["hour", "status", "orders", "total_cents"])
+         for (hour, status), (count, total) in sorted(totals.items()):
+             writer.writerow([hour, status, count, total])
++        for status, (count, total) in sorted(all_time.items()):
++            writer.writerow(["all_time", status, count, total])
+ 
+     log.info(
+         "sales export written",
