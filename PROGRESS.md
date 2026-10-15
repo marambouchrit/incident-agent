@@ -12,7 +12,7 @@
 | CP3 — Agent vs. baseline, full set | 10 | ⬜ | |
 | CP4 — Repo, viewer, demo | 13 | ⬜ | |
 
-Current day: **Day 3**  ·  Agent version: —  ·  Dev model: gemini-3.5-flash-lite (free tier: 15 RPM · 250K TPM · 500 RPD)  ·  Final model: —
+Current day: **Day 4**  ·  Agent version: v1 (system prompt v1)  ·  Dev model: gemini-3.5-flash-lite (free tier: 15 RPM · 250K TPM · 500 RPD)  ·  Final model: —
 
 ---
 
@@ -65,6 +65,29 @@ Current day: **Day 3**  ·  Agent version: —  ·  Dev model: gemini-3.5-flash-
   - `cap_output` counts lines, not characters: a db log line holds a full SQL statement. Watch token size on Day 3.
   - Pydantic `Optional` args become `anyOf` in the JSON schema; check the Gemini provider accepts it on Day 3.
 - **Next:** Day 3 — `agent/llm.py` wrapper, the loop (system prompt, dispatch, 15-step limit, forced report), first autonomous run on s01.
+
+### Day 3 — 2026-10-15 — The loop (first autonomous run)
+- **Done:**
+  - `agent/llm.py`: Gemini REST wrapper (stdlib only), neutral message format, `llm_call(messages, tools, tool_choice)` → (msg, usage). Retries on 429/5xx, RPM throttle (`LLM_RPM=14`), tokens + latency per call. Ping OK: 1,598 input tokens for 8 tool specs + 2 short messages.
+  - `agent/loop.py`: loops until a valid `submit_report` or 15 steps. Tool errors go back as results; a text-only answer gets a nudge (costs a step); `submit_report` is forced at the limit (`not_identified` allowed); `llm_error` stops but keeps the trajectory.
+  - `agent/prompts.py` (system prompt v1), `agent/trajectory.py` (full tool results per step → `runs/`), `agent/run.py` CLI.
+  - 101 tests green (1 skipped): offline LLM conversion, loop with a scripted fake LLM (submit, unknown tool/bad args, step limit, text-only, provider failure), prompt giveaway check.
+  - First autonomous run on s01 (`e82f4f4`): correct `missing_migration` in 5 steps (log_stats → list_commits → show_commit 45b232b → get_db_schema orders → submit_report), 18,861 in / 656 out tokens, 34.7 s LLM time. Ignored the payments-503 red herring.
+  - Cleanup (`4471f9f`): removed dead `NotImplementedError` paths in `run.py` and the skip in `test_loop.py`.
+- **TODO(human) gaps filled:** loop control logic, system prompt v1. Both written by Claude at my request. No open gaps.
+- **Learned:** (→ also in `docs/concepts.md` #7–10, #24 and `docs/journal.md` Day 3)
+  - System prompt = fixed rules (same for every scenario); user prompt = the incident ticket (symptom only).
+  - The provider name stays inside `llm.py`; the loop only knows `llm_call`, so changing provider means changing one file.
+  - The model chooses every step, including when to call `submit_report`. Code checks the report's *form* (Pydantic); only the eval checks whether it's *right*.
+  - The agent picks each tool from the previous result (hash from `log_stats` → `show_commit`; table from the diff → `get_db_schema`). It fixes bad calls from error messages, but never fixes the app (read-only).
+  - Holdout (s02, s04): run them for CP1, never tune on what they show.
+  - Silent faults: s03 has 0 errors (signal = 19 restarts), s05 has 0 errors (signal = p95 160 → 768 ms). Connection pool = a few DB connections kept open and shared; s04 shrank it from 10 to 2.
+- **Blocked / questions for Claude:**
+  - s01 report has `confidence: 1`: overconfident (calibration, Day 5).
+  - Steps 1 and 5 have no `Hypothesis:` line (3/5 followed). Option for later: a required `hypothesis` argument on tools.
+  - Input tokens per turn doubled in 5 steps (2,354 → 4,735). Watch on 15-step runs.
+  - Day 2 question answered: Gemini accepts Pydantic's `anyOf` through `parametersJsonSchema`.
+- **Next:** Day 4 — report validation (1 retry max), duplicate-call detection, run all 5 scenarios, one failure note per scenario → CP1.
 
 <!-- copy the block above for each day -->
 
