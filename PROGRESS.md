@@ -7,12 +7,12 @@
 | Checkpoint | Target day | Status | Notes |
 |---|---|---|---|
 | CP0 — Setup (CLAUDE.md, Learning style, spec, skills) | 0 | ✅ | 2026-10-13 |
-| CP1 — E2E on 5 scenarios | 4 | ⬜ | |
+| CP1 — E2E on 5 scenarios | 4 | ✅ | 2026-10-15 · 5/5 submitted, right commit 5/5, right category 2/5 |
 | CP2 — One-command eval on ~12 | 7 | ⬜ | |
 | CP3 — Agent vs. baseline, full set | 10 | ⬜ | |
 | CP4 — Repo, viewer, demo | 13 | ⬜ | |
 
-Current day: **Day 4**  ·  Agent version: v1 (system prompt v1)  ·  Dev model: gemini-3.5-flash-lite (free tier: 15 RPM · 250K TPM · 500 RPD)  ·  Final model: —
+Current day: **Day 5**  ·  Agent version: v1 (system prompt v1)  ·  Dev model: gemini-3.5-flash-lite (free tier: 15 RPM · 250K TPM · 500 RPD)  ·  Final model: —
 
 ---
 
@@ -89,6 +89,33 @@ Current day: **Day 4**  ·  Agent version: v1 (system prompt v1)  ·  Dev model:
   - Day 2 question answered: Gemini accepts Pydantic's `anyOf` through `parametersJsonSchema`.
 - **Next:** Day 4 — report validation (1 retry max), duplicate-call detection, run all 5 scenarios, one failure note per scenario → CP1.
 
+### Day 4 — 2026-10-15 — Structured report + ✅ CP1
+- **Done:**
+  - Invalid `submit_report`: 1 retry for the whole run (forced final call included), then stop with `invalid_report`; exact Pydantic error sent back + "NOT recorded" + tries left. `traj["invalid_reports"]`.
+  - Duplicate-call detection: same tool + same args (key order and `None` ignored) → tool not re-run, model gets a 5-line preview of the first result + "try a different angle". Counts as a step. `traj["duplicate_calls"]`, `duplicate: true` per call.
+  - `scripts/run_all.py`: runs s01–s05, prints a summary table (no grading).
+  - 108 tests green (1 skipped).
+  - Real run, gemini-3.5-flash-lite, prompt v1, 1 run each: **5/5 `submitted`**, 6–9 steps, 26–39K tokens, 0 duplicates, 0 invalid reports.
+- **Failure notes (1 run each, compared by hand to `ground_truth/`):**
+
+  | id | Right commit | Category (agent → truth) | Note |
+  |---|---|---|---|
+  | s01 | ✅ 45b232b | ✅ missing_migration | **Hallucinated evidence**: quote `column_name \| character varying \| 40 \| yes` from `db/schema` appears in no tool output. Right answer, fake proof. |
+  | s02 | ✅ 0f782bf | ✅ bad_config | Clean: 6 steps, both quotes real. |
+  | s03 | ✅ 7cca109 | ❌ resource_exhaustion → infra_crash | Cause found (OOM, `.all()`), but 9 steps with **no hypothesis written** at all; third quote ("requeued interrupted jobs") is real but doesn't prove the OOM. |
+  | s04 | ✅ a0f1bed | ❌ bad_config → resource_exhaustion | Cause found (pool 10 → 2). Category is the trigger (config) instead of the effect (exhausted pool). |
+  | s05 | ✅ de45f63 | ❌ code_bug → performance_regression | Cause found (dropped index on order_items.order_id). Zero errors in the logs and still found. |
+
+  Across all 5: `confidence: 1` every time (no calibration signal); many steps with no hypothesis text.
+- **TODO(human) gaps filled:** `on_invalid_report`, `on_duplicate`, failure notes — written by Claude at my request.
+- **Learned:** (→ `docs/concepts.md` #11–13)
+  - "Submitted" means the mechanics work, not that the answer is right: the s01 fake quote passed every check we have today.
+  - The categories overlap (OOM = crash or exhaustion? pool shrunk by config = config or exhaustion?). 3/5 "wrong" categories with 5/5 right commits says the label set is ambiguous, not that the agent is lost.
+- **Blocked / questions for Claude:**
+  - Correctness rule for Day 5: grade on category, on key detail/commit, or both? The category set may need clearer definitions (or the rule should accept the key detail).
+  - Duplicate detection and report retry never fired on real runs; only unit tests cover them so far.
+- **Next:** Day 5 — eval harness v0: correctness rule, verbatim evidence check (would catch s01), calibration, 3 runs per scenario.
+
 <!-- copy the block above for each day -->
 
 ---
@@ -102,7 +129,7 @@ Current day: **Day 4**  ·  Agent version: v1 (system prompt v1)  ·  Dev model:
 | Context drowning | | | | |
 | Gave up too early | | | | |
 | Looping | | | | |
-| Hallucinated evidence | | | | |
+| Hallucinated evidence | 1 (s01) | runs/s01_v1_20261015T223236.json | verbatim evidence check (Day 5) | |
 
 ---
 

@@ -1,7 +1,5 @@
 """Prompts for the agent. Versioned: bump PROMPT_VERSION when the text changes,
 so every trajectory says which prompt produced it.
-
-System prompt v1 written by Claude at my request (Day 3).
 """
 
 PROMPT_VERSION = "v1"

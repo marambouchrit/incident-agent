@@ -45,8 +45,10 @@ def record_step(traj: dict, msg: dict, usage: dict, *, forced: bool = False) -> 
     return step
 
 
-def record_tool_result(step: dict, call: dict, result: str, *, is_error: bool = False) -> None:
-    step["tool_calls"].append({"tool": call["name"], "args": call["args"], "result": result, "is_error": is_error})
+def record_tool_result(step: dict, call: dict, result: str, *, is_error: bool = False,
+                       duplicate: bool = False) -> None:
+    step["tool_calls"].append({"tool": call["name"], "args": call["args"], "result": result,
+                               "is_error": is_error, "duplicate": duplicate})
 
 
 def finish(traj: dict, stop_reason: str, report: dict | None = None) -> dict:

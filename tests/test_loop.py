@@ -25,15 +25,16 @@ def call(name: str, args: dict, i: int = 0) -> dict:
 class FakeLLM:
     """Plays back scripted assistant messages; `default` is used once the script runs out."""
 
-    def __init__(self, script: list[dict], default: dict | None = None):
+    def __init__(self, script: list[dict], default: dict | None = None, forced: list[dict] | None = None):
         self.script, self.default = list(script), default
+        self.forced = list(forced or [])      # scripted answers to forced calls; then a valid report
         self.calls: list[dict] = []           # what the loop sent each time
 
     def __call__(self, messages, tools, **kwargs):
         self.calls.append({"messages": [dict(m) for m in messages], "kwargs": kwargs})
         tool_choice = kwargs.get("tool_choice", "auto")
         if tool_choice == "submit_report":
-            return call("submit_report", REPORT, 99), USAGE
+            return (self.forced.pop(0) if self.forced else call("submit_report", REPORT, 99)), USAGE
         msg = self.script.pop(0) if self.script else self.default
         return msg, USAGE
 
@@ -99,3 +100,76 @@ def test_system_prompt_has_no_giveaway():
     assert "submit_report" in text and "not_identified" in text
     for banned in ("ground_truth", "ground truth", "fault", "missing_migration", "pool"):
         assert banned not in text, banned
+
+
+# --- invalid submit_report: one retry for the whole run (on_invalid_report) ---
+
+BAD_REPORT = {**REPORT, "confidence": 1.5}                    # out of [0, 1]
+
+
+def report_results(traj: dict) -> list[dict]:
+    return [c for s in traj["steps"] for c in s["tool_calls"] if c["tool"] == "submit_report"]
+
+
+def test_report_bad_then_good_is_submitted():
+    fake = FakeLLM([call("submit_report", BAD_REPORT, 1), call("submit_report", REPORT, 2)])
+    traj = run(fake)
+    assert traj["stop_reason"] == "submitted"
+    assert traj["invalid_reports"] == 1
+    first = report_results(traj)[0]
+    assert first["is_error"] and "confidence" in first["result"]   # the model sees what is wrong
+
+
+def test_report_bad_twice_stops_with_invalid_report():
+    fake = FakeLLM([call("submit_report", BAD_REPORT, 1)] * 2, default=call("log_stats", {"service": "api"}))
+    traj = run(fake)
+    assert traj["stop_reason"] == "invalid_report"
+    assert traj["report"] is None
+    assert len(fake.calls) == 2                               # no third chance
+    assert len(traj["steps"]) == 2                            # trajectory kept
+
+
+def test_report_forced_bad_then_good():
+    fake = FakeLLM([], default=call("log_stats", {"service": "api"}), forced=[call("submit_report", BAD_REPORT, 98)])
+    traj = run(fake, max_steps=2)
+    assert traj["stop_reason"] == "step_limit"
+    assert traj["report"]["confidence"] == REPORT["confidence"]
+    assert len(fake.calls) == 4                               # 2 steps + forced + 1 retry
+
+
+def test_report_retry_budget_is_shared_with_forced_call():
+    bad = call("submit_report", BAD_REPORT, 98)
+    fake = FakeLLM([call("submit_report", BAD_REPORT, 1)], default=call("log_stats", {"service": "api"}), forced=[bad])
+    traj = run(fake, max_steps=2)
+    assert traj["stop_reason"] == "invalid_report"           # retry already used at step 1
+    assert len(fake.calls) == 3
+
+
+# --- duplicate calls: same tool + same args -> not run again (on_duplicate) ---
+
+from agent.loop import call_key
+
+
+def test_call_key_ignores_order_and_none():
+    assert call_key("search_logs", {"service": "api", "query": "x"}) ==         call_key("search_logs", {"query": "x", "service": "api", "since": None})
+    assert call_key("search_logs", {"service": "api"}) != call_key("search_logs", {"service": "worker"})
+
+
+def test_duplicate_is_not_run_again_and_says_so():
+    same = {"service": "api"}
+    fake = FakeLLM([call("log_stats", same, 1), call("log_stats", same, 2), call("submit_report", REPORT, 3)])
+    traj = run(fake)
+    assert traj["stop_reason"] == "submitted"
+    assert traj["duplicate_calls"] == 1
+    first, second = (s["tool_calls"][0] for s in traj["steps"][:2])
+    assert not first["duplicate"] and second["duplicate"]
+    assert second["result"] != first["result"]                # a message, not the tool output again
+    assert "1" in second["result"]                           # points back to step 1
+    assert len(traj["steps"]) == 3                           # the repeat still costs a step
+
+
+def test_duplicate_loop_still_ends():
+    fake = FakeLLM([], default=call("log_stats", {"service": "api"}))
+    traj = run(fake, max_steps=4)
+    assert traj["stop_reason"] == "step_limit"
+    assert traj["duplicate_calls"] == 3
