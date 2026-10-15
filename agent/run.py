@@ -11,7 +11,6 @@ import sys
 from pathlib import Path
 
 from agent import trajectory as tr
-from agent.llm import LLMError
 from agent.loop import MAX_STEPS, run_agent
 from agent.prompts import PROMPT_VERSION, SYSTEM_PROMPT
 
@@ -37,6 +36,8 @@ def print_summary(traj: dict, saved: Path) -> None:
             err = "  ERROR" if c["is_error"] else ""
             print(f"      -> {c['tool']}({c['args']}){err}")
     print(f"\nstop: {traj['stop_reason']}")
+    if traj.get("error"):
+        print(f"error: {traj['error']}")
     report = traj["report"]
     if report:
         print(f"report: {report.get('status')} | {report.get('root_cause_category')} "
@@ -55,13 +56,7 @@ def main() -> None:
     args = parser.parse_args()
 
     scenario_dir = resolve_scenario(args.scenario)
-    try:
-        traj = run_agent(scenario_dir, SYSTEM_PROMPT, max_steps=args.max_steps)
-    except NotImplementedError:
-        sys.exit("The loop is not written yet: fill the TODO(human) in agent/loop.py.")
-    except LLMError as err:
-        sys.exit(f"LLM call failed: {err}")
-
+    traj = run_agent(scenario_dir, SYSTEM_PROMPT, max_steps=args.max_steps)
     traj["agent_version"] = PROMPT_VERSION
     print_summary(traj, tr.save(traj))
 

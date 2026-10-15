@@ -1,12 +1,8 @@
-"""agent/loop.py with a scripted fake LLM: no network, deterministic.
-
-These tests skip until the TODO(human) in run_agent is filled.
-"""
+"""agent/loop.py with a scripted fake LLM: no network, deterministic."""
 
 from pathlib import Path
 
-import pytest
-
+from agent.llm import LLMError
 from agent.loop import run_agent
 
 S01 = Path(__file__).resolve().parents[1] / "scenarios" / "s01"
@@ -43,10 +39,7 @@ class FakeLLM:
 
 
 def run(fake: FakeLLM, **kw) -> dict:
-    try:
-        return run_agent(S01, "test prompt", llm=fake, **kw)
-    except NotImplementedError:
-        pytest.skip("fill the TODO(human) in agent/loop.py")
+    return run_agent(S01, "test prompt", llm=fake, **kw)
 
 
 def test_stops_on_submit_report():
@@ -84,6 +77,20 @@ def test_text_only_answers_still_terminate():
     traj = run(fake, max_steps=3)
     assert traj["stop_reason"] is not None
     assert len(fake.calls) <= 4
+
+
+def test_provider_failure_keeps_the_trajectory():
+    script = [call("log_stats", {"service": "api"}, 1)]
+
+    def flaky(messages, tools, **kwargs):
+        if script:
+            return script.pop(0), USAGE
+        raise LLMError("HTTP 503: overloaded")
+
+    traj = run_agent(S01, "test prompt", llm=flaky)
+    assert traj["stop_reason"] == "llm_error"
+    assert "503" in traj["error"]
+    assert len(traj["steps"]) == 1                            # step 1 is kept
 
 
 def test_system_prompt_has_no_giveaway():
