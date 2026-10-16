@@ -12,7 +12,7 @@
 | CP3 — Agent vs. baseline, full set | 10 | ⬜ | |
 | CP4 — Repo, viewer, demo | 13 | ⬜ | |
 
-Current day: **Day 5**  ·  Agent version: v1 (system prompt v1)  ·  Dev model: gemini-3.5-flash-lite (free tier: 15 RPM · 250K TPM · 500 RPD)  ·  Final model: —
+Current day: **Day 6**  ·  Agent version: v1 (system prompt v1)  ·  Dev model: gemini-3.5-flash-lite (free tier: 15 RPM · 250K TPM · 500 RPD)  ·  Final model: —
 
 ---
 
@@ -116,6 +116,25 @@ Current day: **Day 5**  ·  Agent version: v1 (system prompt v1)  ·  Dev model:
   - Duplicate detection and report retry never fired on real runs; only unit tests cover them so far.
 - **Next:** Day 5 — eval harness v0: correctness rule, verbatim evidence check (would catch s01), calibration, 3 runs per scenario.
 
+### Day 5 — 2026-10-16 — Evaluation harness v0
+- **Done:**
+  - `eval/metrics.py`: verbatim evidence check (`quote_found`: whitespace-insensitive, `...` may skip text, no fuzzy match; `submit_report` results excluded so an echoed quote can't find itself), correctness signals + `grade` (correct = culprit commit AND a key alias in summary/fix; category scored separately; half-specific → `needs_judge`), `calibration_buckets` (3 buckets, identified runs only), `not_identified_rate`.
+  - `eval/run_all.py` (N scenarios × K runs, round-robin, wall-clock per run, stops after 2 provider errors in a row) and `eval/report.py` (markdown table per scenario + aggregate → `results/<date>_agent.md`; `llm_error` runs listed, not scored).
+  - 126 tests green (1 skipped). "Done when" met: the fake-trajectory test catches a fabricated quote, and the real s01 Day 4 run flags `column_name | character varying | 40 | yes`.
+  - Real eval (`3f440b2`), gemini-3.5-flash-lite, prompt v1: 14 scored runs (s02 has 2; 4 runs lost to HTTP 503, 3 re-run). Cause found **14/14**, category **7/14**, evidence **32/38 (0.84)**, not_identified 0 %, all confidence 1.00. 6.9 steps, ~31K tokens, ~98 s per run.
+- **TODO(human) gaps filled:** `quote_found`, `grade`, `calibration_buckets`. All three written by Claude at my request.
+- **Learned:** (→ `docs/concepts.md` #25–27, `docs/journal.md` Day 5)
+  - Running costs quota and scoring is free, so they are kept separate: a rule change re-scores every saved run without new LLM calls.
+  - Facts (`correctness_signals`) vs. rule (`grade`): two scores show the investigation works (14/14) while the labels don't (7/14, same mistakes each run on s03 and s04).
+  - A provider outage is not an agent failure: before the fix, 2 empty runs counted as wrong and `not_identified`.
+  - The 6 unseen quotes are 3 kinds: 3 real faults (s01 rewritten as a fake log line; s03 ×2 diff sign inverted, `-` instead of `+`), 1 borderline (s02 non-adjacent lines glued), 2 false alarms (s04, s05: `+` diff prefix dropped).
+- **Blocked / questions for Claude:**
+  - Evidence rule: allow omitting a diff's `+`/`-` prefix but not writing the wrong one? Decide with a before/after number (Day 6/7).
+  - Category definitions: s03 (`resource_exhaustion` vs `infra_crash`) and s04 (`bad_config` vs `resource_exhaustion`) are wrong the same way every run.
+  - Calibration has no signal yet (14/14 in one bucket at 1.00); needs hard scenarios.
+  - Gemini free tier is unstable (503 "high demand"): 4/18 runs lost today.
+- **Next:** Day 6 — ~7 more scenarios (first hard ones), dev/holdout tags, eval on dev set, failure taxonomy with counts.
+
 <!-- copy the block above for each day -->
 
 ---
@@ -129,7 +148,7 @@ Current day: **Day 5**  ·  Agent version: v1 (system prompt v1)  ·  Dev model:
 | Context drowning | | | | |
 | Gave up too early | | | | |
 | Looping | | | | |
-| Hallucinated evidence | 1 (s01) | runs/s01_v1_20261015T223236.json | verbatim evidence check (Day 5) | |
+| Hallucinated evidence | 4 runs (s01, s03 ×2, s02 borderline) | runs/2026-10-16/agent/s03_v1_20261016T154505.json | verbatim evidence check (Day 5) | detected, not prevented: 32/38 quotes seen |
 
 ---
 
@@ -137,6 +156,7 @@ Current day: **Day 5**  ·  Agent version: v1 (system prompt v1)  ·  Dev model:
 
 | Date | System | Model | Scenarios × runs | Acc. (E/M/H) | Evidence prec. | Avg steps | Avg cost | Avg latency |
 |---|---|---|---|---|---|---|---|---|
+| 2026-10-16 | agent v1 | gemini-3.5-flash-lite | 5 × 3 (14 scored) | 8/8 · 6/6 · – | 0.84 | 6.9 | $0 (free) | 98 s |
 
 ---
 
