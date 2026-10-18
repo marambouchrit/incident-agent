@@ -211,3 +211,34 @@
 **not_identified.** Measured separately (`not_identified_rate`). On an unsolvable case, "I don't know" beats a wrong cause stated at confidence 1.
 
 **Interview line.** "I check whether the agent's confidence means anything: accuracy per confidence bucket, few buckets because I have few runs. Mine first said 1.0 every time, so its confidence carried no information, which is a known LLM weakness."
+
+## 28. Failure taxonomy (error analysis)
+*(Day 6 · drafted by Claude; reread and rephrase in my own words)*
+
+**What it is.** Read the trajectories one by one, give each failure a name (anchoring, wrong tool, gave up early, looping, hallucinated evidence, context drowning…), and count them. The output is a table: mode → count → one example trajectory → fix tried → effect.
+
+**Why.** An accuracy number says *how much* the agent fails, not *why*. On the Day 6 dev set, 12/18 correct hides two different problems: s08 is a reasoning failure (it blames the first suspicious commit), s03/s05 are label problems (the cause is found, the category is a neighbour). They need different fixes (prompt vs. label definitions), so counting them separately decides what to work on next.
+
+**How here.** `scripts/summarize_runs.py` prints one page per run (hypothesis per step, tool + args, quotes found/not found, grade); the counts go into `PROGRESS.md`.
+
+**Interview line.** "I don't tune on the score, I tune on the failure modes. I read every dev trajectory, named the failures and counted them; the top one was anchoring on the commit just before the errors, so that's what I fixed first."
+
+## 29. Dev / holdout split for prompts
+*(Day 6 · drafted by Claude; reread and rephrase in my own words)*
+
+**What it is.** Scenarios are tagged `dev` or `holdout` when they are created (~60/40, never changed). I read dev trajectories and tune the prompt/tools on them; holdout runs are only scored, never read, until the final evaluation.
+
+**Why.** Every prompt tweak made while looking at a scenario fits the prompt a little to that scenario. Measured on the same scenarios, the score goes up even if the agent didn't really get better. The holdout set is the honest exam. Here the look-alike scenarios (s10 looks like s04, s12 looks like s03) are holdout on purpose.
+
+**Interview line.** "Same idea as train/test in ML: I tune on dev scenarios only and report holdout separately, so a prompt that only memorised my dev cases would show up as a gap."
+
+## 30. Anchoring (confirmation bias in agents)
+*(Day 6 · drafted by Claude; reread and rephrase in my own words)*
+
+**What it is.** The agent picks the first plausible suspect and then only looks for evidence that confirms it. Example s08: the "popularity" commit made search slow, so the agent blamed it 3/3 times. It never checked *when* errors started (11 min after that commit, 4 s after the timeout change) and never read `postgres.conf` or `db.log`.
+
+**Why it matters.** "The commit just before the incident" is the right answer often enough (s01, s02, s11) to become a habit, and the hard scenarios are built to punish exactly that habit.
+
+**Fix direction (Day 7).** Make verification a requirement, not a step: before `submit_report`, the timing must line up (first error vs. deploy/config change) and the state must be checked (containers, schema). A nudge, not a fixed tool order.
+
+**Interview line.** "My main failure mode was anchoring: the agent blamed the last commit before the errors without checking timing. I fixed it with a 'verify before concluding' requirement, measured before/after on the dev set."

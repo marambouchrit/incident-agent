@@ -143,12 +143,15 @@ Current day: **Day 6**  ·  Agent version: v1 (system prompt v1)  ·  Dev model:
 
 | Failure mode | Count (dev) | Example trajectory | Fix tried | Effect |
 |---|---|---|---|---|
-| Anchoring on first hypothesis | | | | |
-| Wrong tool / bad args | | | | |
-| Context drowning | | | | |
-| Gave up too early | | | | |
-| Looping | | | | |
-| Hallucinated evidence | 4 runs (s01, s03 ×2, s02 borderline) | runs/2026-10-16/agent/s03_v1_20261016T154505.json | verbatim evidence check (Day 5) | detected, not prevented: 32/38 quotes seen |
+| **#1 Anchoring on the first suspicious commit** (blames/chases the commit just before the errors, never checks timing or state) | **6/18** (s08 3/3 wrong answer; s06 3/3 spent steps 2–8 on the decoy config commit before checking containers) | runs/2026-10-18/agent/s08_v1_20261018T180917.json · runs/2026-10-18/agent/s06_v1_20261018T180847.json | — (Day 7) | |
+| **#2 Wrong category / misread evidence** | **12/18** category wrong (s03 3/3, s05 3/3 label overlap; s06 3/3 reads `exit_code=137` as OOM although `oom_killed=False`; s08 3/3 code_bug) | runs/2026-10-18/agent/s06_v1_20261018T181143.json | — (Day 7) | |
+| Overconfidence | 18/18 runs at confidence ≥ 0.95; accuracy 0.67 | results/2026-10-18_agent.md (calibration) | — | |
+| Wrong tool / bad args | 0 | — | — | |
+| Context drowning | 0 (max 66K tokens, s06 run 3) | — | — | |
+| Gave up too early | 0 (0 not_identified) | — | — | |
+| Looping | 1 duplicate call (s06 run 3) | runs/2026-10-18/agent/s06_v1_20261018T181500.json | duplicate detection (Day 4) | blocked, agent moved on |
+| Hallucinated evidence | Day 5: 4 runs. Day 6: 3 quotes (s03 ×2 rebuilt diff lines, s05 paraphrase with `->`) | runs/2026-10-16/agent/s03_v1_20261016T154505.json | verbatim evidence check (Day 5) | detected, not prevented |
+| Evidence check false alarm (diff `+`/`-` stripped by the agent) | 7 of 10 "not seen" quotes on Day 6 (s08 ×3, s11 ×2, s05 ×2) | runs/2026-10-18/agent/s11_v1_20261018T180938.json | — (Day 7: accept missing diff prefix) | |
 
 ---
 
@@ -157,6 +160,7 @@ Current day: **Day 6**  ·  Agent version: v1 (system prompt v1)  ·  Dev model:
 | Date | System | Model | Scenarios × runs | Acc. (E/M/H) | Evidence prec. | Avg steps | Avg cost | Avg latency |
 |---|---|---|---|---|---|---|---|---|
 | 2026-10-16 | agent v1 | gemini-3.5-flash-lite | 5 × 3 (14 scored) | 8/8 · 6/6 · – | 0.84 | 6.9 | $0 (free) | 98 s |
+| 2026-10-18 | agent v1 (dev set) | gemini-3.5-flash-lite | 6 × 3 (18 scored) | 6/6 · 3/9 · 3/3 | 0.82 | 7.2 | $0 (free) | 31 s |
 
 ---
 
