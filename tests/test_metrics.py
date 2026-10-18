@@ -161,3 +161,27 @@ def test_every_scored_run_lands_in_exactly_one_bucket():
 
 def test_runs_without_report_are_skipped():
     assert calibration_buckets([row(None, False, identified=False)]) == []
+
+
+# --- Day 7: diff prefixes ------------------------------------------------------
+
+DIFF = """diff --git a/config/api.env b/config/api.env
+--- a/config/api.env
++++ b/config/api.env
+-PAYMENTS_TIMEOUT_S=3
+-PAYMENTS_RETRIES=2
++PAYMENTS_TIMEOUT_S=0.07
++PAYMENTS_RETRIES=0"""
+
+
+def test_diff_lines_quoted_without_prefix_are_found():
+    assert quote_found("PAYMENTS_TIMEOUT_S=0.07\nPAYMENTS_RETRIES=0", [DIFF])
+
+
+def test_diff_lines_quoted_with_prefix_are_still_found():
+    assert quote_found("+PAYMENTS_TIMEOUT_S=0.07\n+PAYMENTS_RETRIES=0", [DIFF])
+
+
+def test_inverted_diff_sign_is_still_caught():
+    # the new value with the "removed" sign: the agent got the direction of the change wrong
+    assert not quote_found("-PAYMENTS_TIMEOUT_S=0.07", [DIFF])

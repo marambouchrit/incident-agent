@@ -48,8 +48,9 @@ DESCRIPTIONS: dict[str, str] = {
     "get_container_status": (
         "Returns each container's current state, restart count, last exit code, OOM-killed "
         "flag, memory limit and start time. Use this when a service restarts repeatedly, its "
-        "logs have gaps, or other services fail to connect to it. Exit code 137 or "
-        "oom_killed=True means it ran out of memory. Omit service to see all containers."
+        "logs have gaps, or other services fail to connect to it. Exit code 137 only means "
+        "the process was killed (SIGKILL): oom_killed=True says memory was the reason; "
+        "oom_killed=False means it was stopped from outside. Omit service to see all containers."
     ),
     "submit_report": (
         "Ends the investigation with your final report; call it exactly once. Use "
@@ -58,6 +59,23 @@ DESCRIPTIONS: dict[str, str] = {
         "'logs/api.jsonl', 'git/<hash>', 'config/api.env', 'db/schema', 'containers') and a "
         "quote copied verbatim from a tool output; never invent or paraphrase quotes. Include "
         "evidence for both the symptom and the cause. confidence is 0-1: how sure you are "
-        "this is the root cause, not just a symptom."
+        "this is the root cause, not just a symptom.\n"
+        "root_cause_category, pick the ONE that names the failure mechanism:\n"
+        "- missing_migration: code uses a column/table/index the database does not have "
+        "(the migration was never applied).\n"
+        "- bad_config: a configuration value is wrong (env var, URL, timeout, DB server "
+        "setting) and requests fail directly because of that value.\n"
+        "- resource_exhaustion: a shared pool or limit of the running app is full "
+        "(DB connection pool, max connections) because it was made smaller or something "
+        "leaks; processes stay up but requests wait or time out on it.\n"
+        "- performance_regression: the same work became slower (dropped index, extra "
+        "queries, heavier query); latency rises and errors are few or none.\n"
+        "- code_bug: application logic is wrong and raises errors or wrong results for "
+        "some inputs, independent of speed or capacity.\n"
+        "- dependency_failure: a service the app calls but does not own (third-party "
+        "API, external provider) is down or failing; the app's code and config are fine.\n"
+        "- infra_crash: one of the app's own containers dies or restarts (OOM kill, crash "
+        "loop). Use it whenever the app's process is killed, even if memory was the reason.\n"
+        "- unknown: only with status='not_identified'."
     ),
 }

@@ -173,3 +173,15 @@ def test_duplicate_loop_still_ends():
     traj = run(fake, max_steps=4)
     assert traj["stop_reason"] == "step_limit"
     assert traj["duplicate_calls"] == 3
+
+
+def test_no_culprit_commit_in_prompt_or_tool_descriptions():
+    # Day 7: v1's evidence example quoted "git/45b232b", s01's real culprit commit.
+    import json
+    from pathlib import Path
+    from agent.prompts import SYSTEM_PROMPT
+    from agent.tools.descriptions import DESCRIPTIONS
+    text = (SYSTEM_PROMPT + " ".join(DESCRIPTIONS.values())).lower()
+    for gt in sorted(Path(__file__).resolve().parents[1].glob("ground_truth/*.json")):
+        culprit = json.loads(gt.read_text(encoding="utf-8"))["culprit_commit"][:7].lower()
+        assert not culprit or culprit not in text, (gt.name, culprit)

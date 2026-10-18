@@ -34,14 +34,28 @@ def _squash(s: str) -> str:
     return " ".join(s.split())
 
 
+def _strip_diff_prefixes(text: str) -> str:
+    """The same text with each diff line's leading '+' / '-' removed ('+++' / '---' kept)."""
+    out = []
+    for line in text.splitlines():
+        if line[:1] in "+-" and line[:3] not in ("+++", "---"):
+            line = line[1:]
+        out.append(line)
+    return "\n".join(out)
+
+
 def quote_found(quote: str, texts: list[str]) -> bool:
     # Rule: verbatim up to whitespace; "..." may skip text; case and characters must match
     # exactly (no fuzzy match, so a one-character typo counts as not seen).
+    # Day 7: a diff line may be quoted without its '+' / '-' (7 of 10 Day 6 misses were
+    # that). A WRONG prefix still fails: the quote is matched against the original text
+    # (prefixes as written) or the stripped one (no prefixes), never a mix.
     pieces = [_squash(p) for p in quote.replace("…", "...").split("...")]
     pieces = [p for p in pieces if p]
     if not pieces:
         return False
-    for text in map(_squash, texts):
+    variants = [v for t in texts for v in (t, _strip_diff_prefixes(t))]
+    for text in map(_squash, variants):
         pos = 0
         for p in pieces:
             pos = text.find(p, pos)
