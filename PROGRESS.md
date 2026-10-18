@@ -12,7 +12,7 @@
 | CP3 — Agent vs. baseline, full set | 10 | ⬜ | |
 | CP4 — Repo, viewer, demo | 13 | ⬜ | |
 
-Current day: **Day 6**  ·  Agent version: v1 (system prompt v1)  ·  Dev model: gemini-3.5-flash-lite (free tier: 15 RPM · 250K TPM · 500 RPD)  ·  Final model: —
+Current day: **Day 7**  ·  Agent version: v1 (system prompt v1)  ·  Dev model: gemini-3.5-flash-lite (free tier: 15 RPM · 250K TPM · 500 RPD)  ·  Final model: —
 
 ---
 
@@ -134,6 +134,28 @@ Current day: **Day 6**  ·  Agent version: v1 (system prompt v1)  ·  Dev model:
   - Calibration has no signal yet (14/14 in one bucket at 1.00); needs hard scenarios.
   - Gemini free tier is unstable (503 "high demand"): 4/18 runs lost today.
 - **Next:** Day 6 — ~7 more scenarios (first hard ones), dev/holdout tags, eval on dev set, failure taxonomy with counts.
+
+### Day 6 — 2026-10-16 → 2026-10-18 — More scenarios + failure analysis
+- **Done:**
+  - 6 new scenarios recorded live (`9489cd0`): s06 payments provider down (medium, dev, no culprit commit), s07 Decimal×float pricing bug (medium, holdout), s08 Postgres statement_timeout 30s→250ms (medium, dev), s10 N+1 in an "orders repository" refactor, pool look-alike of s04 (hard, holdout), s11 payments timeout 3→0.07 s hidden in a "tune HTTP client" commit (hard, dev), s12 jobs.priority column without migration, crash-loop look-alike of s03 (hard, holdout). Set: **11 scenarios**, 6 dev / 5 holdout, 3 easy / 5 medium / 3 hard. Every recording checked: error count, first_error_ts, log volume.
+  - s09 (worker takes all Postgres connections) recorded twice, 1 api error each time: not reproducible → deleted with its kit.
+  - `capture/dry_run.sh` (kit on a throwaway clone with a fake docker, ~10 s), `capture/record_batch.sh` (sequential recording, failures skipped), `scripts/summarize_runs.py` (one page per trajectory, holdout skipped).
+  - Grading: no culprit commit → `commit_match = None` and the category takes its place (`"" in text` was always True); generic alias `payments` removed from s06; `eval/run_all.py` defaults to every scenario folder. 182 tests green (1 skipped).
+  - Dev eval (`f801346`), 6 × 3 = 18 runs, all submitted: cause found **12/18** (easy 6/6, medium 3/9, hard 3/3), category **6/18**, evidence **45/55 (0.82)**, confidence 0.99 vs. accuracy 0.67, 7.2 steps, ~35K tokens, ~31 s per run.
+  - "Done when" met: top 2 failure modes named with trajectories (table below).
+  - `docs/journal.md` is now git-ignored (local study notes).
+- **TODO(human) gaps filled:** no-culprit grading rule, failure taxonomy. Both by Claude at my request.
+- **Learned:** (→ `docs/concepts.md` #28–30)
+  - #1 anchoring (6/18): s08 blames the "popularity" commit 3/3 (search slow since 20:38, broken only at 20:49, 4 s after the timeout reload) and never reads postgres.conf or db.log; s06 spends steps 2–8 on the decoy config commit before checking containers.
+  - #2 wrong category / misread evidence (12/18): s03, s05 label overlap; s06 reads exit_code=137 as OOM although oom_killed=False.
+  - Designed difficulty ≠ difficulty for the agent: hard s11 3/3 (culprit = last commit), medium s08 0/3 (last visible commit is the decoy).
+  - 7 of 10 "unseen" quotes are diff lines without their `+`/`-`: the check is too strict there.
+  - A dry-run proves the scripts run, not that the incident happens (s09). Performance assumptions need a measurement on the real machine (s08 EXPLAIN ANALYZE: 550–745 ms → timeout lowered from 500 ms to 250 ms).
+- **Blocked / questions for Claude:**
+  - Day 5 journal is still in the GitHub history (`3f440b2`); removing it needs a force-push.
+  - Recording took ~5 h 20 instead of ~4 h (PC sleep +34 min, s09 retry +36 min).
+  - Gemini quota (500 RPD) can't fit 2 × dev + full eval in one day: reuse today's dev eval as the "before" run.
+- **Next:** Day 7 — mitigations for #1 (verify timing + state before submit_report, a requirement not a tool order) and #2 (clearer category definitions), evidence rule for diff prefixes, before/after on dev, then one-command eval on all 11 × 3 → CP2.
 
 <!-- copy the block above for each day -->
 
