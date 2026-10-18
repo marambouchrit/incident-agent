@@ -1,0 +1,33 @@
+{
+  "id": "s10",
+  "fault": "orders_n_plus_one",
+  "category": "performance_regression",
+  "key_detail": "commit 5174ef9 ('Move order queries into a repository module') rewrote GET /orders?user_id= as order_summaries() in app/repositories/orders.py: the SQL LIMIT is gone (the limit is applied in Python afterwards) and the item count now comes from len(o.items) through a new lazy-loaded Order.items relationship, so each request loads all ~750 orders of the user and runs one extra query per order (N+1, ~750 queries instead of 21). /orders becomes very slow, and during busy periods these requests hold the api's DB connections so long that other requests time out waiting for the pool (QueuePool limit of size 10 overflow 5 reached). The pool settings were not changed.",
+  "key_detail_aliases": [
+    "N+1",
+    "order_summaries",
+    "repositories/orders.py",
+    "lazy load",
+    "o.items",
+    "Order.items",
+    "one query per order"
+  ],
+  "culprit_commit": "5174ef9",
+  "culprit_file": "app/repositories/orders.py",
+  "first_error_ts": "2026-10-16T17:22:30.946Z",
+  "symptom_location": "logs/api.jsonl",
+  "cause_location": [
+    "git/diffs/5174ef9.patch"
+  ],
+  "difficulty": "hard",
+  "red_herrings": [
+    "the QueuePool TimeoutError ERRORs (the loudest error, on every endpoint): a consequence of /orders requests holding connections for seconds; DB_POOL_SIZE=10 / DB_MAX_OVERFLOW=5 in config/api.env were never changed",
+    "checkout logging commit deployed to the api about four minutes after the culprit and before the first error; the api's startup line then shows that commit's version, not the culprit's",
+    "dev requirements commit (pytest, ruff) about five minutes before the culprit; not installed in the image and not deployed",
+    "the traffic bursts themselves: an equally large burst about nine minutes before the culprit caused no errors",
+    "'slow request' WARNINGs on /checkout that also appear in the healthy period"
+  ],
+  "split": "holdout",
+  "expected_fix": "revert or fix the repository refactor so GET /orders loads only `limit` orders in SQL and gets their item counts in one query (selectinload(Order.items), a grouped count, or the previous query), then redeploy the api",
+  "notes": "/orders latency_ms jumps right after the culprit deploy (minute 14) under steady traffic, still status 200, with 'slow request' WARNINGs on /orders but no ERROR. The first ERRORs (app.errors 'unhandled exception' with sqlalchemy.exc.TimeoutError QueuePool text) appear only in the burst at minute 22 and hit /checkout, /products and /users too. The burst at minute 5 is the healthy control. The diff is mostly a pure move; the regression is the removed .limit(limit) plus len(o.items) in order_summaries(). db.log only logs statements over 500 ms, so the many short per-order queries are not individually visible there."
+}

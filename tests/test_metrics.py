@@ -103,6 +103,27 @@ def test_no_report_is_incorrect():
     assert grade(correctness_signals(None, TRUTH))["correct"] is False
 
 
+NO_COMMIT = {"category": "dependency_failure", "culprit_commit": "",
+             "key_detail_aliases": ["payment provider", "payments container", "exited"]}
+
+
+def test_no_culprit_commit_is_not_a_free_match():
+    sig = correctness_signals(report("dependency_failure", summary="something broke"), NO_COMMIT)
+    assert sig["commit_match"] is None
+
+
+def test_no_culprit_commit_needs_category_and_alias():
+    right = correctness_signals(
+        report("dependency_failure", summary="the payments container exited; provider down"), NO_COMMIT)
+    assert grade(right) == {"correct": True, "needs_judge": False}
+    decoy = correctness_signals(
+        report("bad_config", summary="commit 72e66c2 changed api.env; payments container unreachable"),
+        NO_COMMIT)
+    assert grade(decoy) == {"correct": False, "needs_judge": True}
+    vague = correctness_signals(report("bad_config", summary="checkout fails"), NO_COMMIT)
+    assert grade(vague)["correct"] is False
+
+
 def test_half_specific_goes_to_judge_and_category_breaks_the_tie():
     commit_only = correctness_signals(report(summary="commit 45b232b broke it"), TRUTH)
     assert grade(commit_only) == {"correct": True, "needs_judge": True}

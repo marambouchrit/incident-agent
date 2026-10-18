@@ -1,0 +1,42 @@
+2026-10-16 19:21:08.976 UTC [27] @ LOG:  checkpoint complete: wrote 198 buffers (0.6%); 0 WAL file(s) added, 0 removed, 0 recycled; write=19.852 s, sync=0.033 s, total=19.933 s; sync files=29, longest=0.006 s, average=0.002 s; distance=978 kB, estimate=1391 kB; lsn=0/486069E8, redo lsn=0/485CD350
+2026-10-16 19:21:16.930 UTC [1] @ LOG:  received fast shutdown request
+2026-10-16 19:21:16.935 UTC [1] @ LOG:  aborting any active transactions
+2026-10-16 19:21:16.939 UTC [1] @ LOG:  background worker "logical replication launcher" (PID 32) exited with exit code 1
+2026-10-16 19:21:16.939 UTC [27] @ LOG:  shutting down
+2026-10-16 19:21:16.944 UTC [27] @ LOG:  checkpoint starting: shutdown immediate
+2026-10-16 19:21:16.975 UTC [27] @ LOG:  checkpoint complete: wrote 31 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.005 s, sync=0.014 s, total=0.036 s; sync files=14, longest=0.006 s, average=0.001 s; distance=241 kB, estimate=1276 kB; lsn=0/48609888, redo lsn=0/48609888
+2026-10-16 19:21:17.015 UTC [1] @ LOG:  database system is shut down
+
+PostgreSQL Database directory appears to contain a database; Skipping initialization
+
+2026-10-16 19:21:28.891 UTC [1] @ LOG:  starting PostgreSQL 16.15 (Debian 16.15-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-10-16 19:21:28.892 UTC [1] @ LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2026-10-16 19:21:28.892 UTC [1] @ LOG:  listening on IPv6 address "::", port 5432
+2026-10-16 19:21:28.898 UTC [1] @ LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-10-16 19:21:28.905 UTC [30] @ LOG:  database system was shut down at 2026-10-16 19:21:16 UTC
+2026-10-16 19:21:28.920 UTC [1] @ LOG:  database system is ready to accept connections
+2026-10-16 19:26:28.924 UTC [28] @ LOG:  checkpoint starting: time
+2026-10-16 19:26:53.060 UTC [28] @ LOG:  checkpoint complete: wrote 241 buffers (0.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=24.068 s, sync=0.045 s, total=24.136 s; sync files=33, longest=0.008 s, average=0.002 s; distance=1558 kB, estimate=1558 kB; lsn=0/487CFB20, redo lsn=0/4878F298
+2026-10-16 19:31:28.124 UTC [28] @ LOG:  checkpoint starting: time
+2026-10-16 19:31:49.898 UTC [28] @ LOG:  checkpoint complete: wrote 217 buffers (0.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=21.730 s, sync=0.029 s, total=21.775 s; sync files=28, longest=0.005 s, average=0.002 s; distance=1479 kB, estimate=1550 kB; lsn=0/48945288, redo lsn=0/48900FA8
+2026-10-16 19:34:10.223 UTC [65] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-16 19:34:10.223 UTC [65] shopline@shopline DETAIL:  Key (email)=(shopper759.d279af@example.com) already exists.
+2026-10-16 19:34:10.223 UTC [65] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-16 19:36:28.941 UTC [28] @ LOG:  checkpoint starting: time
+2026-10-16 19:36:57.545 UTC [28] @ LOG:  checkpoint complete: wrote 287 buffers (0.9%); 0 WAL file(s) added, 0 removed, 0 recycled; write=28.563 s, sync=0.026 s, total=28.605 s; sync files=30, longest=0.008 s, average=0.001 s; distance=1639 kB, estimate=1639 kB; lsn=0/48ADCED8, redo lsn=0/48A9AC60
+2026-10-16 19:41:28.609 UTC [28] @ LOG:  checkpoint starting: time
+2026-10-16 19:41:53.651 UTC [28] @ LOG:  checkpoint complete: wrote 249 buffers (0.8%); 0 WAL file(s) added, 0 removed, 0 recycled; write=24.976 s, sync=0.036 s, total=25.042 s; sync files=29, longest=0.007 s, average=0.002 s; distance=1620 kB, estimate=1637 kB; lsn=0/48C92480, redo lsn=0/48C2FD98
+2026-10-16 19:46:28.717 UTC [28] @ LOG:  checkpoint starting: time
+2026-10-16 19:47:06.040 UTC [28] @ LOG:  checkpoint complete: wrote 372 buffers (1.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=37.261 s, sync=0.044 s, total=37.323 s; sync files=30, longest=0.005 s, average=0.002 s; distance=2315 kB, estimate=2315 kB; lsn=0/48EE21A8, redo lsn=0/48E729B8
+2026-10-16 19:48:48.555 UTC [756] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-16 19:48:48.555 UTC [756] shopline@shopline DETAIL:  Key (email)=(shopper2546.d279af@example.com) already exists.
+2026-10-16 19:48:48.555 UTC [756] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-16 19:49:36.112 UTC [826] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-16 19:49:36.112 UTC [826] shopline@shopline DETAIL:  Key (email)=(shopper1399.d279af@example.com) already exists.
+2026-10-16 19:49:36.112 UTC [826] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-16 19:51:28.105 UTC [28] @ LOG:  checkpoint starting: time
+2026-10-16 19:51:56.256 UTC [28] @ LOG:  checkpoint complete: wrote 280 buffers (0.9%); 0 WAL file(s) added, 1 removed, 0 recycled; write=28.088 s, sync=0.033 s, total=28.152 s; sync files=27, longest=0.005 s, average=0.002 s; distance=1899 kB, estimate=2273 kB; lsn=0/4909B988, redo lsn=0/4904D940
+2026-10-16 19:52:36.409 UTC [756] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-16 19:52:36.409 UTC [756] shopline@shopline DETAIL:  Key (email)=(shopper2651.d279af@example.com) already exists.
+2026-10-16 19:52:36.409 UTC [756] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-16 19:56:28.323 UTC [28] @ LOG:  checkpoint starting: time

@@ -22,7 +22,7 @@ from agent.run import resolve_scenario
 from eval import report
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT = ["s01", "s02", "s03", "s04", "s05"]
+DEFAULT = sorted(p.name for p in (ROOT / "scenarios").iterdir() if p.is_dir())
 MAX_LLM_ERRORS_IN_A_ROW = 2   # quota gone or provider down: stop instead of burning the list
 
 

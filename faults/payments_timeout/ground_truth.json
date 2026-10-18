@@ -1,0 +1,22 @@
+{
+  "id": "{{ID}}",
+  "fault": "payments_timeout",
+  "category": "bad_config",
+  "key_detail": "commit {{CULPRIT_COMMIT}} ('Tune HTTP client defaults for payments') tidied app/payments_client.py but also set PAYMENTS_TIMEOUT_S 3 -> 0.07 and PAYMENTS_RETRIES 2 -> 0 in config/api.env; the payment provider normally answers in 20-80 ms, so a share of charges hit httpx.ReadTimeout with no retry and POST /checkout returns 500",
+  "key_detail_aliases": ["PAYMENTS_TIMEOUT_S", "PAYMENTS_RETRIES", "0.07", "payments timeout"],
+  "culprit_commit": "{{CULPRIT_COMMIT}}",
+  "culprit_file": "config/api.env",
+  "first_error_ts": "{{FIRST_ERROR_TS}}",
+  "symptom_location": "logs/api.jsonl",
+  "cause_location": ["config/api.env", "git/diffs/{{CULPRIT_COMMIT}}.patch"],
+  "difficulty": "hard",
+  "red_herrings": [
+    "worker 'job failed' ERRORs (LookupError: order ... not found) for confirmation jobs of orders that do not exist; they start in the healthy period, about twelve minutes before the culprit deploy, and recur later",
+    "worker commit (order total in confirmation log) deployed about nine minutes before the culprit: the worker restarts mid-window and logs a second 'service started' + deprecation WARNING",
+    "'payment attempt failed, retrying' and 'slow request' WARNINGs on /checkout already exist in the healthy period (the stub is occasionally slow or returns 503)",
+    "the ReadTimeout itself points at the payment provider, but its status page is green and the provider's latency did not change"
+  ],
+  "split": "dev",
+  "expected_fix": "restore PAYMENTS_TIMEOUT_S=3 and PAYMENTS_RETRIES=2 in config/api.env (the client tidy-up can stay) and redeploy the api",
+  "notes": "The api is redeployed on the culprit at {{INJECT_TIME}} UTC; within a minute some POST /checkout requests fail with 'unhandled exception' (app.errors) whose exc ends in 'httpx.ReadTimeout: timed out', raised from app/payments_client.py. Most checkouts still succeed. A few failures are httpx.HTTPStatusError 503, which the old retries used to absorb. The 'payment attempt failed, retrying' WARNINGs stop after the deploy because retries are now 0. The cause is only visible in the config diff of an innocent-sounding commit that mostly touches the client code."
+}

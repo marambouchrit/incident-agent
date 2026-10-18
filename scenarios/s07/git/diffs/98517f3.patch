@@ -1,0 +1,17 @@
+commit 98517f3
+Author: Tomas Keller
+Date:   2026-10-16T19:08:00Z
+
+    Run stock reconciliation every 10 minutes
+
+
+diff --git a/config/worker.env b/config/worker.env
+index 77cb746..520f8f5 100644
+--- a/config/worker.env
++++ b/config/worker.env
+@@ -7,4 +7,4 @@ WORKER_POLL_INTERVAL_S=1
+ WORKER_BATCH_SIZE=10
+ EXPORT_CHUNK_ROWS=2000
+ EXPORT_INTERVAL_S=600
+-RECONCILE_INTERVAL_S=300
++RECONCILE_INTERVAL_S=600

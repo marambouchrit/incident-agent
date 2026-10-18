@@ -1,0 +1,110 @@
+
+PostgreSQL Database directory appears to contain a database; Skipping initialization
+
+2026-10-16 18:10:08.059 UTC [1] @ LOG:  starting PostgreSQL 16.15 (Debian 16.15-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-10-16 18:10:08.059 UTC [1] @ LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2026-10-16 18:10:08.059 UTC [1] @ LOG:  listening on IPv6 address "::", port 5432
+2026-10-16 18:10:08.068 UTC [1] @ LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-10-16 18:10:08.080 UTC [29] @ LOG:  database system was shut down at 2026-10-16 17:35:37 UTC
+2026-10-16 18:10:08.097 UTC [1] @ LOG:  database system is ready to accept connections
+2026-10-16 18:15:08.078 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-16 18:15:34.438 UTC [27] @ LOG:  checkpoint complete: wrote 262 buffers (0.8%); 0 WAL file(s) added, 0 removed, 0 recycled; write=26.224 s, sync=0.060 s, total=26.361 s; sync files=32, longest=0.031 s, average=0.002 s; distance=1683 kB, estimate=1683 kB; lsn=0/47612DB0, redo lsn=0/475A0940
+2026-10-16 18:20:08.481 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-16 18:20:35.611 UTC [27] @ LOG:  checkpoint complete: wrote 268 buffers (0.8%); 0 WAL file(s) added, 0 removed, 0 recycled; write=26.997 s, sync=0.091 s, total=27.130 s; sync files=29, longest=0.030 s, average=0.004 s; distance=1645 kB, estimate=1679 kB; lsn=0/47791930, redo lsn=0/4773BF50
+2026-10-16 18:23:00.662 UTC [605] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-16 18:23:00.662 UTC [605] shopline@shopline DETAIL:  Key (email)=(shopper759.d268f7@example.com) already exists.
+2026-10-16 18:23:00.662 UTC [605] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-16 18:25:08.575 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-16 18:25:41.339 UTC [27] @ LOG:  checkpoint complete: wrote 324 buffers (1.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=32.631 s, sync=0.096 s, total=32.765 s; sync files=31, longest=0.045 s, average=0.004 s; distance=2222 kB, estimate=2222 kB; lsn=0/47A021C8, redo lsn=0/47967900
+2026-10-16 18:26:37.926 UTC [606] shopline@shopline LOG:  duration: 13297.247 ms  execute <unnamed>: SELECT inventory.product_id, inventory.quantity 
+	FROM inventory 
+	WHERE inventory.product_id IN ($1::INTEGER, $2::INTEGER, $3::INTEGER) ORDER BY inventory.product_id FOR UPDATE
+2026-10-16 18:26:37.926 UTC [606] shopline@shopline DETAIL:  parameters: $1 = '98', $2 = '140', $3 = '236'
+2026-10-16 18:27:19.935 UTC [792] shopline@shopline LOG:  duration: 5012.763 ms  execute <unnamed>: SELECT inventory.product_id, inventory.quantity 
+	FROM inventory 
+	WHERE inventory.product_id IN ($1::INTEGER, $2::INTEGER, $3::INTEGER, $4::INTEGER) ORDER BY inventory.product_id FOR UPDATE
+2026-10-16 18:27:19.935 UTC [792] shopline@shopline DETAIL:  parameters: $1 = '26', $2 = '239', $3 = '409', $4 = '424'
+2026-10-16 18:28:35.227 UTC [782] shopline@shopline LOG:  duration: 16603.193 ms  execute <unnamed>: SELECT inventory.product_id, inventory.quantity 
+	FROM inventory 
+	WHERE inventory.product_id IN ($1::INTEGER, $2::INTEGER, $3::INTEGER, $4::INTEGER) ORDER BY inventory.product_id FOR UPDATE
+2026-10-16 18:28:35.227 UTC [782] shopline@shopline DETAIL:  parameters: $1 = '76', $2 = '317', $3 = '325', $4 = '369'
+2026-10-16 18:29:05.811 UTC [659] shopline@shopline LOG:  duration: 4791.600 ms  execute <unnamed>: SELECT inventory.product_id, inventory.quantity 
+	FROM inventory 
+	WHERE inventory.product_id IN ($1::INTEGER) ORDER BY inventory.product_id FOR UPDATE
+2026-10-16 18:29:05.811 UTC [659] shopline@shopline DETAIL:  parameters: $1 = '296'
+2026-10-16 18:29:14.435 UTC [791] shopline@shopline LOG:  duration: 4879.831 ms  execute <unnamed>: SELECT inventory.product_id, inventory.quantity 
+	FROM inventory 
+	WHERE inventory.product_id IN ($1::INTEGER, $2::INTEGER, $3::INTEGER) ORDER BY inventory.product_id FOR UPDATE
+2026-10-16 18:29:14.435 UTC [791] shopline@shopline DETAIL:  parameters: $1 = '45', $2 = '220', $3 = '411'
+2026-10-16 18:30:08.392 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-16 18:30:26.297 UTC [27] @ LOG:  checkpoint complete: wrote 178 buffers (0.5%); 0 WAL file(s) added, 0 removed, 0 recycled; write=17.523 s, sync=0.344 s, total=17.905 s; sync files=30, longest=0.296 s, average=0.012 s; distance=1264 kB, estimate=2126 kB; lsn=0/47AC1B38, redo lsn=0/47AA3958
+2026-10-16 18:31:05.044 UTC [791] shopline@shopline LOG:  duration: 7383.641 ms  execute <unnamed>: SELECT inventory.product_id, inventory.quantity 
+	FROM inventory 
+	WHERE inventory.product_id IN ($1::INTEGER, $2::INTEGER) ORDER BY inventory.product_id FOR UPDATE
+2026-10-16 18:31:05.044 UTC [791] shopline@shopline DETAIL:  parameters: $1 = '219', $2 = '355'
+2026-10-16 18:31:16.106 UTC [782] shopline@shopline LOG:  duration: 10652.895 ms  execute <unnamed>: SELECT inventory.product_id, inventory.quantity 
+	FROM inventory 
+	WHERE inventory.product_id IN ($1::INTEGER, $2::INTEGER) ORDER BY inventory.product_id FOR UPDATE
+2026-10-16 18:31:16.106 UTC [782] shopline@shopline DETAIL:  parameters: $1 = '193', $2 = '437'
+2026-10-16 18:31:42.642 UTC [781] shopline@shopline LOG:  duration: 18684.951 ms  execute <unnamed>: SELECT inventory.product_id, inventory.quantity 
+	FROM inventory 
+	WHERE inventory.product_id IN ($1::INTEGER, $2::INTEGER, $3::INTEGER, $4::INTEGER) ORDER BY inventory.product_id FOR UPDATE
+2026-10-16 18:31:42.642 UTC [781] shopline@shopline DETAIL:  parameters: $1 = '191', $2 = '218', $3 = '352', $4 = '436'
+2026-10-16 18:32:21.048 UTC [605] shopline@shopline LOG:  duration: 16013.798 ms  execute <unnamed>: SELECT inventory.product_id, inventory.quantity 
+	FROM inventory 
+	WHERE inventory.product_id IN ($1::INTEGER, $2::INTEGER, $3::INTEGER, $4::INTEGER) ORDER BY inventory.product_id FOR UPDATE
+2026-10-16 18:32:21.048 UTC [605] shopline@shopline DETAIL:  parameters: $1 = '54', $2 = '127', $3 = '163', $4 = '377'
+2026-10-16 18:32:45.061 UTC [659] shopline@shopline LOG:  duration: 29763.330 ms  execute <unnamed>: SELECT inventory.product_id, inventory.quantity 
+	FROM inventory 
+	WHERE inventory.product_id IN ($1::INTEGER, $2::INTEGER, $3::INTEGER) ORDER BY inventory.product_id FOR UPDATE
+2026-10-16 18:32:45.061 UTC [659] shopline@shopline DETAIL:  parameters: $1 = '22', $2 = '377', $3 = '460'
+2026-10-16 18:32:46.957 UTC [781] shopline@shopline LOG:  duration: 1466.087 ms  execute <unnamed>: SELECT inventory.product_id, inventory.quantity 
+	FROM inventory 
+	WHERE inventory.product_id IN ($1::INTEGER, $2::INTEGER, $3::INTEGER, $4::INTEGER) ORDER BY inventory.product_id FOR UPDATE
+2026-10-16 18:32:46.957 UTC [781] shopline@shopline DETAIL:  parameters: $1 = '30', $2 = '89', $3 = '108', $4 = '142'
+2026-10-16 18:34:34.625 UTC [792] shopline@shopline LOG:  duration: 3513.354 ms  execute <unnamed>: SELECT inventory.product_id, inventory.quantity 
+	FROM inventory 
+	WHERE inventory.product_id IN ($1::INTEGER, $2::INTEGER, $3::INTEGER, $4::INTEGER) ORDER BY inventory.product_id FOR UPDATE
+2026-10-16 18:34:34.625 UTC [792] shopline@shopline DETAIL:  parameters: $1 = '105', $2 = '186', $3 = '210', $4 = '480'
+2026-10-16 18:35:08.359 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-16 18:35:23.430 UTC [27] @ LOG:  checkpoint complete: wrote 152 buffers (0.5%); 0 WAL file(s) added, 0 removed, 0 recycled; write=15.015 s, sync=0.035 s, total=15.071 s; sync files=19, longest=0.006 s, average=0.002 s; distance=844 kB, estimate=1998 kB; lsn=0/47B9A600, redo lsn=0/47B76C18
+2026-10-16 18:36:35.254 UTC [781] shopline@shopline LOG:  duration: 6189.435 ms  execute <unnamed>: SELECT inventory.product_id, inventory.quantity 
+	FROM inventory 
+	WHERE inventory.product_id IN ($1::INTEGER, $2::INTEGER) ORDER BY inventory.product_id FOR UPDATE
+2026-10-16 18:36:35.254 UTC [781] shopline@shopline DETAIL:  parameters: $1 = '75', $2 = '338'
+2026-10-16 18:37:01.651 UTC [791] shopline@shopline LOG:  duration: 1615.928 ms  execute <unnamed>: SELECT inventory.product_id, inventory.quantity 
+	FROM inventory 
+	WHERE inventory.product_id IN ($1::INTEGER, $2::INTEGER, $3::INTEGER) ORDER BY inventory.product_id FOR UPDATE
+2026-10-16 18:37:01.651 UTC [791] shopline@shopline DETAIL:  parameters: $1 = '91', $2 = '221', $3 = '299'
+2026-10-16 18:37:17.682 UTC [782] shopline@shopline LOG:  duration: 6280.759 ms  execute <unnamed>: SELECT inventory.product_id, inventory.quantity 
+	FROM inventory 
+	WHERE inventory.product_id IN ($1::INTEGER, $2::INTEGER, $3::INTEGER) ORDER BY inventory.product_id FOR UPDATE
+2026-10-16 18:37:17.682 UTC [782] shopline@shopline DETAIL:  parameters: $1 = '28', $2 = '299', $3 = '387'
+2026-10-16 18:37:42.914 UTC [606] shopline@shopline LOG:  duration: 6198.094 ms  execute <unnamed>: SELECT inventory.product_id, inventory.quantity 
+	FROM inventory 
+	WHERE inventory.product_id IN ($1::INTEGER, $2::INTEGER, $3::INTEGER) ORDER BY inventory.product_id FOR UPDATE
+2026-10-16 18:37:42.914 UTC [606] shopline@shopline DETAIL:  parameters: $1 = '86', $2 = '217', $3 = '467'
+2026-10-16 18:38:53.263 UTC [606] shopline@shopline LOG:  duration: 7456.307 ms  execute <unnamed>: SELECT inventory.product_id, inventory.quantity 
+	FROM inventory 
+	WHERE inventory.product_id IN ($1::INTEGER, $2::INTEGER, $3::INTEGER, $4::INTEGER) ORDER BY inventory.product_id FOR UPDATE
+2026-10-16 18:38:53.263 UTC [606] shopline@shopline DETAIL:  parameters: $1 = '138', $2 = '278', $3 = '352', $4 = '358'
+2026-10-16 18:39:31.810 UTC [605] shopline@shopline LOG:  duration: 2681.484 ms  execute <unnamed>: SELECT inventory.product_id, inventory.quantity 
+	FROM inventory 
+	WHERE inventory.product_id IN ($1::INTEGER, $2::INTEGER) ORDER BY inventory.product_id FOR UPDATE
+2026-10-16 18:39:31.810 UTC [605] shopline@shopline DETAIL:  parameters: $1 = '76', $2 = '405'
+2026-10-16 18:40:02.407 UTC [1074] shopline@shopline LOG:  duration: 4842.542 ms  execute <unnamed>: SELECT inventory.product_id, inventory.quantity 
+	FROM inventory 
+	WHERE inventory.product_id IN ($1::INTEGER, $2::INTEGER, $3::INTEGER, $4::INTEGER) ORDER BY inventory.product_id FOR UPDATE
+2026-10-16 18:40:02.407 UTC [1074] shopline@shopline DETAIL:  parameters: $1 = '186', $2 = '354', $3 = '362', $4 = '439'
+2026-10-16 18:40:08.494 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-16 18:40:24.352 UTC [27] @ LOG:  checkpoint complete: wrote 158 buffers (0.5%); 0 WAL file(s) added, 0 removed, 0 recycled; write=15.804 s, sync=0.025 s, total=15.858 s; sync files=18, longest=0.006 s, average=0.002 s; distance=859 kB, estimate=1884 kB; lsn=0/47C77440, redo lsn=0/47C4D8C0
+2026-10-16 18:41:01.656 UTC [659] shopline@shopline LOG:  duration: 13829.943 ms  execute <unnamed>: SELECT inventory.product_id, inventory.quantity 
+	FROM inventory 
+	WHERE inventory.product_id IN ($1::INTEGER, $2::INTEGER, $3::INTEGER, $4::INTEGER) ORDER BY inventory.product_id FOR UPDATE
+2026-10-16 18:41:01.656 UTC [659] shopline@shopline DETAIL:  parameters: $1 = '8', $2 = '149', $3 = '162', $4 = '423'
+2026-10-16 18:43:06.342 UTC [791] shopline@shopline LOG:  duration: 8229.658 ms  execute <unnamed>: SELECT inventory.product_id, inventory.quantity 
+	FROM inventory 
+	WHERE inventory.product_id IN ($1::INTEGER, $2::INTEGER, $3::INTEGER) ORDER BY inventory.product_id FOR UPDATE
+2026-10-16 18:43:06.342 UTC [791] shopline@shopline DETAIL:  parameters: $1 = '330', $2 = '375', $3 = '474'
+2026-10-16 18:45:08.420 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-16 18:45:23.647 UTC [27] @ LOG:  checkpoint complete: wrote 152 buffers (0.5%); 0 WAL file(s) added, 0 removed, 0 recycled; write=15.190 s, sync=0.022 s, total=15.229 s; sync files=19, longest=0.005 s, average=0.002 s; distance=846 kB, estimate=1780 kB; lsn=0/47D3ECF0, redo lsn=0/47D21468

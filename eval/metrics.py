@@ -88,11 +88,13 @@ def correctness_signals(report: dict | None, truth: dict) -> dict:
         return {"identified": False, "category_match": False, "commit_match": False,
                 "alias_hits": [], "category": None}
     text = _squash(f"{report.get('summary', '')} {report.get('suggested_fix', '')}").lower()
+    culprit = truth["culprit_commit"][:7].lower()
     return {
         "identified": report.get("status") == "identified",
         "category": report.get("root_cause_category"),
         "category_match": report.get("root_cause_category") == truth["category"],
-        "commit_match": truth["culprit_commit"][:7].lower() in text,
+        # None = no culprit commit (e.g. a provider outage): `"" in text` would always be True
+        "commit_match": (culprit in text) if culprit else None,
         "alias_hits": [a for a in truth["key_detail_aliases"] if _squash(a).lower() in text],
     }
 
@@ -102,9 +104,12 @@ def grade(sig: dict) -> dict:
     # The category is scored separately (category_match): the labels overlap, so a
     # neighbour label must not hide a found cause. Half-specific reports go to a judge;
     # meanwhile the category breaks the tie.
+    # No culprit commit: the category takes the commit's place. It is what separates
+    # "the provider is down" (dependency_failure) from the decoy "a config commit broke it".
     if not sig["identified"]:
         return {"correct": False, "needs_judge": False}
-    specifics = int(sig["commit_match"]) + int(bool(sig["alias_hits"]))
+    first = sig["category_match"] if sig["commit_match"] is None else sig["commit_match"]
+    specifics = int(first) + int(bool(sig["alias_hits"]))
     if specifics == 2:
         return {"correct": True, "needs_judge": False}
     if specifics == 0:

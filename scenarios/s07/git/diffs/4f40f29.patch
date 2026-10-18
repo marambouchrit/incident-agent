@@ -1,0 +1,46 @@
+commit 4f40f29
+Author: Lina Haddad
+Date:   2026-10-16T19:01:00Z
+
+    Add bulk pricing for multi-item carts
+
+
+diff --git a/app/pricing.py b/app/pricing.py
+new file mode 100644
+index 0000000..a4933de
+--- /dev/null
++++ b/app/pricing.py
+@@ -0,0 +1,12 @@
++from decimal import ROUND_HALF_UP, Decimal
++
++BULK_TIERS = ((6, 0.10), (3, 0.05))
++
++
++def bulk_discount_cents(lines: list[tuple[int, int]]) -> int:
++    """Discount for carts with several different products. lines: (unit_price_cents, quantity)."""
++    for min_lines, rate in BULK_TIERS:
++        if len(lines) >= min_lines:
++            subtotal = Decimal(sum(price * quantity for price, quantity in lines))
++            return int((subtotal * rate).quantize(Decimal("1"), rounding=ROUND_HALF_UP))
++    return 0
+diff --git a/app/routers/checkout.py b/app/routers/checkout.py
+index 38f230c..00c0968 100644
+--- a/app/routers/checkout.py
++++ b/app/routers/checkout.py
+@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
+ from sqlalchemy import select
+ from sqlalchemy.orm import Session
+ 
+-from app import config, payments_client
++from app import config, payments_client, pricing
+ from app.db import get_session
+ from app.models import Inventory, Job, Order, OrderItem, Payment, Product, User
+ 
+@@ -47,6 +47,7 @@ def checkout(body: CheckoutIn, session: Session = Depends(get_session)) -> dict[
+         stock[product_id].quantity -= quantity
+ 
+     total = sum(products[pid].price_cents * qty for pid, qty in wanted.items())
++    total -= pricing.bulk_discount_cents([(products[pid].price_cents, qty) for pid, qty in wanted.items()])
+     if config.FEATURE_DISCOUNTS and body.discount_code:
+         total = int(total * 0.9)
+ 

@@ -1,0 +1,20 @@
+commit 853c634
+Author: Lina Haddad
+Date:   2026-10-16T18:22:20Z
+
+    Refresh catalog cache more often
+
+
+diff --git a/config/api.env b/config/api.env
+index 4933e25..e54dc80 100644
+--- a/config/api.env
++++ b/config/api.env
+@@ -4,7 +4,7 @@ DB_POOL_SIZE=10
+ DB_MAX_OVERFLOW=5
+ DB_POOL_TIMEOUT_S=10
+ SLOW_REQUEST_MS=400
+-CATALOG_CACHE_TTL_S=30
++CATALOG_CACHE_TTL_S=10
+ FEATURE_DISCOUNTS=false
+ PAYMENTS_URL=http://payments:8080
+ PAYMENTS_TIMEOUT_S=3

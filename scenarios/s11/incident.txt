@@ -1,0 +1,1 @@
+Since around 19:37 UTC a share of customer checkouts fail with HTTP 500; trying again sometimes works. Browsing products and orders is fine. The payment provider's status page shows all systems operational.

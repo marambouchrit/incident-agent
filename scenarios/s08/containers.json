@@ -1,0 +1,38 @@
+[
+  {
+    "service": "api",
+    "state": "running",
+    "restarts": 0,
+    "exit_code": 0,
+    "oom_killed": false,
+    "mem_limit_mb": 512,
+    "started_at": "2026-10-16T20:44:38.59955581Z"
+  },
+  {
+    "service": "worker",
+    "state": "running",
+    "restarts": 0,
+    "exit_code": 0,
+    "oom_killed": false,
+    "mem_limit_mb": 256,
+    "started_at": "2026-10-16T20:34:28.76493738Z"
+  },
+  {
+    "service": "db",
+    "state": "running",
+    "restarts": 0,
+    "exit_code": 0,
+    "oom_killed": false,
+    "mem_limit_mb": 1024,
+    "started_at": "2026-10-16T20:33:19.304618344Z"
+  },
+  {
+    "service": "payments",
+    "state": "running",
+    "restarts": 0,
+    "exit_code": 0,
+    "oom_killed": false,
+    "mem_limit_mb": 64,
+    "started_at": "2026-10-16T20:34:28.237802993Z"
+  }
+]

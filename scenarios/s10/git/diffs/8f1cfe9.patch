@@ -1,0 +1,21 @@
+commit 8f1cfe9
+Author: Lina Haddad
+Date:   2026-10-16T17:18:18Z
+
+    Log item count when an order is placed
+
+
+diff --git a/app/routers/checkout.py b/app/routers/checkout.py
+index 38f230c..b8ce273 100644
+--- a/app/routers/checkout.py
++++ b/app/routers/checkout.py
+@@ -69,5 +69,8 @@ def checkout(body: CheckoutIn, session: Session = Depends(get_session)) -> dict[
+     session.add(Job(kind="order_confirmation", payload={"order_id": order.id}))
+     session.commit()
+ 
+-    log.info("order placed", extra={"order_id": order.id, "total_cents": total})
++    log.info(
++        "order placed",
++        extra={"order_id": order.id, "total_cents": total, "item_count": len(wanted)},
++    )
+     return {"order_id": order.id, "status": order.status, "total_cents": total}

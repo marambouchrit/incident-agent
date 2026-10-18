@@ -1,0 +1,20 @@
+commit da7c501
+Author: Tomas Keller
+Date:   2026-10-16T19:27:40Z
+
+    Include order total in confirmation log
+
+
+diff --git a/worker/handlers/order_confirmation.py b/worker/handlers/order_confirmation.py
+index 2a1e2ed..b55de13 100644
+--- a/worker/handlers/order_confirmation.py
++++ b/worker/handlers/order_confirmation.py
+@@ -16,4 +16,7 @@ def handle(session: Session, payload: dict[str, Any]) -> None:
+         raise LookupError(f"order {payload['order_id']} not found")
+     user = session.get(User, order.user_id)
+     time.sleep(0.02)  # mail gateway round trip
+-    log.info("order confirmation sent", extra={"order_id": order.id, "user_id": user.id if user else None})
++    log.info(
++        "order confirmation sent",
++        extra={"order_id": order.id, "user_id": user.id if user else None, "total_cents": order.total_cents},
++    )

@@ -1,0 +1,45 @@
+commit 79c1077
+Author: Lina Haddad
+Date:   2026-10-16T19:36:40Z
+
+    Tune HTTP client defaults for payments
+
+
+diff --git a/app/payments_client.py b/app/payments_client.py
+index c7843fb..c422246 100644
+--- a/app/payments_client.py
++++ b/app/payments_client.py
+@@ -6,16 +6,16 @@ from app import config
+ 
+ log = logging.getLogger("app.payments_client")
+ 
++HEADERS = {"User-Agent": f"shopline-api/{config.APP_VERSION}"}
++
+ 
+ def charge(order_id: int, amount_cents: int) -> str:
++    url = f"{config.PAYMENTS_URL}/charge"
++    body = {"order_id": order_id, "amount_cents": amount_cents}
+     attempts = config.PAYMENTS_RETRIES + 1
+     for attempt in range(1, attempts + 1):
+         try:
+-            response = httpx.post(
+-                f"{config.PAYMENTS_URL}/charge",
+-                json={"order_id": order_id, "amount_cents": amount_cents},
+-                timeout=config.PAYMENTS_TIMEOUT_S,
+-            )
++            response = httpx.post(url, json=body, headers=HEADERS, timeout=config.PAYMENTS_TIMEOUT_S)
+             response.raise_for_status()
+             return response.json()["ref"]
+         except httpx.HTTPError as exc:
+diff --git a/config/api.env b/config/api.env
+index 4933e25..4ea0385 100644
+--- a/config/api.env
++++ b/config/api.env
+@@ -7,5 +7,5 @@ SLOW_REQUEST_MS=400
+ CATALOG_CACHE_TTL_S=30
+ FEATURE_DISCOUNTS=false
+ PAYMENTS_URL=http://payments:8080
+-PAYMENTS_TIMEOUT_S=3
+-PAYMENTS_RETRIES=2
++PAYMENTS_TIMEOUT_S=0.07
++PAYMENTS_RETRIES=0

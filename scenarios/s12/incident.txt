@@ -1,0 +1,1 @@
+Since around 20:11 UTC customers report that they no longer receive order confirmation emails. Checkout itself works and new orders show up in the order history. No maintenance was announced.

@@ -1,0 +1,19 @@
+commit 21b5251
+Author: Tomas Keller
+Date:   2026-10-16T18:55:00Z
+
+    Bump pydantic to 2.10.6
+
+
+diff --git a/requirements.txt b/requirements.txt
+index 7891b82..0ff65f5 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -1,6 +1,6 @@
+ fastapi==0.115.6
+ uvicorn==0.34.0
+-pydantic==2.10.4
++pydantic==2.10.6
+ SQLAlchemy==2.0.36
+ psycopg[binary]==3.2.3
+ alembic==1.14.0

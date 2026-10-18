@@ -1,0 +1,23 @@
+{
+  "id": "{{ID}}",
+  "fault": "jobs_priority_column",
+  "category": "missing_migration",
+  "key_detail": "commit {{CULPRIT_COMMIT}} makes the worker's job claim query order by jobs.priority and ships migration 0002 adding that column, but the worker was deployed without running the migration; the column does not exist, so every claim fails with UndefinedColumn and the worker crashes and restarts in a loop (exit code 1, not OOM)",
+  "key_detail_aliases": ["priority", "jobs.priority", "UndefinedColumn", "0002_job_priority", "alembic upgrade", "migration"],
+  "culprit_commit": "{{CULPRIT_COMMIT}}",
+  "culprit_file": "worker/main.py",
+  "first_error_ts": "{{FIRST_ERROR_TS}}",
+  "symptom_location": "logs/worker.jsonl",
+  "cause_location": ["git/diffs/{{CULPRIT_COMMIT}}.patch", "db/schema.sql", "containers.json"],
+  "difficulty": "hard",
+  "red_herrings": [
+    "docker-compose.yml commit raising the payments stub memory limit 64m -> 128m, deployed about six minutes before the incident; makes memory/OOM look plausible, but the worker shows oom_killed false and exit code 1",
+    "worker restart loop and growing backlog of order_confirmation jobs, which look like the OOM pattern but are a consequence of the failing claim query",
+    "commit routing uncaught exceptions through the JSON logger, deployed to the worker about ten minutes before the incident; the worker ran normally on it",
+    "the jobs payload deprecation WARNING repeated on every worker restart; it also appears at startup in the healthy period",
+    "possible payment retry WARNINGs/errors while the payments stub is recreated during its own deploy, well before the incident"
+  ],
+  "split": "holdout",
+  "expected_fix": "run the pending migration (alembic upgrade head, i.e. deploy.sh --migrate) so jobs.priority exists, then restart the worker; the backlog of order_confirmation jobs will then drain (or roll the worker back to the previous commit)",
+  "notes": "The culprit commit changes app/models.py, app/routers/checkout.py, worker/main.py and adds migrations/versions/0002_job_priority.py, but only the worker is deployed and without --migrate. The api keeps running its previous image, so checkout still works and keeps enqueueing order_confirmation jobs that are never claimed. The worker crashes right after startup on the claim query; each restart logs 'service started' (new version), the deprecation WARNING and a CRITICAL 'uncaught exception' with the SQLAlchemy ProgrammingError / psycopg.errors.UndefinedColumn text. Docker's restart back-off makes restarts sparser over time. db.log has the matching postgres 'column \"priority\" does not exist' errors. db/schema.sql has no priority column on jobs and alembic_version stays at 0001."
+}

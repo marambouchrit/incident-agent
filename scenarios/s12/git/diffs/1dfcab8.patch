@@ -1,0 +1,18 @@
+commit 1dfcab8
+Author: Tomas Keller
+Date:   2026-10-16T20:01:22Z
+
+    Log uncaught exceptions as JSON
+
+
+diff --git a/app/logging_setup.py b/app/logging_setup.py
+index fd0dabd..55605ab 100644
+--- a/app/logging_setup.py
++++ b/app/logging_setup.py
+@@ -43,5 +43,6 @@ def configure(service: str) -> None:
+     root.handlers[:] = [handler]
+     root.setLevel(config.LOG_LEVEL)
+     logging.captureWarnings(True)
++    sys.excepthook = lambda *exc_info: logging.getLogger(service).critical("uncaught exception", exc_info=exc_info)
+     logging.getLogger("httpx").setLevel(logging.WARNING)
+     logging.getLogger("httpcore").setLevel(logging.WARNING)

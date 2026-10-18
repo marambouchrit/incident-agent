@@ -1,0 +1,16 @@
+commit 536f18b
+Author: Priya Nair
+Date:   2026-10-16T17:09:18Z
+
+    Add dev requirements for tests and linting
+
+
+diff --git a/requirements-dev.txt b/requirements-dev.txt
+new file mode 100644
+index 0000000..71fe0c2
+--- /dev/null
++++ b/requirements-dev.txt
+@@ -0,0 +1,3 @@
++-r requirements.txt
++pytest==8.3.4
++ruff==0.8.4

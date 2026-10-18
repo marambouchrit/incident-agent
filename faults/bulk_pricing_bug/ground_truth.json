@@ -1,0 +1,21 @@
+{
+  "id": "{{ID}}",
+  "fault": "bulk_pricing_bug",
+  "category": "code_bug",
+  "key_detail": "commit {{CULPRIT_COMMIT}} added app/pricing.py bulk_discount_cents, which multiplies a Decimal subtotal by float tier rates (0.05/0.10); every checkout with 3 or more different products raises TypeError: unsupported operand type(s) for *: 'decimal.Decimal' and 'float' and returns 500, while carts with 1-2 products still succeed",
+  "key_detail_aliases": ["bulk_discount_cents", "app/pricing.py", "pricing.py", "decimal.Decimal' and 'float", "Decimal", "bulk pricing"],
+  "culprit_commit": "{{CULPRIT_COMMIT}}",
+  "culprit_file": "app/pricing.py",
+  "first_error_ts": "{{FIRST_ERROR_TS}}",
+  "symptom_location": "logs/api.jsonl",
+  "cause_location": ["git/diffs/{{CULPRIT_COMMIT}}.patch"],
+  "difficulty": "medium",
+  "red_herrings": [
+    "pydantic 2.10.4 -> 2.10.6 dependency bump deployed to the api about six minutes before the culprit (request validation library, but patch-level and errors start only after the later deploy)",
+    "steady ~5% 4xx on /checkout, /users and /products from malformed client input (422/404), present before and after the change",
+    "worker settings change (RECONCILE_INTERVAL_S 300 -> 600) deployed after the errors started"
+  ],
+  "split": "holdout",
+  "expected_fix": "revert commit {{CULPRIT_COMMIT}} or fix bulk_discount_cents to use Decimal rates (Decimal(\"0.05\"), Decimal(\"0.10\")) instead of floats, then redeploy the api",
+  "notes": "Change applied at {{INJECT_TS}}. Only POST /checkout with 3+ distinct products fails (about half of the loadgen carts, which have 1-4 items); single- and two-item carts keep returning 201, so the error rate is partial. The app.errors 'unhandled exception' lines carry the TypeError traceback ending in app/pricing.py; the diff shows the float rates. The exception fires before the order insert and the payment call, so no orphan orders or payments."
+}

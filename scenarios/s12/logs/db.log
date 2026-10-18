@@ -1,0 +1,361 @@
+2026-10-16 19:56:53.635 UTC [28] @ LOG:  checkpoint complete: wrote 252 buffers (0.8%); 0 WAL file(s) added, 0 removed, 0 recycled; write=25.259 s, sync=0.024 s, total=25.313 s; sync files=30, longest=0.004 s, average=0.001 s; distance=1595 kB, estimate=2205 kB; lsn=0/4923B1A8, redo lsn=0/491DC648
+2026-10-16 19:56:57.260 UTC [1] @ LOG:  received fast shutdown request
+2026-10-16 19:56:57.264 UTC [1] @ LOG:  aborting any active transactions
+2026-10-16 19:56:57.266 UTC [1] @ LOG:  background worker "logical replication launcher" (PID 33) exited with exit code 1
+2026-10-16 19:56:57.266 UTC [28] @ LOG:  shutting down
+2026-10-16 19:56:57.269 UTC [28] @ LOG:  checkpoint starting: shutdown immediate
+2026-10-16 19:56:57.293 UTC [28] @ LOG:  checkpoint complete: wrote 52 buffers (0.2%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.004 s, sync=0.011 s, total=0.027 s; sync files=14, longest=0.003 s, average=0.001 s; distance=378 kB, estimate=2023 kB; lsn=0/4923B220, redo lsn=0/4923B220
+2026-10-16 19:56:57.313 UTC [1] @ LOG:  database system is shut down
+
+PostgreSQL Database directory appears to contain a database; Skipping initialization
+
+2026-10-16 19:57:09.899 UTC [1] @ LOG:  starting PostgreSQL 16.15 (Debian 16.15-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-10-16 19:57:09.900 UTC [1] @ LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2026-10-16 19:57:09.900 UTC [1] @ LOG:  listening on IPv6 address "::", port 5432
+2026-10-16 19:57:09.907 UTC [1] @ LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-10-16 19:57:09.918 UTC [29] @ LOG:  database system was shut down at 2026-10-16 19:56:57 UTC
+2026-10-16 19:57:09.933 UTC [1] @ LOG:  database system is ready to accept connections
+2026-10-16 20:02:09.938 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-16 20:02:34.610 UTC [27] @ LOG:  checkpoint complete: wrote 248 buffers (0.8%); 0 WAL file(s) added, 0 removed, 0 recycled; write=24.618 s, sync=0.035 s, total=24.673 s; sync files=32, longest=0.008 s, average=0.002 s; distance=1574 kB, estimate=1574 kB; lsn=0/494073A0, redo lsn=0/493C4AC8
+2026-10-16 20:07:09.657 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-16 20:07:31.373 UTC [27] @ LOG:  checkpoint complete: wrote 216 buffers (0.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=21.654 s, sync=0.044 s, total=21.717 s; sync files=28, longest=0.015 s, average=0.002 s; distance=1444 kB, estimate=1561 kB; lsn=0/49575120, redo lsn=0/4952DAD0
+2026-10-16 20:09:52.049 UTC [79] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-16 20:09:52.049 UTC [79] shopline@shopline DETAIL:  Key (email)=(shopper759.d2820d@example.com) already exists.
+2026-10-16 20:09:52.049 UTC [79] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-16 20:11:32.441 UTC [715] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:11:32.441 UTC [715] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:11:33.577 UTC [716] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:11:33.577 UTC [716] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:11:35.213 UTC [717] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:11:35.213 UTC [717] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:11:36.548 UTC [718] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:11:36.548 UTC [718] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:11:38.348 UTC [726] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:11:38.348 UTC [726] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:11:40.945 UTC [727] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:11:40.945 UTC [727] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:11:45.248 UTC [728] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:11:45.248 UTC [728] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:11:53.228 UTC [737] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:11:53.228 UTC [737] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:12:07.103 UTC [745] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:12:07.103 UTC [745] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:12:09.438 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-16 20:12:33.593 UTC [770] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:12:33.593 UTC [770] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:12:38.844 UTC [27] @ LOG:  checkpoint complete: wrote 292 buffers (0.9%); 0 WAL file(s) added, 0 removed, 0 recycled; write=29.309 s, sync=0.073 s, total=29.407 s; sync files=30, longest=0.014 s, average=0.003 s; distance=1793 kB, estimate=1793 kB; lsn=0/4973DA18, redo lsn=0/496EE158
+2026-10-16 20:13:25.700 UTC [808] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:13:25.700 UTC [808] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:14:26.716 UTC [854] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:14:26.716 UTC [854] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:15:28.428 UTC [900] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:15:28.428 UTC [900] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:16:30.539 UTC [947] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:16:30.539 UTC [947] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:17:09.912 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-16 20:17:31.887 UTC [1000] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:17:31.887 UTC [1000] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:17:36.091 UTC [27] @ LOG:  checkpoint complete: wrote 259 buffers (0.8%); 0 WAL file(s) added, 0 removed, 0 recycled; write=26.067 s, sync=0.054 s, total=26.180 s; sync files=30, longest=0.007 s, average=0.002 s; distance=1642 kB, estimate=1778 kB; lsn=0/498E91F8, redo lsn=0/49888AB8
+2026-10-16 20:18:33.333 UTC [1046] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:18:33.333 UTC [1046] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:19:34.568 UTC [1092] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:19:34.568 UTC [1092] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:20:36.532 UTC [1138] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:20:36.532 UTC [1138] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:21:38.021 UTC [1184] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:21:38.021 UTC [1184] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:22:09.152 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-16 20:22:36.889 UTC [27] @ LOG:  checkpoint complete: wrote 275 buffers (0.8%); 0 WAL file(s) added, 0 removed, 0 recycled; write=27.611 s, sync=0.090 s, total=27.737 s; sync files=28, longest=0.041 s, average=0.004 s; distance=1793 kB, estimate=1793 kB; lsn=0/49AB0320, redo lsn=0/49A49060
+2026-10-16 20:22:39.773 UTC [1230] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:22:39.773 UTC [1230] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:23:41.341 UTC [1276] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:23:41.341 UTC [1276] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:24:35.836 UTC [78] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-16 20:24:35.836 UTC [78] shopline@shopline DETAIL:  Key (email)=(shopper2546.d2820d@example.com) already exists.
+2026-10-16 20:24:35.836 UTC [78] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-16 20:24:42.826 UTC [1322] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:24:42.826 UTC [1322] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:25:24.128 UTC [78] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-16 20:25:24.128 UTC [78] shopline@shopline DETAIL:  Key (email)=(shopper1399.d2820d@example.com) already exists.
+2026-10-16 20:25:24.128 UTC [78] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-16 20:25:44.253 UTC [1368] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:25:44.253 UTC [1368] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:26:46.135 UTC [1415] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:26:46.135 UTC [1415] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:27:09.889 UTC [27] @ LOG:  checkpoint starting: time
+2026-10-16 20:27:38.146 UTC [27] @ LOG:  checkpoint complete: wrote 280 buffers (0.9%); 0 WAL file(s) added, 0 removed, 0 recycled; write=28.111 s, sync=0.075 s, total=28.258 s; sync files=30, longest=0.030 s, average=0.003 s; distance=1750 kB, estimate=1789 kB; lsn=0/49C519F8, redo lsn=0/49BFEBE8
+2026-10-16 20:27:47.541 UTC [1461] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:27:47.541 UTC [1461] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:28:25.646 UTC [1377] shopline@shopline ERROR:  duplicate key value violates unique constraint "users_email_key"
+2026-10-16 20:28:25.646 UTC [1377] shopline@shopline DETAIL:  Key (email)=(shopper2651.d2820d@example.com) already exists.
+2026-10-16 20:28:25.646 UTC [1377] shopline@shopline STATEMENT:  INSERT INTO users (email, name) VALUES ($1::VARCHAR, $2::VARCHAR) RETURNING users.id, users.created_at
+2026-10-16 20:28:49.263 UTC [1507] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:28:49.263 UTC [1507] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:29:51.097 UTC [1554] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:29:51.097 UTC [1554] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:30:52.882 UTC [1600] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:30:52.882 UTC [1600] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:31:54.020 UTC [1647] shopline@shopline ERROR:  column "priority" does not exist at character 182
+2026-10-16 20:31:54.020 UTC [1647] shopline@shopline STATEMENT:  
+	    UPDATE jobs SET status = 'running', attempts = attempts + 1
+	    WHERE id IN (
+	        SELECT id FROM jobs
+	        WHERE status = 'pending' AND run_at <= now()
+	        ORDER BY priority DESC, id LIMIT $1
+	        FOR UPDATE SKIP LOCKED
+	    )
+	    RETURNING id, kind, payload, attempts
+	    
+2026-10-16 20:32:09.202 UTC [27] @ LOG:  checkpoint starting: time

@@ -1,0 +1,49 @@
+commit 4542967
+Author: Lina Haddad
+Date:   2026-10-16T20:38:30Z
+
+    Rank product search results by popularity
+
+
+diff --git a/app/routers/search.py b/app/routers/search.py
+index be0208c..c060d2d 100644
+--- a/app/routers/search.py
++++ b/app/routers/search.py
+@@ -1,11 +1,12 @@
++from datetime import datetime, timedelta, timezone
+ from typing import Any
+ 
+ from fastapi import APIRouter, Depends, Query
+-from sqlalchemy import select
++from sqlalchemy import func, select
+ from sqlalchemy.orm import Session
+ 
+ from app.db import get_session
+-from app.models import Product
++from app.models import Order, OrderItem, Product
+ 
+ router = APIRouter()
+ 
+@@ -16,7 +17,21 @@ def search_products(
+     limit: int = Query(20, ge=1, le=50),
+     session: Session = Depends(get_session),
+ ) -> list[dict[str, Any]]:
+-    query = select(Product).where(Product.name.ilike(f"%{q}%")).order_by(Product.name).limit(limit)
++    since = datetime.now(timezone.utc) - timedelta(days=30)
++    units_sold = (
++        select(OrderItem.product_id, func.sum(OrderItem.quantity).label("units"))
++        .join(Order, Order.id == OrderItem.order_id)
++        .where(Order.status == "paid", Order.created_at >= since)
++        .group_by(OrderItem.product_id)
++        .subquery()
++    )
++    query = (
++        select(Product)
++        .outerjoin(units_sold, units_sold.c.product_id == Product.id)
++        .where(Product.name.ilike(f"%{q}%"))
++        .order_by(func.coalesce(units_sold.c.units, 0).desc(), Product.name)
++        .limit(limit)
++    )
+     return [
+         {"id": p.id, "name": p.name, "category": p.category, "price_cents": p.price_cents}
+         for p in session.scalars(query)

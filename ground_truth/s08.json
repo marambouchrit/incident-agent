@@ -1,0 +1,31 @@
+{
+  "id": "s08",
+  "fault": "statement_timeout",
+  "category": "bad_config",
+  "key_detail": "commit 2ef2fad lowered statement_timeout in config/postgres.conf from 30s to 250ms (applied by a config reload); the product search query, which takes about 0.55-0.75 s since search ranks by popularity, is now cancelled by postgres and /products/search returns 500 with QueryCanceled",
+  "key_detail_aliases": [
+    "statement_timeout",
+    "postgres.conf",
+    "QueryCanceled",
+    "statement timeout",
+    "250ms"
+  ],
+  "culprit_commit": "2ef2fad",
+  "culprit_file": "config/postgres.conf",
+  "first_error_ts": "2026-10-16T20:49:35.098Z",
+  "symptom_location": "logs/api.jsonl",
+  "cause_location": [
+    "config/postgres.conf",
+    "git/diffs/2ef2fad.patch",
+    "logs/db.log"
+  ],
+  "difficulty": "medium",
+  "red_herrings": [
+    "the 'Rank product search results by popularity' commit deployed about eleven minutes before the first error: it made search slow (about 1 s) but search kept working under the old 30s timeout",
+    "'slow request' WARNINGs on /products/search and 'duration:' lines in db.log that exist since that earlier deploy, well before the errors",
+    "orders router refactor commit deployed to the api about five minutes before the first error (no behaviour change)"
+  ],
+  "split": "dev",
+  "expected_fix": "restore statement_timeout = 30s (or raise it well above the search query time) in config/postgres.conf and reload postgres (SELECT pg_reload_conf()); optionally make the popularity ranking cheaper",
+  "notes": "The popularity commit made search slow but it kept working (HTTP 200, slow request WARNINGs) for about ten minutes under the old 30s timeout; errors begin only seconds after the statement_timeout change and reload, so timing makes the timeout change the culprit. Only /products/search fails; its query is the only one above 250 ms. api logs show psycopg.errors.QueryCanceled 'canceling statement due to statement timeout'; db.log shows the reload ('received SIGHUP', 'parameter \"statement_timeout\" changed to \"250ms\"') and the matching ERROR lines. No deploy happens with the culprit: the config reaches postgres through a reload, so no 'service started' line marks it."
+}

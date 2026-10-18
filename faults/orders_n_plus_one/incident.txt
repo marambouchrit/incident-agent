@@ -1,0 +1,1 @@
+Since around {{FIRST_ERROR_TIME}} UTC customers get intermittent errors (HTTP 500) across the site during busy periods, which then go away again. Customers also say the order history page has been very slow for a while, since before the errors started. No maintenance was announced.

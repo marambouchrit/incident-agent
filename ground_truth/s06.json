@@ -1,0 +1,30 @@
+{
+  "id": "s06",
+  "fault": "payments_down",
+  "category": "dependency_failure",
+  "key_detail": "the payments container (external payment provider) stopped at about 18:26 UTC and stays down (containers.json: state exited, exit code 137, not OOM); /checkout calls to http://payments:8080 fail with httpx.ConnectError after the client's retries, while the api config is correct and unchanged",
+  "key_detail_aliases": [
+    "payment provider",
+    "ConnectError",
+    "exited",
+    "provider down",
+    "payments container"
+  ],
+  "culprit_commit": "",
+  "culprit_file": "",
+  "first_error_ts": "2026-10-16T18:26:37.930Z",
+  "symptom_location": "logs/api.jsonl",
+  "cause_location": [
+    "containers.json",
+    "logs/api.jsonl"
+  ],
+  "difficulty": "medium",
+  "red_herrings": [
+    "config commit to config/api.env changing CATALOG_CACHE_TTL_S 30 -> 10, deployed to the api about four minutes before the first errors (looks like a bad env var change, but it only affects the product list cache)",
+    "'payment attempt failed, retrying' WARNINGs also appear in the healthy period (occasional 503 from the provider, retry succeeds)",
+    "the error text (name resolution / connect failure to the payments host) suggests a wrong PAYMENTS_URL, but PAYMENTS_URL is unchanged in every commit"
+  ],
+  "split": "dev",
+  "expected_fix": "restore/restart the payment provider (docker compose up -d payments, or escalate to the provider); no api code or config change is needed",
+  "notes": "There is no culprit commit: the newest commit (catalog cache TTL) is a decoy. The evidence is containers.json (payments not running, exited with 137, started_at before the window) plus api logs: from the first error on, every POST /checkout logs two 'payment attempt failed, retrying' WARNINGs with ConnectError and then an app.errors 'unhandled exception' ERROR whose exc ends in httpx.ConnectError, status 500; all other endpoints keep returning 200. inject_ts is when the provider was stopped."
+}
