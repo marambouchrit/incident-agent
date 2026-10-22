@@ -1,7 +1,7 @@
 # CLAUDE.md — Incident Investigation Agent
 
 ## What this project is
-An autonomous, single, read-only AI agent for root cause analysis (RCA). Given an incident report, the LLM forms hypotheses, chooses its own tools (logs, commits/diffs, config, DB schema, container status), observes, adapts, and ends with a structured report (cause, verbatim evidence, confidence, suggested fix). It proposes fixes, never applies them. It runs on static incident snapshots in `scenarios/`, is evaluated against `ground_truth/`, and is compared to a one-shot baseline.
+An autonomous, single, read-only AI agent for root cause analysis (RCA). Given an incident report, the LLM forms hypotheses, chooses its own tools (logs, commits/diffs, config, DB schema, container status), observes, adapts, and ends with a structured report (cause, verbatim evidence, confidence, suggested fix). It proposes fixes, never applies them. It runs on static incident snapshots in `scenarios/`, and is evaluated against `ground_truth/` (no baseline: dropped 2026-10-22, see ROADMAP Decision log).
 
 This is a **learning project**: I'm a final-year engineering student (AI/LLM engineering) building it for my CV and to learn agent engineering properly. Timebox ~2 weeks.
 

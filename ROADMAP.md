@@ -393,3 +393,6 @@ If a new idea appears: write it under "Future work" in `PROGRESS.md` and move on
 | 2026-10-13 | Dev/holdout split of scenarios | Avoid prompt overfitting |
 | 2026-10-13 | Claude Code in Learning mode with `TODO(human)` gaps; no edit-permission blocks | Focus my effort on design decisions, let plumbing be generated; ownership split in §0.2 |
 | 2026-10-13 | Claude Code only, no claude.ai Project chat | One place that sees the repo; mentoring (briefings, reviews) moved into CLAUDE.md + `/next` |
+| 2026-10-22 | Day 8 dropped: no baseline, no new scenarios (stay at 11) | The goal is the agent; 11 scenarios (6 dev / 5 holdout) are enough evidence. CP3 becomes "full-set agent results with dev/holdout split" |
+| 2026-10-22 | Final model = dev model (gemini-3.5-flash-lite, pinned) | Free tier only; stronger free models allow ~20 requests/day, too few for one eval |
+| 2026-10-22 | Day 9: the 11 × 3 v2 eval (2026-10-18) counts as the full eval; only holdout failure analysis remains. Calibration goes into the Day 10 tuning round | Avoid re-running an eval we already have |

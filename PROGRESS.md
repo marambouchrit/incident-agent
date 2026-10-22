@@ -9,10 +9,10 @@
 | CP0 — Setup (CLAUDE.md, Learning style, spec, skills) | 0 | ✅ | 2026-10-13 |
 | CP1 — E2E on 5 scenarios | 4 | ✅ | 2026-10-15 · 5/5 submitted, right commit 5/5, right category 2/5 |
 | CP2 — One-command eval on ~12 | 7 | ✅ | 2026-10-18 · 11 × 3, prompt v2: cause 28/33 (holdout 15/15), category 22/33 |
-| CP3 — Agent vs. baseline, full set | 10 | ⬜ | |
+| CP3 — Full-set agent results, dev/holdout split, v1.0 tag | 10 | ⬜ | redefined 2026-10-22 (baseline dropped) |
 | CP4 — Repo, viewer, demo | 13 | ⬜ | |
 
-Current day: **Day 8**  ·  Agent version: v2 (system prompt v2)  ·  Dev model: gemini-3.5-flash-lite (free tier: 15 RPM · 250K TPM · 500 RPD)  ·  Final model: —
+Current day: **Day 10**  ·  Agent version: v2 (system prompt v2)  ·  Dev model: gemini-3.5-flash-lite (free tier: 15 RPM · 250K TPM · 500 RPD)  ·  Final model: gemini-3.5-flash-lite (free only)
 
 ---
 
@@ -182,6 +182,22 @@ Current day: **Day 8**  ·  Agent version: v2 (system prompt v2)  ·  Dev model:
   - Day 8 asks for 15–20 scenarios; recording 6 took ~5 h 20 on Day 6.
 - **Next:** Day 8 — one-shot baseline (`baseline/`, same `submit_report` schema, fixed token budget), `eval --system baseline`, cost estimate; scenario count decision.
 
+### Day 8 + Day 9 — 2026-10-22 — Scope cut + holdout analysis
+- **Done:**
+  - Day 8 dropped: no baseline, no new scenarios (set stays at 11: 6 dev / 5 holdout). Final model = dev model (gemini-3.5-flash-lite), free tier only. CP3 redefined as "full-set agent results with dev/holdout split". 3 lines in the `ROADMAP.md` Decision log; baseline sentence removed from `CLAUDE.md`.
+  - Day 9: the 11 × 3 v2 eval from 2026-10-18 (`results/2026-10-18_agent_v2.md`) counts as the full eval, so it was not re-run (0 LLM calls today).
+  - Holdout failure analysis, 15 runs read: cause **15/15**, category **11/15**, evidence 43/43, 0 red herrings blamed. s02, s07, s12 3/3 on category; s04 1/3, s10 1/3.
+  - "Done when" (Day 9, adapted): I can say in one sentence where the agent fails. The investigation generalizes to holdout; the remaining errors are the category labels on the two pool-exhaustion look-alikes.
+- **TODO(human) gaps filled:** holdout failure analysis, by Claude at my request.
+- **Learned:** (→ `docs/concepts.md` #33–34, `docs/journal.md` Day 8 + 9)
+  - s04 and s10 are cause vs. effect mirror images. s04 (pool limit lowered by config) is labelled by its trigger, `bad_config` 2/3. s10 (N+1 fills an unchanged pool) is labelled by its effect, `resource_exhaustion` 2/3. Our definitions allow both readings: `bad_config` = "a configuration value is wrong", and `performance_regression` says "errors are few or none" while s10 has hundreds of QueuePool errors.
+  - Candidate rule: limit lowered → `resource_exhaustion`; limit unchanged but work slower → `performance_regression`, even if the pool fills.
+  - The 4 wrong-label runs report confidence 0.95–1.00. No s04 run mentions the healthy control burst at 17:12, so the v2 "rule out an alternative" requirement isn't visible there.
+  - Reading the holdout makes it no longer blind. A Day 10 label fix must be justified by dev cases (s05, s06), and the results must say the holdout was read.
+- **Blocked / questions for Claude:**
+  - Without a baseline, "is the loop worth ~7× the calls?" has no number. Stated as a known limitation.
+- **Next:** Day 10: one tuning round (max 2–3 changes, dev-justified): category rule for trigger vs. effect, calibration. Re-run, compare, tag v1.0 → CP3.
+
 <!-- copy the block above for each day -->
 
 ---
@@ -191,7 +207,7 @@ Current day: **Day 8**  ·  Agent version: v2 (system prompt v2)  ·  Dev model:
 | Failure mode | Count (dev) | Example trajectory | Fix tried | Effect |
 |---|---|---|---|---|
 | **#1 Anchoring on the first suspicious commit** (blames/chases the commit just before the errors, never checks timing or state) | **6/18** (s08 3/3 wrong answer; s06 3/3 spent steps 2–8 on the decoy config commit before checking containers) | runs/2026-10-18/agent/s08_v1_20261018T180917.json · runs/2026-10-18/agent/s06_v1_20261018T180847.json | Prompt v2 "Before you conclude" (timing, state, alternatives) | Partial: s08 opens `2ef2fad` 0/3 → 2/3, correct 0/3 → 1/3; still no timing comparison |
-| **#2 Wrong category / misread evidence** | **12/18** category wrong (s03 3/3, s05 3/3 label overlap; s06 3/3 reads `exit_code=137` as OOM although `oom_killed=False`; s08 3/3 code_bug) | runs/2026-10-18/agent/s06_v1_20261018T181143.json | Category definitions in `submit_report`; 137 description fixed | Dev category 6/18 → 11/18 (s03 0 → 3, s05 0 → 2); s06 0/3 remains (label ambiguity) |
+| **#2 Wrong category / misread evidence** | **12/18** category wrong (s03 3/3, s05 3/3 label overlap; s06 3/3 reads `exit_code=137` as OOM although `oom_killed=False`; s08 3/3 code_bug) | runs/2026-10-18/agent/s06_v1_20261018T181143.json | Category definitions in `submit_report`; 137 description fixed | Dev category 6/18 → 11/18 (s03 0 → 3, s05 0 → 2); s06 0/3 remains (label ambiguity). Holdout v2: 11/15, misses = s04 trigger label, s10 effect label (pool look-alikes) |
 | Overconfidence | 18/18 runs at confidence ≥ 0.95; accuracy 0.67 | results/2026-10-18_agent.md (calibration) | — | v2 full set: 33/33 at ~1.00, accuracy 0.85 |
 | Hallucinated evidence | 3/18 v1 (s03 ×2 inverted sign, s05 paraphrase); v2 dev 5 quotes incl. 1 invented diff (s06) | runs/2026-10-18/agent_v2/s06_v2_20261018T190030.json | Evidence rule (diff prefix) | False alarms gone (45 → 52/55); real fakes still caught |
 | Wrong tool / bad args | 0 | — | — | |
