@@ -9,10 +9,10 @@
 | CP0 — Setup (CLAUDE.md, Learning style, spec, skills) | 0 | ✅ | 2026-10-13 |
 | CP1 — E2E on 5 scenarios | 4 | ✅ | 2026-10-15 · 5/5 submitted, right commit 5/5, right category 2/5 |
 | CP2 — One-command eval on ~12 | 7 | ✅ | 2026-10-18 · 11 × 3, prompt v2: cause 28/33 (holdout 15/15), category 22/33 |
-| CP3 — Full-set agent results, dev/holdout split, v1.0 tag | 10 | ⬜ | redefined 2026-10-22 (baseline dropped) |
+| CP3 — Full-set agent results, dev/holdout split, v1.0 tag | 10 | ✅ | 2026-10-22 · v1.0 (prompt v3): cause 29/33, category 28/33; blind holdout (v2) cause 15/15, category 11/15 |
 | CP4 — Repo, viewer, demo | 13 | ⬜ | |
 
-Current day: **Day 10**  ·  Agent version: v2 (system prompt v2)  ·  Dev model: gemini-3.5-flash-lite (free tier: 15 RPM · 250K TPM · 500 RPD)  ·  Final model: gemini-3.5-flash-lite (free only)
+Current day: **Day 11**  ·  Agent version: v1.0 (prompt v3, tag `v1.0`)  ·  Dev model: gemini-3.5-flash-lite (free tier: 15 RPM · 250K TPM · 500 RPD)  ·  Final model: gemini-3.5-flash-lite (free only)
 
 ---
 
@@ -198,6 +198,28 @@ Current day: **Day 10**  ·  Agent version: v2 (system prompt v2)  ·  Dev model
   - Without a baseline, "is the loop worth ~7× the calls?" has no number. Stated as a known limitation.
 - **Next:** Day 10: one tuning round (max 2–3 changes, dev-justified): category rule for trigger vs. effect, calibration. Re-run, compare, tag v1.0 → CP3.
 
+### Day 10 — 2026-10-22 — One tuning round + ✅ CP3
+- **Done:**
+  - Prompt **v3**, 2 changes, both justified by dev failures:
+    (1) `submit_report` category rule: label the change that made the problem start, not the downstream error. Covers a migration that ran and dropped an index, a lowered timeout, a lowered pool limit and an unchanged pool filled by slow work. `infra_crash` wins when an app process is killed.
+    (2) A confidence scale in the system prompt, tied to the "Before you conclude" checks.
+  - The giveaway test rejected "de**fault**" in the prompt (banned word "fault"). Rephrased; the test was not changed.
+  - Dev 6 × 3 (`runs/2026-10-22/agent_v3/`): s03 category fell 3/3 → 1/3 because of the new rule (code change → `performance_regression` instead of `infra_crash`). Added the `infra_crash` priority sentence and re-ran s03: 3/3. The first s03 runs are kept in `agent_v3_s03_before/`; the other 5 dev scenarios ran before that sentence.
+  - Dev v2 → v3: cause 13/18 → 14/18, category 11/18 → 13/18 (s05 2 → 3, s08 0 → 1), evidence 50/55 → 51/58, confidence/accuracy 1.00/0.72 → 0.96/0.78, tokens 38.5K → 45.4K (+18 %).
+  - Holdout 5 × 3, labelled **not blind**: cause 15/15, category 15/15, evidence 42/45.
+  - Full v1.0 (11 × 3): cause **29/33**, category **28/33**, evidence 93/103 (0.90). `results/2026-10-22_v1.0.md` has the main table, the blind v2 holdout number, v2 → v3 on dev, known limits and future work.
+  - Commits `f6303f2` (+ tag `v1.0`) and `88f7df0`, pushed with the tag. 186 tests green (1 skipped).
+- **TODO(human) gaps filled:** category rule, confidence scale (prompt v3), limits write-up. All by Claude at my request.
+- **Learned:** (→ `docs/concepts.md` #35–36, `docs/journal.md` Day 10)
+  - A new rule can break a case that already worked (s03), so the whole dev set is re-run after every change.
+  - The v3 holdout 15/15 category is not evidence of generalisation. Two rule lines came from s04/s10, which were read before tuning; the blind number stays v2 (11/15).
+  - Calibration through a written scale barely works on this model: every run still ≥ 0.8, including all 4 wrong dev runs.
+  - s08: the agent quotes the lowered timeout but still labels the slow query. It sees the evidence and doesn't apply the rule.
+- **Blocked / questions for Claude:**
+  - 2 pushed commit messages contain "Day" (`6394192`, `f6303f2`). Renaming them needs a force-push and re-creating the `v1.0` tag; not done, waiting for my decision.
+  - v1.0 frozen: s06, s08 and calibration are documented as limits, not tuned.
+- **Next:** Day 11 — trajectory viewer (Vite + React + TS + Tailwind, static JSON).
+
 <!-- copy the block above for each day -->
 
 ---
@@ -225,6 +247,8 @@ Current day: **Day 10**  ·  Agent version: v2 (system prompt v2)  ·  Dev model
 |---|---|---|---|---|---|---|---|---|
 | 2026-10-16 | agent v1 | gemini-3.5-flash-lite | 5 × 3 (14 scored) | 8/8 · 6/6 · – | 0.84 | 6.9 | $0 (free) | 98 s |
 | 2026-10-18 | agent v1 (dev set) | gemini-3.5-flash-lite | 6 × 3 (18 scored) | 6/6 · 3/9 · 3/3 | 0.82 | 7.2 | $0 (free) | 31 s |
+| 2026-10-18 | agent v2 (full set) | gemini-3.5-flash-lite | 11 × 3 (33) | 9/9 · 10/15 · 9/9 | 0.95 | 7.2 | $0 (free) | 31 s |
+| 2026-10-22 | agent v1.0 / prompt v3 (full set; holdout not blind) | gemini-3.5-flash-lite | 11 × 3 (33) | 9/9 · 11/15 · 9/9 | 0.90 | 7.7 | $0 (free) | 71 s |
 
 ---
 
