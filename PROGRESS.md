@@ -230,4 +230,8 @@ Current day: **Day 10**  ·  Agent version: v2 (system prompt v2)  ·  Dev model
 
 ## Future work (ideas parked to protect scope)
 
--
+- Confidence computed in code from the verification checks actually done, instead of asked from the model (v3 confidence scale barely moved it: 1.00 → 0.96). Separate v1.1 experiment if time allows (Day 14).
+- s06: a snapshot signal that tells an external dependency from the app's own containers.
+- One-shot baseline (dropped 2026-10-22) to measure what the loop adds per token.
+- A fresh, never-read holdout set (the current one was read before the v3 tuning round).
+- Full list of v1.0 limits: `results/2026-10-22_v1.0.md`.
