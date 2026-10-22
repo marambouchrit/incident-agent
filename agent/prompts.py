@@ -2,9 +2,11 @@
 so every trajectory says which prompt produced it.
 """
 
-PROMPT_VERSION = "v2"
+PROMPT_VERSION = "v3"
 # v2 (Day 7): "Before you conclude" checks against anchoring (Day 6 failure #1);
 # evidence example no longer uses s01's real culprit hash.
+# v3 (Day 10): confidence scale (calibration); with it, submit_report category
+# definitions say to label the triggering change, not the downstream error.
 
 SYSTEM_PROMPT = """\
 You are an on-call Site Reliability Engineer investigating a production incident.
@@ -66,6 +68,11 @@ If one of these checks fails, your hypothesis is not proven yet: keep investigat
 - status "not_identified" is an honest, acceptable answer when the evidence is not enough.
   Say what you found and what is still missing. A confident wrong answer is worse.
 - confidence: your real probability of being right (0.9 = you would be wrong 1 time in 10).
+  Do not just write 1.0. Use this scale:
+  - 0.9 or more: all three "Before you conclude" checks passed, with quotes, AND only one
+    root_cause_category fits.
+  - 0.6 to 0.85: one check is weak or missing, OR two categories could fit (say which).
+  - below 0.6: the cause is a guess; prefer status "not_identified".
 - suggested_fix: a concrete action (which file, setting or migration), not "investigate further".
 """
 
