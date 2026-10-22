@@ -8,11 +8,11 @@
 |---|---|---|---|
 | CP0 — Setup (CLAUDE.md, Learning style, spec, skills) | 0 | ✅ | 2026-10-13 |
 | CP1 — E2E on 5 scenarios | 4 | ✅ | 2026-10-15 · 5/5 submitted, right commit 5/5, right category 2/5 |
-| CP2 — One-command eval on ~12 | 7 | ⬜ | |
+| CP2 — One-command eval on ~12 | 7 | ✅ | 2026-10-18 · 11 × 3, prompt v2: cause 28/33 (holdout 15/15), category 22/33 |
 | CP3 — Agent vs. baseline, full set | 10 | ⬜ | |
 | CP4 — Repo, viewer, demo | 13 | ⬜ | |
 
-Current day: **Day 7**  ·  Agent version: v1 (system prompt v1)  ·  Dev model: gemini-3.5-flash-lite (free tier: 15 RPM · 250K TPM · 500 RPD)  ·  Final model: —
+Current day: **Day 8**  ·  Agent version: v2 (system prompt v2)  ·  Dev model: gemini-3.5-flash-lite (free tier: 15 RPM · 250K TPM · 500 RPD)  ·  Final model: —
 
 ---
 
@@ -157,6 +157,31 @@ Current day: **Day 7**  ·  Agent version: v1 (system prompt v1)  ·  Dev model:
   - Gemini quota (500 RPD) can't fit 2 × dev + full eval in one day: reuse today's dev eval as the "before" run.
 - **Next:** Day 7 — mitigations for #1 (verify timing + state before submit_report, a requirement not a tool order) and #2 (clearer category definitions), evidence rule for diff prefixes, before/after on dev, then one-command eval on all 11 × 3 → CP2.
 
+### Day 7 — 2026-10-18 — Targeted mitigations + ✅ CP2
+- **Done:**
+  - Evidence rule (`eval/metrics.py`): a diff line may be quoted without its `+`/`-`; a wrong sign still fails (quote matched against the original text or a prefix-stripped copy, never a mix). Day 6 runs re-scored with 0 LLM calls: **45/55 → 52/55**; the 3 left are real faults (s03 ×2 inverted sign, s05 paraphrase).
+  - Tool level (`agent/tools/descriptions.py`): `get_container_status` said *"Exit code 137 … means it ran out of memory"* (wrong since Day 2) → now "137 = killed; `oom_killed` says whether memory was the reason". `submit_report` now defines each category, following `docs/SCENARIO_SPEC.md` §6.
+  - Prompt **v2** (`agent/prompts.py`): "Before you conclude" requires timing (first error vs. every change), state (config/schema/containers) and one ruled-out alternative, in any order (no fixed tool sequence).
+  - Leak fixed: v1's evidence example was `"git/45b232b"`, s01's real culprit commit (since Day 3). New test: no ground-truth culprit commit in the prompt or any tool description.
+  - 186 tests green (1 skipped).
+  - Before/after on dev (6 × 3, both with the new evidence rule): cause **12/18 → 13/18**, category **6/18 → 11/18**, evidence 52/55 → 50/55, confidence/accuracy 0.99/0.67 → 1.00/0.72, tokens 34.9K → 38.5K (+10 %).
+  - CP2: holdout 5 × 3 added to the same `runs/2026-10-18/agent_v2/` → full 11 × 3 with v2 (`results/2026-10-18_agent_v2.md`): cause **28/33** (dev 13/18, holdout **15/15**), category 22/33, evidence 93/98 (0.95), confidence 1.00 vs. accuracy 0.85. `python -m eval.run_all` runs all 11 × 3 in one command; today it ran in two parts (dev, then holdout) to save quota.
+  - Commit `d6bd927`.
+- **TODO(human) gaps filled:** evidence rule, tool description fix + category definitions, prompt v2. All by Claude at my request.
+- **Learned:** (→ `docs/concepts.md` #31–32)
+  - Fix the observation before adding a rule: the s06 "137 = OOM" misread came from our own tool description.
+  - Category definitions fixed the label problem: s03 0/3 → 3/3, s05 0/3 → 2/3.
+  - Anchoring only partly fixed: on s08 the agent now opens the config commit `2ef2fad` 2/3 times (0/3 in v1), but still doesn't compare the times (20:49:30 change, 20:49:35 first error) and keeps the 20:38 commit as the main cause (1/3 correct).
+  - s06 stays 0/3 for a label reason: 2/3 runs find "payments container exited, `oom_killed=False`" but say `infra_crash`; nothing in the snapshot shows `payments` is external (same compose file). Not tuned further (would overfit dev).
+  - Holdout > dev (15/15 vs 13/18) means the fixes didn't overfit; it doesn't mean the agent is perfect (the agent-hard cases s06/s08 happen to be dev; 15 runs is small). Holdout misses on category: s04 1/3, s10 1/3 (pool look-alikes). Numbers only, holdout runs not read.
+  - Tool + prompt changed together: the gain is measured for the set, not per change.
+- **Blocked / questions for Claude:**
+  - Overconfidence unchanged (confidence ~1.00 on every run): no calibration signal yet.
+  - New fabricated quote in s06 v2 run 1 (`PAYMENTS_URL=http://paymnts:8080`), caught by the evidence check.
+  - `docs/concepts.md` is tracked in git although my rule is "don't push concepts"; left out of `d6bd927`, decide (commit or untrack).
+  - Day 8 asks for 15–20 scenarios; recording 6 took ~5 h 20 on Day 6.
+- **Next:** Day 8 — one-shot baseline (`baseline/`, same `submit_report` schema, fixed token budget), `eval --system baseline`, cost estimate; scenario count decision.
+
 <!-- copy the block above for each day -->
 
 ---
@@ -165,9 +190,10 @@ Current day: **Day 7**  ·  Agent version: v1 (system prompt v1)  ·  Dev model:
 
 | Failure mode | Count (dev) | Example trajectory | Fix tried | Effect |
 |---|---|---|---|---|
-| **#1 Anchoring on the first suspicious commit** (blames/chases the commit just before the errors, never checks timing or state) | **6/18** (s08 3/3 wrong answer; s06 3/3 spent steps 2–8 on the decoy config commit before checking containers) | runs/2026-10-18/agent/s08_v1_20261018T180917.json · runs/2026-10-18/agent/s06_v1_20261018T180847.json | — (Day 7) | |
-| **#2 Wrong category / misread evidence** | **12/18** category wrong (s03 3/3, s05 3/3 label overlap; s06 3/3 reads `exit_code=137` as OOM although `oom_killed=False`; s08 3/3 code_bug) | runs/2026-10-18/agent/s06_v1_20261018T181143.json | — (Day 7) | |
-| Overconfidence | 18/18 runs at confidence ≥ 0.95; accuracy 0.67 | results/2026-10-18_agent.md (calibration) | — | |
+| **#1 Anchoring on the first suspicious commit** (blames/chases the commit just before the errors, never checks timing or state) | **6/18** (s08 3/3 wrong answer; s06 3/3 spent steps 2–8 on the decoy config commit before checking containers) | runs/2026-10-18/agent/s08_v1_20261018T180917.json · runs/2026-10-18/agent/s06_v1_20261018T180847.json | Prompt v2 "Before you conclude" (timing, state, alternatives) | Partial: s08 opens `2ef2fad` 0/3 → 2/3, correct 0/3 → 1/3; still no timing comparison |
+| **#2 Wrong category / misread evidence** | **12/18** category wrong (s03 3/3, s05 3/3 label overlap; s06 3/3 reads `exit_code=137` as OOM although `oom_killed=False`; s08 3/3 code_bug) | runs/2026-10-18/agent/s06_v1_20261018T181143.json | Category definitions in `submit_report`; 137 description fixed | Dev category 6/18 → 11/18 (s03 0 → 3, s05 0 → 2); s06 0/3 remains (label ambiguity) |
+| Overconfidence | 18/18 runs at confidence ≥ 0.95; accuracy 0.67 | results/2026-10-18_agent.md (calibration) | — | v2 full set: 33/33 at ~1.00, accuracy 0.85 |
+| Hallucinated evidence | 3/18 v1 (s03 ×2 inverted sign, s05 paraphrase); v2 dev 5 quotes incl. 1 invented diff (s06) | runs/2026-10-18/agent_v2/s06_v2_20261018T190030.json | Evidence rule (diff prefix) | False alarms gone (45 → 52/55); real fakes still caught |
 | Wrong tool / bad args | 0 | — | — | |
 | Context drowning | 0 (max 66K tokens, s06 run 3) | — | — | |
 | Gave up too early | 0 (0 not_identified) | — | — | |
