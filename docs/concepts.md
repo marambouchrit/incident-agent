@@ -321,3 +321,14 @@
 **Design choice.** Trajectories are saved as JSON and the score is computed from them afterwards, never during the run. That split is what makes the exact re-score possible, and lets a metric change be applied to old runs without any new LLM call.
 
 **Interview line.** "My numbers re-compute exactly from the saved trajectories; a fresh run gives close but not identical numbers, which is why I ran every scenario three times."
+
+## 39. Agent vs. workflow: the proof is in the trajectories
+*(Day 13 · drafted by Claude; reread and rephrase in my own words)*
+
+**What it is.** A workflow is code that fixes the steps ("read logs, then the last commit, then answer"). An agent gets tools and a budget, and the model chooses each next tool from what it just saw. My project has no workflow; the comparison is only there to explain what makes it an agent.
+
+**Why it matters.** Saying "it's autonomous" proves nothing. Showing different paths on different incidents does: in v1.0 every run starts with `log_stats`, then s01 goes to `get_db_schema` (the diff added a column), s04 to `read_config` (pool timeouts), s03 to `get_container_status` (restarts). No line of my code makes those choices.
+
+**The test.** Look for a line like "at step 2, call tool X" in the code. If there is one, it's a workflow. A prompt that *advises* a method (start with `log_stats`) is still an agent, because nothing enforces it.
+
+**Interview line.** "My loop never decides which tool comes next; the model does, and my trajectories show different paths for different incidents."

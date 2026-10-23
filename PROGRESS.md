@@ -10,9 +10,9 @@
 | CP1 — E2E on 5 scenarios | 4 | ✅ | 2026-10-15 · 5/5 submitted, right commit 5/5, right category 2/5 |
 | CP2 — One-command eval on ~12 | 7 | ✅ | 2026-10-18 · 11 × 3, prompt v2: cause 28/33 (holdout 15/15), category 22/33 |
 | CP3 — Full-set agent results, dev/holdout split, v1.0 tag | 10 | ✅ | 2026-10-22 · v1.0 (prompt v3): cause 29/33, category 28/33; blind holdout (v2) cause 15/15, category 11/15 |
-| CP4 — Repo, viewer, demo | 13 | ⬜ | Viewer done 2026-10-23; README + demo left |
+| CP4 — Repo, viewer, demo | 13 | ✅ | 2026-10-23 · README verified on a fresh clone; demo skipped (my choice) |
 
-Current day: **Day 13**  ·  Agent version: v1.0 (prompt v3, tag `v1.0`)  ·  Dev model: gemini-3.5-flash-lite (free tier: 15 RPM · 250K TPM · 500 RPD)  ·  Final model: gemini-3.5-flash-lite (free only)
+Current day: **Day 14**  ·  Agent version: v1.0 (prompt v3, tag `v1.0`)  ·  Dev model: gemini-3.5-flash-lite (free tier: 15 RPM · 250K TPM · 500 RPD)  ·  Final model: gemini-3.5-flash-lite (free only)
 
 ---
 
@@ -250,6 +250,23 @@ Current day: **Day 13**  ·  Agent version: v1.0 (prompt v3, tag `v1.0`)  ·  De
 - **Blocked / questions for Claude:**
   - The 2 pushed commit messages with "Day" (`6394192`, `f6303f2`) are still not renamed.
 - **Next:** Day 13 — README (problem, agent vs workflow, architecture, tools, safety, eval, results, failures, limits) + 1–2 min demo → CP4.
+
+### Day 13 — 2026-10-23 — README + ✅ CP4
+- **Done:**
+  - `README.md`: result first (29/33), problem, why it's an agent (4 real v1.0 trajectories: same start `log_stats`, then s01 → `get_db_schema`, s04 → `read_config`, s03 → `get_container_status`), architecture diagram, tools table, safety design, eval method + results (blind holdout v2 15/15 · 11/15), failures (s08, overconfidence, s06), next steps, setup.
+  - Fresh-clone check (scratchpad), README commands only: `pytest -q` 185 passed / 4 skipped (3 need the git-ignored `runs/`); `agent.run s01` → cause found, 6 steps, 33K tokens; `npm run dev` → HTTP 200, `/data/index.json` serves 33 runs.
+  - 3 README claims corrected against the code: trajectory saved in `runs/` (not `runs/<date>/`), duplicate calls are answered with the earlier result + a nudge (not refused), the giveaway test covers the system prompt only.
+  - `docs/interview.md` (Day 14 work, done early): 30-second pitch, key numbers, 46 questions with short answers in 7 themes (agent design, tools, safety, evaluation, failures and tuning, observability, next). Covers ROADMAP §6 and the journal's daily questions.
+  - Commit `f1de56e` (README), pushed. 188 tests green (1 skipped).
+  - Demo video skipped (my decision); CP4's "done when" (clone → run → viewer from the README) is met without it.
+- **TODO(human) gaps filled:** "Why this is an agent, not a workflow" and "What I'd do next" in the README — by Claude at my request.
+- **Learned:** (→ `docs/concepts.md` #39, `docs/journal.md` Day 13)
+  - The project has no workflow; the README describes one only to show the difference: the model, not my code, picks the next tool, so the path changes with the evidence.
+  - A README is a list of claims: 3 of them were wrong until checked against the code.
+- **Blocked / questions for Claude:**
+  - The 2 pushed commit messages with "Day" (`6394192`, `f6303f2`) are still not renamed.
+  - "Demo skipped" not yet in the ROADMAP decision log.
+- **Next:** Day 14 — buffer: practise `docs/interview.md` out loud; stretch optional.
 
 <!-- copy the block above for each day -->
 
