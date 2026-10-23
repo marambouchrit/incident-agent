@@ -12,7 +12,7 @@
 | CP3 — Full-set agent results, dev/holdout split, v1.0 tag | 10 | ✅ | 2026-10-22 · v1.0 (prompt v3): cause 29/33, category 28/33; blind holdout (v2) cause 15/15, category 11/15 |
 | CP4 — Repo, viewer, demo | 13 | ⬜ | Viewer done 2026-10-23; README + demo left |
 
-Current day: **Day 12**  ·  Agent version: v1.0 (prompt v3, tag `v1.0`)  ·  Dev model: gemini-3.5-flash-lite (free tier: 15 RPM · 250K TPM · 500 RPD)  ·  Final model: gemini-3.5-flash-lite (free only)
+Current day: **Day 13**  ·  Agent version: v1.0 (prompt v3, tag `v1.0`)  ·  Dev model: gemini-3.5-flash-lite (free tier: 15 RPM · 250K TPM · 500 RPD)  ·  Final model: gemini-3.5-flash-lite (free only)
 
 ---
 
@@ -236,6 +236,20 @@ Current day: **Day 12**  ·  Agent version: v1.0 (prompt v3, tag `v1.0`)  ·  De
 - **Blocked / questions for Claude:**
   - The 2 pushed commit messages with "Day" (`6394192`, `f6303f2`) are still not renamed.
 - **Next:** Day 12 — pin the final model in `results/final.md` (same free model as v1.0, no baseline) + small UI polish only.
+
+### Day 12 — 2026-10-23 — Final results (no re-run)
+- **Done:**
+  - No `results/final.md`: the final model = the dev model (decision 2026-10-22), so `results/2026-10-22_v1.0.md` already is the final eval. Added the 2 missing parts there: **Cost** ($0, free tier, ~1.45M tokens for 33 runs, ~4 min/run → ~2 h for 11 × 3) and **Reproduce** (eval command at tag `v1.0`, re-score command, viewer export command).
+  - Re-score check: `python -m eval.report runs/2026-10-22/agent_v3` rebuilds the dev table with zero diff → scoring is deterministic.
+  - Live check: `eval.run_all s01 --runs 1` (out of repo) → submitted, cause found, category ✅, evidence 3/3, 6 steps, 33K tokens, 245 s.
+  - Commits `746ed98`, `76848a7`. 188 tests green (1 skipped).
+- **TODO(human) gaps filled:** none.
+- **Learned:** (→ `docs/concepts.md` #38, `docs/journal.md` Day 12)
+  - Re-score is reproducible exactly; a re-run is only reproducible approximately (the model's output varies), hence 3 runs per scenario.
+  - A roadmap step depends on earlier decisions: once final model = dev model, "final eval" shrank to adding cost + commands.
+- **Blocked / questions for Claude:**
+  - The 2 pushed commit messages with "Day" (`6394192`, `f6303f2`) are still not renamed.
+- **Next:** Day 13 — README (problem, agent vs workflow, architecture, tools, safety, eval, results, failures, limits) + 1–2 min demo → CP4.
 
 <!-- copy the block above for each day -->
 

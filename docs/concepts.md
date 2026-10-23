@@ -310,3 +310,14 @@
 **Design choice.** The viewer only displays; the grade is computed once in Python (`eval.metrics.score_run`) and exported. Two scorers (Python + TypeScript) would drift apart and show different numbers than `results/`.
 
 **Interview line.** "I built a read-only trace viewer because you can't debug an agent from its final answer: you need to see which evidence it saw, when, and what it did next."
+
+## 38. Re-score vs. re-run: two kinds of reproducibility
+*(Day 12 · drafted by Claude; reread and rephrase in my own words)*
+
+**What it is.** Re-scoring runs the grading code again on saved trajectories (`python -m eval.report runs/2026-10-22/agent_v3`). Re-running calls the model again (`python -m eval.run_all`).
+
+**Why it matters.** Re-scoring is exact: same files + same code = same table (checked: zero diff in git). Re-running is only approximate, because the model's output varies between calls even with the same prompt and model. So the results file says which one it promises, and each scenario runs 3 times to see that variation instead of trusting one lucky or unlucky run.
+
+**Design choice.** Trajectories are saved as JSON and the score is computed from them afterwards, never during the run. That split is what makes the exact re-score possible, and lets a metric change be applied to old runs without any new LLM call.
+
+**Interview line.** "My numbers re-compute exactly from the saved trajectories; a fresh run gives close but not identical numbers, which is why I ran every scenario three times."
