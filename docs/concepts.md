@@ -242,3 +242,71 @@
 **Fix direction (Day 7).** Make verification a requirement, not a step: before `submit_report`, the timing must line up (first error vs. deploy/config change) and the state must be checked (containers, schema). A nudge, not a fixed tool order.
 
 **Interview line.** "My main failure mode was anchoring: the agent blamed the last commit before the errors without checking timing. I fixed it with a 'verify before concluding' requirement, measured before/after on the dev set."
+
+## 31. Where to fix a failure: tool, prompt or loop
+*(Day 7 · drafted by Claude; reread and rephrase in my own words)*
+
+**What it is.** A failure can be fixed at 3 levels. **Tool level:** what the model sees (outputs, descriptions, error messages). **Prompt level:** rules the model should follow. **Loop level:** code that forces something (a nudge at step 10, a rejected report). Try them in that order: a fix in the observation helps on every step, while a prompt rule is one more instruction that can be ignored.
+
+**Example here.** In s06 the agent read `exit_code=137, oom_killed=False` as "out of memory" 3/3 times. That wasn't the model's mistake: our own `get_container_status` description said *"Exit code 137 … means it ran out of memory"*. The fix was one sentence in the tool description, not a prompt rule. Same for categories: the model only saw 8 bare names, so the definitions went into the `submit_report` description, where the choice is made.
+
+**Interview line.** "Before writing a prompt rule I check what the model actually saw. One failure mode came from my own tool description, which taught the model that exit 137 means OOM. Fixing the observation is cheaper and more general than adding a rule."
+
+## 32. Prompt contamination (a leaked example)
+*(Day 7 · drafted by Claude; reread and rephrase in my own words)*
+
+**What it is.** An example in the prompt that comes from the test set. Prompt v1 gave `"git/45b232b"` as an evidence example, and `45b232b` is the real culprit commit of s01. The agent sees it in every run, so the s01 score is no longer a clean measurement.
+
+**How it was caught.** By a check, not by reading: a test now loads every `ground_truth/*.json` and fails if a culprit commit appears in the system prompt or any tool description (`tests/test_loop.py`).
+
+**Interview line.** "I found that my prompt quoted a real commit hash from one scenario as an example, a small test-set leak. I removed it and added a test that scans the prompt and tool descriptions for any ground-truth commit, so it can't come back."
+
+
+## 33. Cause vs. effect when labelling a failure
+*(Day 9 · drafted by Claude; reread and rephrase in my own words)*
+
+**What it is.** One incident often has a trigger (what changed) and an effect (what broke). A label set needs a fixed rule for which one it names, or the same mechanism gets two labels. Example: s04 and s10 both end with a full DB connection pool. In s04 a config commit lowered the pool limit; in s10 slow N+1 queries filled an unchanged pool. The agent labelled s04 by its trigger (`bad_config`) and s10 by its effect (`resource_exhaustion`), and was wrong both times.
+
+**Rule.** If the limit itself was lowered → `resource_exhaustion`. If the limit is unchanged but the work got slower → `performance_regression`, even if the pool fills.
+
+**Interview line.** "Holdout: the agent found the cause 15/15 but the label only 11/15. All 4 misses were cause-vs-effect confusions between two pool-exhaustion look-alikes, so the fix is a clearer labelling rule, not a better investigation."
+
+## 34. Reading the holdout has a price
+*(Day 9 · drafted by Claude; reread and rephrase in my own words)*
+
+**What it is.** The holdout is only "unseen" until you read its runs. Once a fix is motivated by a holdout failure, later holdout scores are no longer a blind measure of generalisation.
+
+**Example here.** The s04/s10 label misses suggest changing the category definitions. That change is justified by dev cases with the same problem (s05, s06), and the results will state that the holdout was read before the Day 10 tuning round.
+
+**Interview line.** "I opened the holdout only once, after the final v2 eval. Any fix after that is justified by dev failures, and I report that the holdout is no longer fully blind."
+
+## 35. A new rule can break a case that worked (regression)
+*(Day 10 · drafted by Claude; reread and rephrase in my own words)*
+
+**What it is.** A prompt or description change aimed at some failures can change the answer on cases that were already right. Example: the v3 rule "label the change that made the problem start" was meant for s05/s08. It moved s03 (worker loads everything into memory, OOM-killed) from `infra_crash` 3/3 to `performance_regression` 2/3, because the change was "heavier code". One priority sentence ("if an app process is killed → `infra_crash`") brought it back to 3/3.
+
+**Why it matters.** It is the same idea as regression tests in software: after every change, re-run the whole dev set, not only the scenarios you wanted to fix.
+
+**Interview line.** "My tuning round broke an easy scenario that was 3/3. I caught it because I re-ran the whole dev set, fixed the conflict between two rules, and re-ran it."
+
+## 36. Calibration by prompt is not enough
+*(Day 10 · drafted by Claude; reread and rephrase in my own words)*
+
+**What it is.** Asking the model for a "real probability", even with a written scale (≥ 0.9 only if all checks passed), barely changes what it reports. v2 → v3: average confidence 1.00 → 0.96 while dev accuracy is 0.78; the 4 wrong dev runs still say 0.9–1.0.
+
+**Why.** The model judges its own work, and it always believes it did every check. The score comes from the same reasoning that may be wrong.
+
+**Better direction (future work).** Compute confidence in code from observable facts in the trajectory: was the timing compared, was the state read, was an alternative ruled out with a quote, does only one category fit.
+
+**Interview line.** "My agent was overconfident: about 0.96 average confidence for 78 % accuracy on dev. A confidence scale in the prompt didn't fix it, so my next step would be to compute confidence from the checks the agent actually did."
+
+## 37. Traces are the debugger of an agent
+*(Day 11 · drafted by Claude; reread and rephrase in my own words)*
+
+**What it is.** A trace (trajectory) is the full record of one run: each thought, each tool call with its arguments, each result, and the final report. The viewer replays it step by step and highlights where each evidence quote came from.
+
+**Why.** An agent's code is the same on every run; the behaviour lives in the trace. s08 is the example: the final report only says "wrong", while the trace shows the agent read the lowered timeout and still blamed the slow query. Without the trace, you can't tell a reasoning error from a missing tool.
+
+**Design choice.** The viewer only displays; the grade is computed once in Python (`eval.metrics.score_run`) and exported. Two scorers (Python + TypeScript) would drift apart and show different numbers than `results/`.
+
+**Interview line.** "I built a read-only trace viewer because you can't debug an agent from its final answer: you need to see which evidence it saw, when, and what it did next."

@@ -10,9 +10,9 @@
 | CP1 — E2E on 5 scenarios | 4 | ✅ | 2026-10-15 · 5/5 submitted, right commit 5/5, right category 2/5 |
 | CP2 — One-command eval on ~12 | 7 | ✅ | 2026-10-18 · 11 × 3, prompt v2: cause 28/33 (holdout 15/15), category 22/33 |
 | CP3 — Full-set agent results, dev/holdout split, v1.0 tag | 10 | ✅ | 2026-10-22 · v1.0 (prompt v3): cause 29/33, category 28/33; blind holdout (v2) cause 15/15, category 11/15 |
-| CP4 — Repo, viewer, demo | 13 | ⬜ | |
+| CP4 — Repo, viewer, demo | 13 | ⬜ | Viewer done 2026-10-23; README + demo left |
 
-Current day: **Day 11**  ·  Agent version: v1.0 (prompt v3, tag `v1.0`)  ·  Dev model: gemini-3.5-flash-lite (free tier: 15 RPM · 250K TPM · 500 RPD)  ·  Final model: gemini-3.5-flash-lite (free only)
+Current day: **Day 12**  ·  Agent version: v1.0 (prompt v3, tag `v1.0`)  ·  Dev model: gemini-3.5-flash-lite (free tier: 15 RPM · 250K TPM · 500 RPD)  ·  Final model: gemini-3.5-flash-lite (free only)
 
 ---
 
@@ -219,6 +219,23 @@ Current day: **Day 11**  ·  Agent version: v1.0 (prompt v3, tag `v1.0`)  ·  De
   - 2 pushed commit messages contain "Day" (`6394192`, `f6303f2`). Renaming them needs a force-push and re-creating the `v1.0` tag; not done, waiting for my decision.
   - v1.0 frozen: s06, s08 and calibration are documented as limits, not tuned.
 - **Next:** Day 11 — trajectory viewer (Vite + React + TS + Tailwind, static JSON).
+
+### Day 11 — 2026-10-23 — Trajectory viewer
+- **Done:**
+  - `scripts/export_ui_data.py` turns the 33 v1.0 runs (`agent_v3` dev 18 + `agent_v3_holdout` 15) into `ui/public/data/index.json` + one JSON per run. The grade comes from `eval.metrics.score_run` (Python only); the UI never scores.
+  - `ui/` (Vite + React + TS + Tailwind, no backend): run list (all/dev/holdout filter, ✅/❌/❓ per run, "cause 29/33 · category 28/33") → run page (incident, timeline thought → tool + args → collapsible result, report card ↔ ground truth card).
+  - Evidence quotes are highlighted in the tool result where they were seen ("seen at step N"), or marked "not found" (e.g. s01 run 1 has 1 invented schema line out of 4 quotes).
+  - 2 bugs caught by matching numbers against `results/`: (1) the viewer showed 27 ✅ + 6 ❓ instead of 29/33 → applied the same category tie-break as `results/`, with a "tie" badge; (2) quotes located 92/105 → 105/105 after allowing a "+"/"-" prefix on multi-line diff quotes.
+  - Commits `df911c7`, `cdfd3e1` (viewer run files shipped, only root `runs/` ignored). 188 tests green (1 skipped), incl. 2 new in `tests/test_export_ui_data.py`.
+  - Done-when check: I followed one investigation step by step in the viewer (`npm run dev`) and could follow it.
+- **TODO(human) gaps filled:** none (viewer, export script and plumbing are Claude-generated per the ownership split).
+- **Learned:** (→ `docs/concepts.md` #37, `docs/journal.md` Day 11)
+  - The behaviour of an agent lives in its trace, not its code: s08's report only says "wrong", the trace shows it read the lowered timeout and still blamed the slow query.
+  - One scorer only (Python): a second one in TypeScript would drift and show different numbers than `results/`.
+  - Verdict and evidence are independent checks: a run can have the right cause and an invented quote.
+- **Blocked / questions for Claude:**
+  - The 2 pushed commit messages with "Day" (`6394192`, `f6303f2`) are still not renamed.
+- **Next:** Day 12 — pin the final model in `results/final.md` (same free model as v1.0, no baseline) + small UI polish only.
 
 <!-- copy the block above for each day -->
 
