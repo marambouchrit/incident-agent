@@ -7,9 +7,10 @@ node_modules/
 ui/dist/
 .claude/settings.local.json
 # runs can get large; commit selected ones into results/ instead
-runs/
+/runs/
 # the target app's own git repo, built by target_app/seed_history.sh
 target_app/_repo/
 capture/.work/
 # personal study notes, kept local
 docs/journal.md
+*.tsbuildinfo
